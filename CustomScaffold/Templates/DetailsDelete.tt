@@ -1,0 +1,56 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+@model Database.Models.<#= EntityName #>
+
+@{
+    ViewData["Title"] = "<#= Action #>";
+}
+
+<h2><#= Action #></h2>
+
+<# if(Action == "Delete")
+   {
+#>
+	<h3>Are you sure you want to delete this?</h3>
+<# } #>
+
+<div>
+    <h4><#= EntityName #></h4>
+    <hr />
+    <dl class="dl-horizontal">
+		<#
+			foreach(var column in ColumnNames)
+			{
+		#>
+			<dt>
+				@Html.DisplayNameFor(model => model.<#=column#>)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.<#=column#>)
+			</dd>
+		<# } #>
+    </dl>
+
+	<#
+		if(Action == "Delete")
+		{
+	#>
+		<form asp-action="Delete">
+			<input type="hidden" asp-for="<#= EntityIdName #>" />
+			<input type="submit" value="Delete" class="btn btn-default" /> |
+			<a asp-action="Index">Back to List</a>
+		</form>
+	<#
+		}
+		else
+		{
+	#>
+		<div>
+			<a asp-action="Edit" asp-route-id="@Model.<#= EntityIdName #>">Edit</a> |
+			<a asp-action="Index">Back to List</a>
+		</div>
+	<#  } #>
+</div>

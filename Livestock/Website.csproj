@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>9a824a61-318c-4967-af68-1eb1e7db1446</UserSecretsId>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="netcoreapp2.1\**" />
+    <Compile Remove="Views\Breeds\**" />
+    <Content Remove="netcoreapp2.1\**" />
+    <Content Remove="Views\Breeds\**" />
+    <EmbeddedResource Remove="netcoreapp2.1\**" />
+    <EmbeddedResource Remove="Views\Breeds\**" />
+    <None Remove="netcoreapp2.1\**" />
+    <None Remove="Views\Breeds\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\dummy.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Database\Database.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\dummy.ts" />
+  </ItemGroup>
+
+</Project>

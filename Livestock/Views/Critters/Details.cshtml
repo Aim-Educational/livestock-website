@@ -1,0 +1,90 @@
+﻿@model Database.Models.Critter
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Critter</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MumFurther)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MumFurther)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DadFurther)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DadFurther)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerContactId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OwnerContactId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BreedId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BreedId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Timestamp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Timestamp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VersionNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VersionNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CritterType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CritterType.Comment)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DadCritter)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DadCritter.Comment)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MumCritter)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MumCritter.Comment)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CritterId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

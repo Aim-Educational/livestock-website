@@ -1,0 +1,44 @@
+@model Database.Models.VehicleLifeEventWash
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+
+<div>
+    <h4>VehicleLifeEventWash</h4>
+    <hr />
+    <dl class="dl-horizontal">
+					<dt>
+				@Html.DisplayNameFor(model => model.Comment)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Comment)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.DateTime)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.DateTime)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.UserId)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.UserId)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.VehicleLifeEventId)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.VehicleLifeEventId)
+			</dd>
+		    </dl>
+
+			<div>
+			<a asp-action="Edit" asp-route-id="@Model.VehicleLifeEventWashId">Edit</a> |
+			<a asp-action="Index">Back to List</a>
+		</div>
+	</div>

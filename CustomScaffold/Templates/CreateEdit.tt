@@ -1,0 +1,72 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+@model Database.Models.<#= EntityName #>
+
+@{
+    ViewData["Title"] = "<#= Action #>";
+}
+
+<h2><#= Action #></h2>
+
+<h4>@Html.DisplayNameFor(model => model.<#= EntityIdName #>)</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="<#= Action #>">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+			<# foreach(var c in ColumnNames)
+			   {
+				  var column = c;
+			#>
+				<# if(column.EndsWith(IDENTIFIER_FK))
+				   {
+					   column = column.Substring(0, column.Length - IDENTIFIER_FK.Length);
+				#>
+					<div class="form-group">
+						<label asp-for="<#=column#>" class="control-label"></label>
+						<select asp-for="<#=column#>" class ="form-control" asp-items="ViewBag.<#=column#>"></select>
+					</div>
+				<#
+					}
+					else if(column.EndsWith(IDENTIFIER_HIDDEN))
+					{
+						if(Action == "Create")
+							continue;
+
+						column = column.Substring(0, column.Length - IDENTIFIER_HIDDEN.Length);
+				#>
+					@Html.HiddenFor(model => model.<#=column#>)
+				<#
+					}
+					else
+					{
+				#>
+					<div class="form-group">
+						<label asp-for="<#=column#>" class="control-label"></label>
+						<input asp-for="<#=column#>" class="form-control" />
+						<span asp-validation-for="<#=column#>" class="text-danger"></span>
+					</div>
+				<#
+					}
+				#>
+			<#
+				}
+			#>
+            <div class="form-group">
+                <input type="submit" value="<#= Action #>" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
