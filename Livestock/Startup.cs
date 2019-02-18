@@ -114,6 +114,7 @@ namespace Livestock
             }
 
             app.UseHttpsRedirection();
+            app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();

@@ -43,7 +43,7 @@ namespace Website.Filters
             
             if(!this.Accounts.HasPermission(user, this.Permission))
             {
-                context.Result = new RedirectToActionResult("generic", "error", new { message = $"You do not have the '{this.Permission}' permission.\nGo yell at Andy or something." });
+                context.Result = new RedirectToActionResult("error", "home", new { message = $"You do not have the '{this.Permission}' permission.\nGo yell at Andy or something." });
                 return;
             }
         }

@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap-social@5.1.1",
+      "destination": "wwwroot/lib/bootstrap-social/"
+    },
+    {
+      "library": "font-awesome@4.7.0",
+      "destination": "wwwroot/lib/font-awesome/"
+    }
+  ]
+}
