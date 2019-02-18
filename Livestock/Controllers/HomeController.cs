@@ -15,6 +15,7 @@ namespace Livestock.Controllers
 {
     public class HomeController : Controller
     {
+        [AimAuthorize(Roles: "superamdin")]
         [HasPermission(UserPermission.LivestockModify)]
         public string Test()
         {
@@ -25,30 +26,11 @@ namespace Livestock.Controllers
         {
             return View();
         }
-        
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error(string info)
+        public IActionResult Error(string message)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, AdditionalInfo = info });
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, AdditionalInfo = message });
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Website.Services
         [DataType(DataType.EmailAddress)]
         public string Email;
         public string Role;
+        public string Name;
     }
 
     public interface IAccountInfoService
@@ -36,7 +37,7 @@ namespace Website.Services
         List<User> TEMP_DB = new List<User>()
         {
             new User{ Email = "sealabjaster@gmail.com", Role = "admin" },
-            new User{ Email = "andyradford@hotmail.com", Role = "superadmin" }
+            new User{ Email = "andyradford@hotmail.com", Role = "Lord of the forsaken" }
         };
 
         public LivestockContext Db;
@@ -50,7 +51,7 @@ namespace Website.Services
         {
             identity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Email));
-            identity.AddClaim(new Claim(ClaimTypes.Name, "TODO:Names"));
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.Name ?? "NO NAME FOUND"));
         }
 
         public void AddTemporaryUserClaims(ClaimsIdentity identity)
@@ -78,7 +79,7 @@ namespace Website.Services
     {
         public static Task<User> GetUserByPrincipleAsync(this IAccountInfoService account, ClaimsPrincipal principal)
         {
-            var email = principal.FindFirst(c => c.Type == "email");
+            var email = principal.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
             return (email == null) ? Task.FromResult<User>(null) : account.GetUserByEmailAsync(email.Value);
         }
     }

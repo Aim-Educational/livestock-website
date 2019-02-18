@@ -205,6 +205,8 @@ namespace CustomScaffold
                                                         return p.Name + CreateEdit.IDENTIFIER_FK;
                                                     else if(p.IsInternalFor(entity))
                                                         return p.Name + CreateEdit.IDENTIFIER_HIDDEN;
+                                                    else if(p.ClrType == typeof(DateTime))
+                                                        return p.Name + CreateEdit.IDENTIFIER_DATETIME;
                                                     else
                                                         return p.Name;
                                                 })

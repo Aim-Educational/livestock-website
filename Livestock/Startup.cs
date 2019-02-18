@@ -20,6 +20,7 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using Website.Services;
 using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
 
 namespace Livestock
 {
@@ -42,10 +43,18 @@ namespace Livestock
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // I want all the generated code stuffed into a folder so it's not cluttering up my screen.
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 // {2} is area, {1} is controller,{0} is the action 
                 options.ViewLocationFormats.Add("/Views/Generated/{1}/{0}" + RazorViewEngine.ViewExtension);
+            });
+
+            // This is here so the MVC binder uses British date format, instead of American.
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-GB");
+                options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("en-GB") };
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -113,6 +122,7 @@ namespace Livestock
                 app.UseHsts();
             }
 
+            app.UseRequestLocalization();
             app.UseHttpsRedirection();
             app.UseStatusCodePages();
             app.UseStaticFiles();

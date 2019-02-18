@@ -26,6 +26,7 @@ namespace CustomScaffold.Templates
     {
         public static readonly string IDENTIFIER_FK = "?";
         public static readonly string IDENTIFIER_HIDDEN = "~";
+        public static readonly string IDENTIFIER_DATETIME = "^";
 
         public string EntityName;
         public string EntityIdName;

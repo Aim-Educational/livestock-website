@@ -133,6 +133,69 @@ namespace CustomScaffold.Templates
             #line 43 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
 
 					}
+					else if(column.EndsWith(IDENTIFIER_DATETIME))
+					{
+						column = column.Substring(0, column.Length - IDENTIFIER_DATETIME.Length);
+				
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t\t\t<div class=\"form-group date\" id=\"");
+            
+            #line 49 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(column));
+            
+            #line default
+            #line hidden
+            this.Write("\" data-target-input=\"nearest\">\r\n\t\t\t\t\t\t<label asp-for=\"");
+            
+            #line 50 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(column));
+            
+            #line default
+            #line hidden
+            this.Write("\" class=\"control-label\"></label>\r\n\t\t\t\t\t\t<div class=\"form-inline\">\r\n\t\t\t\t\t\t\t<input " +
+                    "id=\"");
+            
+            #line 52 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(column));
+            
+            #line default
+            #line hidden
+            this.Write("\" type=\"text\" name=\"");
+            
+            #line 52 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(column));
+            
+            #line default
+            #line hidden
+            this.Write("\" class=\"form-control datetimepicker-input\" data-target=\"#");
+            
+            #line 52 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(column));
+            
+            #line default
+            #line hidden
+            this.Write("\"\r\n\t\t\t\t\t\t\t\t   value=\"@(Model?.");
+            
+            #line 53 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(column));
+            
+            #line default
+            #line hidden
+            this.Write(".ToString(\"G\") ?? \"\")\"/>\r\n\t\t\t\t\t\t\t<div class=\"input-group-append\" data-target=\"#");
+            
+            #line 54 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(column));
+            
+            #line default
+            #line hidden
+            this.Write("\" data-toggle=\"datetimepicker\">\r\n\t\t\t\t\t\t\t\t<div class=\"input-group-text\"><i class=\"" +
+                    "fa fa-calendar\"></i></div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t");
+            
+            #line 59 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+
+					}
 					else
 					{
 				
@@ -141,28 +204,28 @@ namespace CustomScaffold.Templates
             #line hidden
             this.Write("\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t<label asp-for=\"");
             
-            #line 49 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            #line 65 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(column));
             
             #line default
             #line hidden
             this.Write("\" class=\"control-label\"></label>\r\n\t\t\t\t\t\t<input asp-for=\"");
             
-            #line 50 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            #line 66 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(column));
             
             #line default
             #line hidden
             this.Write("\" class=\"form-control\" />\r\n\t\t\t\t\t\t<span asp-validation-for=\"");
             
-            #line 51 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            #line 67 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(column));
             
             #line default
             #line hidden
             this.Write("\" class=\"text-danger\"></span>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t");
             
-            #line 53 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            #line 69 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
 
 					}
 				
@@ -171,7 +234,7 @@ namespace CustomScaffold.Templates
             #line hidden
             this.Write("\t\t\t");
             
-            #line 56 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            #line 72 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
 
 				}
 			
@@ -181,15 +244,40 @@ namespace CustomScaffold.Templates
             this.Write("            <div class=\"form-group\">\r\n                <input type=\"submit\" value=" +
                     "\"");
             
-            #line 60 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            #line 76 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Action));
             
             #line default
             #line hidden
             this.Write("\" class=\"btn btn-success\" />\r\n            </div>\r\n        </form>\r\n    </div>\r\n</" +
                     "div>\r\n\r\n<div>\r\n    <a asp-action=\"Index\">Back to List</a>\r\n</div>\r\n\r\n@section Sc" +
-                    "ripts {\r\n    @{await Html.RenderPartialAsync(\"_ValidationScriptsPartial\");}\r\n}\r\n" +
+                    "ripts {\r\n    @{await Html.RenderPartialAsync(\"_ValidationScriptsPartial\");}\r\n\r\n\t" +
                     "");
+            
+            #line 89 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+foreach(var column in ColumnNames.Where(c => c.EndsWith(IDENTIFIER_DATETIME)).Select(c => c.Substring(0, c.Length - IDENTIFIER_DATETIME.Length)))
+	  {
+	
+            
+            #line default
+            #line hidden
+            this.Write("\t\t<script type=\"text/javascript\">\r\n\t\t\t$(function () {\r\n\t\t\t\t$(\'#");
+            
+            #line 94 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(column));
+            
+            #line default
+            #line hidden
+            this.Write("\').datetimepicker();\r\n\t\t\t});\r\n\t\t</script>\r\n\t");
+            
+            #line 97 "D:\Coding\C#\Livestock\CustomScaffold\Templates\CreateEdit.tt"
+
+	  }
+	
+            
+            #line default
+            #line hidden
+            this.Write("}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

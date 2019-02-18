@@ -42,6 +42,22 @@
 					@Html.HiddenFor(model => model.<#=column#>)
 				<#
 					}
+					else if(column.EndsWith(IDENTIFIER_DATETIME))
+					{
+						column = column.Substring(0, column.Length - IDENTIFIER_DATETIME.Length);
+				#>
+					<div class="form-group date" id="<#=column#>" data-target-input="nearest">
+						<label asp-for="<#=column#>" class="control-label"></label>
+						<div class="form-inline">
+							<input id="<#=column#>" type="text" name="<#=column#>" class="form-control datetimepicker-input" data-target="#<#=column#>"
+								   value="@(Model?.<#=column#>.ToString("G") ?? "")"/>
+							<div class="input-group-append" data-target="#<#=column#>" data-toggle="datetimepicker">
+								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+							</div>
+						</div>
+					</div>
+				<#
+					}
 					else
 					{
 				#>
@@ -69,4 +85,16 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+	<#foreach(var column in ColumnNames.Where(c => c.EndsWith(IDENTIFIER_DATETIME)).Select(c => c.Substring(0, c.Length - IDENTIFIER_DATETIME.Length)))
+	  {
+	#>
+		<script type="text/javascript">
+			$(function () {
+				$('#<#=column#>').datetimepicker();
+			});
+		</script>
+	<#
+	  }
+	#>
 }

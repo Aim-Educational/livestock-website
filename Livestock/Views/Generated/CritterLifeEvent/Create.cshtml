@@ -28,10 +28,15 @@
 						<input asp-for="CritterId" class="form-control" />
 						<span asp-validation-for="CritterId" class="text-danger"></span>
 					</div>
-																<div class="form-group">
+																<div class="form-group date" id="DateTime" data-target-input="nearest">
 						<label asp-for="DateTime" class="control-label"></label>
-						<input asp-for="DateTime" class="form-control" />
-						<span asp-validation-for="DateTime" class="text-danger"></span>
+						<div class="form-inline">
+							<input id="DateTime" type="text" name="DateTime" class="form-control datetimepicker-input" data-target="#DateTime"
+								   value="@(Model?.DateTime.ToString("G") ?? "")"/>
+							<div class="input-group-append" data-target="#DateTime" data-toggle="datetimepicker">
+								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+							</div>
+						</div>
 					</div>
 																<div class="form-group">
 						<label asp-for="EnumCritterLifeEventTypeId" class="control-label"></label>
@@ -51,4 +56,10 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+
+			<script type="text/javascript">
+			$(function () {
+				$('#DateTime').datetimepicker();
+			});
+		</script>
+	}
