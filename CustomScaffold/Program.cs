@@ -178,7 +178,7 @@ namespace CustomScaffold
             template.EntityIdName = entity.GetKeys().First().Properties.First().Name;
             template.ColumnNames = entity.GetPropertiesFilterInternal().OrderByUserExperience(entity).Select(p => p.Name).ToList();
 
-            return new EntityFile() { data = template.TransformText(), path = $"Views/{entity.ClrType.Name}/Index.cshtml" };
+            return new EntityFile() { data = template.TransformText(), path = $"Views/Generated/{entity.ClrType.Name}/Index.cshtml" };
         }
     }
 
@@ -210,7 +210,7 @@ namespace CustomScaffold
                                                 })
                                          .ToList();
 
-            return new EntityFile() { data = template.TransformText(), path = $"Views/{entity.ClrType.Name}/{this.Action}.cshtml" };
+            return new EntityFile() { data = template.TransformText(), path = $"Views/Generated/{entity.ClrType.Name}/{this.Action}.cshtml" };
         }
     }
 
@@ -231,7 +231,7 @@ namespace CustomScaffold
             template.EntityIdName = entity.GetKeys().First().Properties.First().Name;
             template.ColumnNames = entity.GetPropertiesFilterInternal().OrderByUserExperience(entity).Select(p => p.Name).ToList();
 
-            return new EntityFile() { data = template.TransformText(), path = $"Views/{entity.ClrType.Name}/{this.Action}.cshtml" };
+            return new EntityFile() { data = template.TransformText(), path = $"Views/Generated/{entity.ClrType.Name}/{this.Action}.cshtml" };
         }
     }
 }

@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using Website.Services;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace Livestock
 {
@@ -39,6 +40,12 @@ namespace Livestock
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                // {2} is area, {1} is controller,{0} is the action 
+                options.ViewLocationFormats.Add("/Views/Generated/{1}/{0}" + RazorViewEngine.ViewExtension);
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
