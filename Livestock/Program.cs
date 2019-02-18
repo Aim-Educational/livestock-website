@@ -19,6 +19,10 @@ namespace Livestock
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                   .ConfigureAppConfiguration((ctx, config) =>
+                   {
+                       config.AddEnvironmentVariables(prefix: "LIVESTOCK_");
+                   })
+                   .UseStartup<Startup>();
     }
 }
