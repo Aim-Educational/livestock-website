@@ -21,6 +21,7 @@ using Newtonsoft.Json.Linq;
 using Website.Services;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace Livestock
 {
@@ -53,7 +54,7 @@ namespace Livestock
             // This is here so the MVC binder uses British date format, instead of American.
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-GB");
+                options.DefaultRequestCulture = new RequestCulture("en-GB");
                 options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("en-GB") };
             });
 
