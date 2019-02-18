@@ -52,7 +52,7 @@ namespace Livestock
             services.AddDbContext<LivestockContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Livestock")));
             services.AddScoped<IAccountInfoService, AccountInfoService>();
 
-            var interimServices = services.BuildServiceProvider();
+            var accounts = services.BuildServiceProvider().GetService<IAccountInfoService>();
             services.AddAuthentication(options => 
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -88,8 +88,7 @@ namespace Livestock
 
                         if(user["email"].Type == JTokenType.Null)
                             throw new Exception("No public email is associated with this account.");
-
-                        var accounts = interimServices.GetService<IAccountInfoService>(); // yuk
+                        
                         var userInfo = await accounts.GetUserByEmailAsync(user["email"].Value<string>());
                         if(userInfo != null)
                             accounts.AddClaimsFor(userInfo, context.Identity);

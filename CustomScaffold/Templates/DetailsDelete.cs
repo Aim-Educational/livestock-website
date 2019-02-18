@@ -120,8 +120,8 @@ namespace CustomScaffold.Templates
             
             #line default
             #line hidden
-            this.Write("\" />\r\n\t\t\t<input type=\"submit\" value=\"Delete\" class=\"btn btn-default\" /> |\r\n\t\t\t<a " +
-                    "asp-action=\"Index\">Back to List</a>\r\n\t\t</form>\r\n\t");
+            this.Write("\" />\r\n\t\t\t<input type=\"submit\" value=\"Delete\" class=\"btn btn-danger\" /> |\r\n\t\t\t<a a" +
+                    "sp-action=\"Index\">Back to List</a>\r\n\t\t</form>\r\n\t");
             
             #line 46 "D:\Coding\C#\Livestock\CustomScaffold\Templates\DetailsDelete.tt"
 

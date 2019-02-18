@@ -186,7 +186,7 @@ namespace CustomScaffold.Templates
             
             #line default
             #line hidden
-            this.Write("\" class=\"btn btn-default\" />\r\n            </div>\r\n        </form>\r\n    </div>\r\n</" +
+            this.Write("\" class=\"btn btn-success\" />\r\n            </div>\r\n        </form>\r\n    </div>\r\n</" +
                     "div>\r\n\r\n<div>\r\n    <a asp-action=\"Index\">Back to List</a>\r\n</div>\r\n\r\n@section Sc" +
                     "ripts {\r\n    @{await Html.RenderPartialAsync(\"_ValidationScriptsPartial\");}\r\n}\r\n" +
                     "");
