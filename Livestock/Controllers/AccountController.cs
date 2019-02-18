@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Livestock.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -19,6 +20,12 @@ namespace Website.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        [Authorize]
+        public IActionResult Logout()
+        {
+            return SignOut(new AuthenticationProperties{ RedirectUri = "/" });
         }
 
         public IActionResult ChallengeGithub()

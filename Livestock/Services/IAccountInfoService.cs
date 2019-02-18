@@ -50,12 +50,14 @@ namespace Website.Services
         {
             identity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Email));
+            identity.AddClaim(new Claim(ClaimTypes.Name, "TODO:Names"));
         }
 
         public void AddTemporaryUserClaims(ClaimsIdentity identity)
         {
             identity.AddClaim(new Claim(ClaimTypes.Role, "temp"));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "unknown@unknown.com"));
+            identity.AddClaim(new Claim(ClaimTypes.Name, "TODO:Names"));
         }
 
         public Task<User> GetUserByEmailAsync(string email)
