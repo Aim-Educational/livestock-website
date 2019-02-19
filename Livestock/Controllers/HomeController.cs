@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 using Website.Services;
 using System.Security.Claims;
 using Website.Filters;
+using System.Reflection;
 
 namespace Livestock.Controllers
 {
@@ -24,6 +25,15 @@ namespace Livestock.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult AllActions()
+        {
+            ViewData["Names"] = Assembly.GetExecutingAssembly()
+                               .GetTypes()
+                               .Where(t => typeof(Controller).IsAssignableFrom(t))
+                               .Select(t => t.Name);
             return View();
         }
 
