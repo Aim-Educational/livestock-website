@@ -20,8 +20,9 @@ namespace Website.Controllers
             return View();
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl ?? "/";
             return View();
         }
 
@@ -42,9 +43,12 @@ namespace Website.Controllers
             return SignOut(new AuthenticationProperties{ RedirectUri = "/" });
         }
 
-        public IActionResult ChallengeGithub()
+        public IActionResult ChallengeGithub(string returnUrl = null)
         {
-            return Challenge(new AuthenticationProperties{ RedirectUri = "/" }, "Github");
+            if(!Url.IsLocalUrl(returnUrl))
+                returnUrl = "/";
+
+            return Challenge(new AuthenticationProperties{ RedirectUri = returnUrl ?? "/" }, "Github");
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Website.Filters
         {
             if(!context.HttpContext.User.Identity.IsAuthenticated)
             {
-                context.Result = new RedirectToActionResult("login", "account", null);
+                context.Result = new RedirectToActionResult("login", "account", new { returnUrl = context.HttpContext.Request.Path.ToString() });
                 return;
             }
 
