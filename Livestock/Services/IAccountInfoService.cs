@@ -42,9 +42,9 @@ namespace Website.Services
 
         public LivestockContext Db;
 
-        public AccountInfoService(LivestockContext db)
+        public AccountInfoService(/*LivestockContext db*/)
         {
-            this.Db = db;
+            /*this.Db = db;*/
         }
 
         public void AddClaimsFor(User user, ClaimsIdentity identity)
@@ -59,6 +59,11 @@ namespace Website.Services
             identity.AddClaim(new Claim(ClaimTypes.Role, "temp"));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "unknown@unknown.com"));
             identity.AddClaim(new Claim(ClaimTypes.Name, "TODO:Names"));
+        }
+
+        public void TEMP_CreateTemporaryUser(ClaimsIdentity identity)
+        {
+            TEMP_DB.Add(new User{ Email = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "N/A", Name = "[DEBUG] TEMPORARY ACCOUNT", Role = "debug" });
         }
 
         public Task<User> GetUserByEmailAsync(string email)
