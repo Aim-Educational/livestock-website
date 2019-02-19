@@ -98,8 +98,7 @@ foreach ($filePath in $fileList)
             }
         }
 
-        $lines.Insert($i, "[DisplayName(`"$newName`")]")
-        $i++
+        $lines.Insert($i++, "[DisplayName(`"$newName`")]")
     }
 
     Out-File -FilePath $filePath -InputObject $([System.String]::Join("`n", $lines.ToArray())) -Encoding string

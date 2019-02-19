@@ -9,7 +9,7 @@ namespace Website.Filters
 {
     public class AimAuthorizeAttribute : TypeFilterAttribute
     {
-        public AimAuthorizeAttribute(string Roles) : base(typeof(AimAuthorizeFilter))
+        public AimAuthorizeAttribute(string Roles = "") : base(typeof(AimAuthorizeFilter))
         {
             Arguments = new[] { Roles.Split(',', StringSplitOptions.RemoveEmptyEntries) };
         }

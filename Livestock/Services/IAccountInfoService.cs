@@ -36,7 +36,7 @@ namespace Website.Services
     {
         List<User> TEMP_DB = new List<User>()
         {
-            new User{ Email = "sealabjaster@gmail.com", Role = "admin" },
+            new User{ Email = "sealabjaster@gmail.com", Role = "Andy's lacky" },
             new User{ Email = "andyradford@hotmail.com", Role = "Lord of the forsaken" }
         };
 

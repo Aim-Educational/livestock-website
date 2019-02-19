@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Website.Filters;
 
 namespace Website.Controllers
 {
@@ -22,7 +23,12 @@ namespace Website.Controllers
             return View();
         }
 
-        [Authorize]
+        public IActionResult Finalise()
+        {
+            return View();
+        }
+
+        [AimAuthorize]
         public IActionResult Logout()
         {
             return SignOut(new AuthenticationProperties{ RedirectUri = "/" });
