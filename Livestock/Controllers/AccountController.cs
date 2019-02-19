@@ -27,8 +27,7 @@ namespace Website.Controllers
         {
             return View();
         }
-
-        [AimAuthorize]
+        
         public IActionResult Logout()
         {
             return SignOut(new AuthenticationProperties{ RedirectUri = "/" });

@@ -21,6 +21,7 @@ using Newtonsoft.Json.Linq;
 using Website.Services;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
+using Website.Middleware;
 using Microsoft.AspNetCore.Localization;
 
 namespace Livestock
@@ -62,7 +63,6 @@ namespace Livestock
             services.AddDbContext<LivestockContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Livestock")));
             services.AddScoped<IAccountInfoService, AccountInfoService>();
 
-            var accounts = services.BuildServiceProvider().GetService<IAccountInfoService>();
             services.AddAuthentication(options => 
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -94,16 +94,10 @@ namespace Livestock
                         response.EnsureSuccessStatusCode();
 
                         var user = JObject.Parse(await response.Content.ReadAsStringAsync());
-                        context.RunClaimActions(user);
-
                         if(user["email"].Type == JTokenType.Null)
                             throw new Exception("No public email is associated with this account.");
-                        
-                        var userInfo = await accounts.GetUserByEmailAsync(user["email"].Value<string>());
-                        if(userInfo != null)
-                            accounts.AddClaimsFor(userInfo, context.Identity);
-                        else
-                            accounts.AddTemporaryUserClaims(context.Identity);
+
+                        context.RunClaimActions(user);
                     }
                 };
             });
@@ -129,6 +123,7 @@ namespace Livestock
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+            app.UseAuthenticatedUserClaimsMiddleware();
 
             app.UseMvc(routes =>
             {
