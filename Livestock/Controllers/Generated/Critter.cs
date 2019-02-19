@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
+using Website.Filters;
+using Website.Services;
+using User = Database.Models.User;
 
 namespace Website.Controllers
 {
@@ -41,6 +44,8 @@ namespace Website.Controllers
             return View(val);
         }
 
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
             ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name");
@@ -51,6 +56,8 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name")
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("CritterId,BreedId,Comment,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
         {
 			this.FixNullFields(val);
@@ -66,6 +73,8 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
             return View(val);
         }
 
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,6 +95,8 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("CritterId,BreedId,Comment,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
         {
 			if(val.CritterId != id)
@@ -119,6 +130,8 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
             return View(val);
         }
 
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,6 +150,8 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.Critter.FindAsync(id);

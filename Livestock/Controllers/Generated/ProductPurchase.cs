@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
+using Website.Filters;
+using Website.Services;
+using User = Database.Models.User;
 
 namespace Website.Controllers
 {
@@ -41,6 +44,8 @@ namespace Website.Controllers
             return View(val);
         }
 
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
             ViewData["ProductId"] = new SelectList(_context.Product, "ProductId", "Description");
@@ -50,6 +55,8 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name");
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("ProductPurchaseId,BatchNumber,Comment,Cost,DateTime,Expiry,LocationId,ProductId,SupplierId,Timestamp,VersionNumber,Volume")]ProductPurchase val)
         {
 			this.FixNullFields(val);
@@ -64,6 +71,8 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
             return View(val);
         }
 
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,6 +92,8 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("ProductPurchaseId,BatchNumber,Comment,Cost,DateTime,Expiry,LocationId,ProductId,SupplierId,Timestamp,VersionNumber,Volume")]ProductPurchase val)
         {
 			if(val.ProductPurchaseId != id)
@@ -115,6 +126,8 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
             return View(val);
         }
 
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,6 +146,8 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.ProductPurchase.FindAsync(id);

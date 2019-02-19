@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
+using Website.Filters;
+using Website.Services;
+using User = Database.Models.User;
 
 namespace Website.Controllers
 {
@@ -41,6 +44,8 @@ namespace Website.Controllers
             return View(val);
         }
 
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
             ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "Name");
@@ -49,6 +54,8 @@ namespace Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("TagId,Comment,CritterId,DateTime,Rfid,Tag1,Timestamp,UserId,VersionNumber")]Tag val)
         {
 			this.FixNullFields(val);
@@ -62,6 +69,8 @@ namespace Website.Controllers
             return View(val);
         }
 
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,6 +89,8 @@ namespace Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("TagId,Comment,CritterId,DateTime,Rfid,Tag1,Timestamp,UserId,VersionNumber")]Tag val)
         {
 			if(val.TagId != id)
@@ -111,6 +122,8 @@ namespace Website.Controllers
             return View(val);
         }
 
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,6 +142,8 @@ namespace Website.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+		[AimAuthorize]
+		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.Tag.FindAsync(id);
