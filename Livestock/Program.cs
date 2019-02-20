@@ -19,6 +19,7 @@ namespace Livestock
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                   .UseUrls("https://localhost:7777/", "https://192.168.1.150:7777/")
                    .ConfigureAppConfiguration((ctx, config) =>
                    {
                        config.AddEnvironmentVariables(prefix: "LIVESTOCK_");

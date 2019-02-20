@@ -35,8 +35,4 @@
     <TypeScriptCompile Include="Scripts\dummy.ts" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Util\" />
-  </ItemGroup>
-
 </Project>
