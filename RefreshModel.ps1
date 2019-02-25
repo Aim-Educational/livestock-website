@@ -1,9 +1,7 @@
-﻿$SERVER_NAME	= "SEAL-WIN64"
-$INSTANCE_NAME	= "SQLEXPRESS"
-$DATABASE_NAME  = "Livestock"
-$PROJECT		= "Database"
+﻿$PROJECT		= "Database"
 $OUTPUT_DIR     = "Models"
-$CONNECTION     = "Server="+$SERVER_NAME+"\"+$INSTANCE_NAME+";Database="+$DATABASE_NAME+";Trusted_Connection=True;"
+$APPSETTINGS    = "Livestock/appsettings.json"
+#$CONNECTION     = "Server="+$SERVER_NAME+"\"+$INSTANCE_NAME+";Database="+$DATABASE_NAME+";Trusted_Connection=True;"
 
 $PROJECT_PATH   = Get-Project $PROJECT
 $PROJECT_PATH   = [System.IO.Path]::GetDirectoryName($PROJECT_PATH.FullName)
@@ -15,6 +13,10 @@ $CONTEXT_PATH   = [System.IO.Path]::Combine($MODEL_PATH, "$CONTEXT_NAME.cs")
 
 $TABLE_OBJECT_PROPERTY_REGEX        = [regex]"public\s[^\s\<]+\s([^\s]+)\s{\s[gs]et;\s[gs]et;\s}"
 $TABLE_OBJECT_NAME_TRUNCATE_MATCHES = "* Contact Id","* Id"
+
+# Get the connection string from appsettings.
+# (Don't you love how needlessly hard this is?)
+$CONNECTION = (Get-Content $APPSETTINGS | ConvertFrom-Json | Select-Object ConnectionStrings).psobject.properties["ConnectionStrings"].Value.psobject.properties["Livestock"].Value
 
 # Reverse-engineer the database.
 Scaffold-DbContext $CONNECTION Microsoft.EntityFrameworkCore.SqlServer -OutputDir $OUTPUT_DIR -Project $PROJECT -Force
