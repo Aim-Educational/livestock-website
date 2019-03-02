@@ -29,7 +29,6 @@ namespace CustomScaffold
         static void Main(string[] args)
         {
             _generators = new List<IEntityFileGenerator>();
-            _generators.Add(new ControllerGenerator());
             _generators.Add(new IndexGenerator());
             _generators.Add(new CreateEditGenerator("Create"));
             _generators.Add(new CreateEditGenerator("Edit"));
@@ -41,7 +40,8 @@ namespace CustomScaffold
             var json = Json.Parse(File.ReadAllText("appsettings.json"));
             using (var db = new LivestockContext(json.Get("ConnectionStrings").Get("Livestock").As<string>()))
             {
-                foreach(var entity in db.Model.GetEntityTypes())
+                _generators.Add(new ControllerGenerator(db));
+                foreach (var entity in db.Model.GetEntityTypes())
                 {
                     foreach(var gen in _generators)
                     {
@@ -110,6 +110,12 @@ namespace CustomScaffold
 
     class ControllerGenerator : IEntityFileGenerator
     {
+        readonly LivestockContext db;
+        public ControllerGenerator(LivestockContext db)
+        {
+            this.db = db;
+        }
+
         public EntityFile Generate(IEntityType entity)
         {
             var template = new Controller();
@@ -156,6 +162,18 @@ namespace CustomScaffold
                         .Where(p => p.ClrType.UnderlyingSystemType == typeof(string))
                         .Select(p => $"if(String.IsNullOrWhiteSpace(val.{p.Name})) val.{p.Name} = \"{(p.Name == "Gender" ? "?" : "N/A")}\";")
                         .Aggregate((one, two) => one + "\n" + two);
+
+            // Create the authorise attribute
+            // [AimAuthorize(RolesOR = "admin,staff")]
+            var rolesOR 
+                = String.Join(',',
+                              db.MenuItem.Include(i => i.MenuHeader)
+                                .Where(i => i.MenuHeader.ApplicationCode == 1 && i.Controller == entity.ClrType.Name)
+                                .Select(i => i.MenuHeader.Role.Description)
+                                .Distinct()
+                             );
+
+            template.ControllerAuthAttrib = $"[AimAuthorize(RolesOR: \"{rolesOR}\")]";
 
             return new EntityFile(){ data = template.TransformText(), path = Path.Join("Controllers/Generated/", entity.ClrType.Name + ".cs") };
         }

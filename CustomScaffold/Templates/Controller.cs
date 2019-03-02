@@ -43,9 +43,16 @@ using User = Database.Models.User;
 
 namespace Website.Controllers
 {
-	public class ");
+	");
             
             #line 22 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ControllerAuthAttrib));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n\tpublic class ");
+            
+            #line 23 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
@@ -53,7 +60,7 @@ namespace Website.Controllers
             this.Write("Controller : Controller\r\n    {\r\n        private readonly LivestockContext _contex" +
                     "t;\r\n\r\n        public ");
             
-            #line 26 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 27 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
@@ -62,7 +69,7 @@ namespace Website.Controllers
                     "\n        }\r\n\r\n        public async Task<IActionResult> Index()\r\n        {\r\n     " +
                     "       var livestockContext = _context.");
             
-            #line 33 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 34 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ContextGetterString));
             
             #line default
@@ -80,14 +87,14 @@ namespace Website.Controllers
 
             var val = await _context.");
             
-            #line 44 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 45 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ContextGetterString));
             
             #line default
             #line hidden
             this.Write(".FirstOrDefaultAsync(m => m.");
             
-            #line 44 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 45 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default
@@ -96,7 +103,7 @@ namespace Website.Controllers
                     "Found();\r\n            }\r\n\r\n            return View(val);\r\n        }\r\n\r\n\t\t[AimAut" +
                     "horize]\r\n        public IActionResult Create()\r\n        {\r\n            ");
             
-            #line 56 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 57 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ForeignKeyDropDownCreationString));
             
             #line default
@@ -105,14 +112,14 @@ namespace Website.Controllers
                     "ntiForgeryToken]\r\n\t\t[AimAuthorize]\r\n        public async Task<IActionResult> Cre" +
                     "ate([Bind(\"");
             
-            #line 63 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 64 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(FormBindingParams));
             
             #line default
             #line hidden
             this.Write("\")]");
             
-            #line 63 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 64 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
@@ -128,7 +135,7 @@ namespace Website.Controllers
             }
             ");
             
-            #line 72 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 73 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ForeignKeyDropDownCreationWithSelectedIndexString));
             
             #line default
@@ -147,7 +154,7 @@ namespace Website.Controllers
 
             var val = await _context.");
             
-            #line 84 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 85 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
@@ -155,7 +162,7 @@ namespace Website.Controllers
             this.Write(".FindAsync(id);\r\n            if (val == null)\r\n            {\r\n                ret" +
                     "urn NotFound();\r\n            }\r\n            ");
             
-            #line 89 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 90 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ForeignKeyDropDownCreationWithSelectedIndexString));
             
             #line default
@@ -164,21 +171,21 @@ namespace Website.Controllers
                     "teAntiForgeryToken]\r\n\t\t[AimAuthorize]\r\n        public async Task<IActionResult> " +
                     "Edit(int id, [Bind(\"");
             
-            #line 96 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 97 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(FormBindingParams));
             
             #line default
             #line hidden
             this.Write("\")]");
             
-            #line 96 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 97 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
             #line hidden
             this.Write(" val)\r\n        {\r\n\t\t\tif(val.");
             
-            #line 98 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 99 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default
@@ -199,7 +206,7 @@ namespace Website.Controllers
                 {
                     if (!Exists(val.");
             
-            #line 112 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 113 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default
@@ -217,7 +224,7 @@ namespace Website.Controllers
             }
             ");
             
-            #line 123 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 124 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ForeignKeyDropDownCreationWithSelectedIndexString));
             
             #line default
@@ -236,14 +243,14 @@ namespace Website.Controllers
 
             var val = await _context.");
             
-            #line 135 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 136 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ContextGetterString));
             
             #line default
             #line hidden
             this.Write(".FirstOrDefaultAsync(m => m.");
             
-            #line 135 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 136 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default
@@ -264,14 +271,14 @@ namespace Website.Controllers
         {
             var val = await _context.");
             
-            #line 149 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 150 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
             #line hidden
             this.Write(".FindAsync(id);\r\n            _context.");
             
-            #line 150 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 151 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
@@ -279,14 +286,14 @@ namespace Website.Controllers
             this.Write(".Remove(val);\r\n            await _context.SaveChangesAsync();\r\n            return" +
                     " RedirectToAction(nameof(Index));\r\n        }\r\n\r\n\t\tprivate void FixNullFields(");
             
-            #line 155 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 156 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
             #line hidden
             this.Write(" val)\r\n\t\t{\r\n\t\t\t");
             
-            #line 157 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 158 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(FixNullFieldsCode));
             
             #line default
@@ -294,14 +301,14 @@ namespace Website.Controllers
             this.Write("\r\n\t\t}\r\n\r\n        private bool Exists(int id)\r\n        {\r\n            return _cont" +
                     "ext.");
             
-            #line 162 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 163 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
             #line hidden
             this.Write(".Any(e => e.");
             
-            #line 162 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
+            #line 163 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default

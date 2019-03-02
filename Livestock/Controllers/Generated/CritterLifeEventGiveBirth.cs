@@ -13,6 +13,7 @@ using User = Database.Models.User;
 
 namespace Website.Controllers
 {
+	[AimAuthorize(RolesOR: "admin")]
 	public class CritterLifeEventGiveBirthController : Controller
     {
         private readonly LivestockContext _context;

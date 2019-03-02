@@ -13,6 +13,7 @@ namespace CustomScaffold.Templates
         public string ForeignKeyDropDownCreationWithSelectedIndexString;
         public string FormBindingParams;
         public string FixNullFieldsCode;
+        public string ControllerAuthAttrib;
     }
 
     partial class Index

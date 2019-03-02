@@ -19,6 +19,7 @@ using User = Database.Models.User;
 
 namespace Website.Controllers
 {
+	<#= ControllerAuthAttrib #>
 	public class <#= EntityName #>Controller : Controller
     {
         private readonly LivestockContext _context;

@@ -13,6 +13,7 @@ using User = Database.Models.User;
 
 namespace Website.Controllers
 {
+	[AimAuthorize(RolesOR: "")]
 	public class EnumLocationTypeController : Controller
     {
         private readonly LivestockContext _context;
