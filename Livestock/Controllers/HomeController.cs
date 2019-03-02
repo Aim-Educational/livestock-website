@@ -20,11 +20,10 @@ namespace Livestock.Controllers
     {
         public async Task<IActionResult> Index([FromServices] LivestockContext db)
         {
-            //var header = db.MenuHeader
-            //               .Include(h => h.MenuItem)
-            //               .FirstOrDefault(h => HttpContext.User.IsInRole(h.Role.Description));
             MenuHeader header = null;
 
+            // If the user is logged in, get the main menu appropriate for their role.
+            // Otherwise, display the "-1" role's main menu.
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 foreach (var h in db.MenuHeader.Include(h => h.Role).Where(h => h.ApplicationCode == 1)) // 1 = Main Menu
