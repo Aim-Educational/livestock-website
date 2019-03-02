@@ -36,15 +36,56 @@ body {
     }
 }
 
-.menu-card image {
-    width: 128px;
-    height: 128px;
+/*START: MENU CARDS*/
+/* Extra small devices (portrait phones, less than 576px) */
+@media (min-width: 575.98px) {
+    .menu-card {
+        width: auto;
+    }
+
+    .menu-card image {
+        width: 100%;
+        height: 128px;
+    }
 }
 
-.menu-card {
-    width: 8.5rem;
+/* Small devices (landscape phones, less than 768px) */
+@media (min-width: 767.98px) {
+    .menu-card {
+        width: auto;
+    }
+
+    .menu-card image {
+        width: 100%;
+        height: 128px;
+    }
 }
 
-.list-inline {
-    white-space: nowrap;
+/* Medium devices (tablets, less than 992px) */
+@media (min-width: 991.98px) {
+    .menu-card {
+        width: 8.5rem;
+    }
+
+    .menu-card image {
+        width: 128px;
+        height: 128px;
+    }
 }
+
+/* Large devices (desktops, less than 1200px) */
+@media (min-width: 1199.98px) {
+    .menu-card {
+        width: 10rem;
+    }
+
+    .menu-card image {
+        width: 128px;
+        height: 128px;
+    }
+
+    .card-body {
+        font-size: 1vw;
+    }
+}
+/*END: MENU CARDS*/
