@@ -13,7 +13,7 @@ using User = Database.Models.User;
 
 namespace Website.Controllers
 {
-	[AimAuthorize(RolesOR: "")]
+	[AimAuthorize(RolesOR: "[Forbidden to all]")]
 	public class MenuHeaderController : Controller
     {
         private readonly LivestockContext _context;

@@ -173,6 +173,9 @@ namespace CustomScaffold
                                 .Distinct()
                              );
 
+            if (String.IsNullOrWhiteSpace(rolesOR))
+                rolesOR = "[Forbidden to all]";
+
             template.ControllerAuthAttrib = $"[AimAuthorize(RolesOR: \"{rolesOR}\")]";
 
             return new EntityFile(){ data = template.TransformText(), path = Path.Join("Controllers/Generated/", entity.ClrType.Name + ".cs") };
