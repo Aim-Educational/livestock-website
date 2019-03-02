@@ -6,7 +6,7 @@
 @if (Model != null)
 {
 <div class="row">
-        @foreach (var item in Model.MenuItem.OrderBy(i => i.SequenceNumber).ThenBy(i => i.Title))
+        @foreach (var item in Model.MenuHeaderItemMap.Select(i => i.MenuItem).OrderBy(i => i.SequenceNumber).ThenBy(i => i.Title))
         {
             <div class="col-sm-8 col-md-6 col-lg-2 col-xl-2">
                 <a asp-controller="@item.Controller" asp-action="@item.Action">

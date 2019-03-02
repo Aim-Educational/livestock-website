@@ -13,19 +13,19 @@ using User = Database.Models.User;
 
 namespace Website.Controllers
 {
-	[AimAuthorize(RolesOR: "admin,")]
-	public class RoleController : Controller
+	[AimAuthorize(RolesOR: "[Forbidden to all]")]
+	public class MenuHeaderItemMapController : Controller
     {
         private readonly LivestockContext _context;
 
-        public RoleController(LivestockContext context)
+        public MenuHeaderItemMapController(LivestockContext context)
         {
             _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.Role;
+            var livestockContext = _context.MenuHeaderItemMap.Include(v => v.MenuHeader).Include(v => v.MenuItem);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -36,7 +36,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Role.FirstOrDefaultAsync(m => m.RoleId == id);
+            var val = await _context.MenuHeaderItemMap.Include(v => v.MenuHeader).Include(v => v.MenuItem).FirstOrDefaultAsync(m => m.MenuHeaderItemMapId == id);
             if (val == null)
             {
                 return NotFound();
@@ -48,14 +48,15 @@ namespace Website.Controllers
 		[AimAuthorize]
         public IActionResult Create()
         {
-            
+            ViewData["MenuHeaderId"] = new SelectList(_context.MenuHeader, "MenuHeaderId", "Name");
+ViewData["MenuItemId"] = new SelectList(_context.MenuItem, "MenuItemId", "Title");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-        public async Task<IActionResult> Create([Bind("RoleId,Comment,Description,Timestamp,VersionNumber")]Role val)
+        public async Task<IActionResult> Create([Bind("MenuHeaderItemMapId,Comment,MenuHeaderId,MenuItemId,Timestamp,VersionNumber")]MenuHeaderItemMap val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -64,7 +65,8 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["MenuHeaderId"] = new SelectList(_context.MenuHeader, "MenuHeaderId", "Name", val.MenuHeaderId);
+ViewData["MenuItemId"] = new SelectList(_context.MenuItem, "MenuItemId", "Title", val.MenuItemId);
             return View(val);
         }
 
@@ -76,21 +78,22 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Role.FindAsync(id);
+            var val = await _context.MenuHeaderItemMap.FindAsync(id);
             if (val == null)
             {
                 return NotFound();
             }
-            
+            ViewData["MenuHeaderId"] = new SelectList(_context.MenuHeader, "MenuHeaderId", "Name", val.MenuHeaderId);
+ViewData["MenuItemId"] = new SelectList(_context.MenuItem, "MenuItemId", "Title", val.MenuItemId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-        public async Task<IActionResult> Edit(int id, [Bind("RoleId,Comment,Description,Timestamp,VersionNumber")]Role val)
+        public async Task<IActionResult> Edit(int id, [Bind("MenuHeaderItemMapId,Comment,MenuHeaderId,MenuItemId,Timestamp,VersionNumber")]MenuHeaderItemMap val)
         {
-			if(val.RoleId != id)
+			if(val.MenuHeaderItemMapId != id)
 				return NotFound();
 
 			this.FixNullFields(val);
@@ -104,7 +107,7 @@ namespace Website.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!Exists(val.RoleId))
+                    if (!Exists(val.MenuHeaderItemMapId))
                     {
                         return NotFound();
                     }
@@ -115,7 +118,8 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["MenuHeaderId"] = new SelectList(_context.MenuHeader, "MenuHeaderId", "Name", val.MenuHeaderId);
+ViewData["MenuItemId"] = new SelectList(_context.MenuItem, "MenuItemId", "Title", val.MenuItemId);
             return View(val);
         }
 
@@ -127,7 +131,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Role.FirstOrDefaultAsync(m => m.RoleId == id);
+            var val = await _context.MenuHeaderItemMap.Include(v => v.MenuHeader).Include(v => v.MenuItem).FirstOrDefaultAsync(m => m.MenuHeaderItemMapId == id);
             if (val == null)
             {
                 return NotFound();
@@ -141,21 +145,20 @@ namespace Website.Controllers
 		[AimAuthorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var val = await _context.Role.FindAsync(id);
-            _context.Role.Remove(val);
+            var val = await _context.MenuHeaderItemMap.FindAsync(id);
+            _context.MenuHeaderItemMap.Remove(val);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-		private void FixNullFields(Role val)
+		private void FixNullFields(MenuHeaderItemMap val)
 		{
 			if(String.IsNullOrWhiteSpace(val.Comment)) val.Comment = "N/A";
-if(String.IsNullOrWhiteSpace(val.Description)) val.Description = "N/A";
 		}
 
         private bool Exists(int id)
         {
-            return _context.Role.Any(e => e.RoleId == id);
+            return _context.MenuHeaderItemMap.Any(e => e.MenuHeaderItemMapId == id);
         }
     }
 }

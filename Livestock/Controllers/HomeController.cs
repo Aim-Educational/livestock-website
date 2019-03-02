@@ -30,7 +30,10 @@ namespace Livestock.Controllers
                 {
                     if (HttpContext.User.IsInRole(h.Role?.Description ?? ""))
                     {
-                        await db.Entry(h).Collection(h2 => h2.MenuItem).LoadAsync();
+                        await db.Entry(h).Collection(h2 => h2.MenuHeaderItemMap).LoadAsync();
+
+                        foreach (var map in h.MenuHeaderItemMap)
+                            await db.Entry(map).Reference(m => m.MenuItem).LoadAsync();
 
                         header = h;
                         break;
@@ -42,7 +45,12 @@ namespace Livestock.Controllers
                 // -1 = Not logged in.
                 header = db.MenuHeader.Include(h => h.Role).FirstOrDefault(h => h.RoleId == -1 && h.ApplicationCode == 1);
                 if (header != null)
-                    await db.Entry(header).Collection(h => h.MenuItem).LoadAsync();
+                {
+                    await db.Entry(header).Collection(h2 => h2.MenuHeaderItemMap).LoadAsync();
+
+                    foreach (var map in header.MenuHeaderItemMap)
+                        await db.Entry(map).Reference(m => m.MenuItem).LoadAsync();
+                }
             }
 
             return View(header);

@@ -68,7 +68,8 @@ namespace CustomScaffold
                 || evilProp.Name == "Description"
                 || evilProp.Name == "MobileNumber"
                 || evilProp.Name == "RegistrationNumber"
-                || evilProp.Name == "VehicleTrailerMapId")
+                || evilProp.Name == "VehicleTrailerMapId"
+                || evilProp.Name == "Title")
                 {
                     prop = evilProp;
                     break;
@@ -165,13 +166,17 @@ namespace CustomScaffold
 
             // Create the authorise attribute
             // [AimAuthorize(RolesOR = "admin,staff")]
-            var rolesOR 
-                = String.Join(',',
-                              db.MenuItem.Include(i => i.MenuHeader)
-                                .Where(i => i.MenuHeader.ApplicationCode == 1 && i.Controller == entity.ClrType.Name)
-                                .Select(i => i.MenuHeader.Role.Description)
-                                .Distinct()
-                             );
+            string rolesOR = "";
+            foreach(var item in db.MenuItem.Where(i => i.Controller == entity.ClrType.Name))
+            {
+                db.Entry(item).Collection(i => i.MenuHeaderItemMap).Load();
+                foreach(var map in item.MenuHeaderItemMap)
+                {
+                    db.Entry(map).Reference(m => m.MenuHeader).Load();
+                    db.Entry(map.MenuHeader).Reference(m => m.Role).Load();
+                    rolesOR += map.MenuHeader.Role.Description + ",";
+                }
+            }
 
             if (String.IsNullOrWhiteSpace(rolesOR))
                 rolesOR = "[Forbidden to all]";

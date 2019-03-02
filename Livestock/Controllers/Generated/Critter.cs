@@ -13,7 +13,7 @@ using User = Database.Models.User;
 
 namespace Website.Controllers
 {
-	[AimAuthorize(RolesOR: "admin")]
+	[AimAuthorize(RolesOR: "admin,")]
 	public class CritterController : Controller
     {
         private readonly LivestockContext _context;
@@ -25,7 +25,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter);
+            var livestockContext = _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).Include(v => v.OwnerContact);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -36,7 +36,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).FirstOrDefaultAsync(m => m.CritterId == id);
+            var val = await _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).Include(v => v.OwnerContact).FirstOrDefaultAsync(m => m.CritterId == id);
             if (val == null)
             {
                 return NotFound();
@@ -52,6 +52,7 @@ namespace Website.Controllers
 ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name");
 ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name");
 ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name");
+ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name");
             return View();
         }
 
@@ -71,6 +72,7 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name")
 ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
 ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.DadCritterId);
 ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.MumCritterId);
+ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.OwnerContactId);
             return View(val);
         }
 
@@ -91,6 +93,7 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
 ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
 ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.DadCritterId);
 ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.MumCritterId);
+ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.OwnerContactId);
             return View(val);
         }
 
@@ -128,6 +131,7 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
 ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
 ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.DadCritterId);
 ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.MumCritterId);
+ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.OwnerContactId);
             return View(val);
         }
 
@@ -139,7 +143,7 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
                 return NotFound();
             }
 
-            var val = await _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).FirstOrDefaultAsync(m => m.CritterId == id);
+            var val = await _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).Include(v => v.OwnerContact).FirstOrDefaultAsync(m => m.CritterId == id);
             if (val == null)
             {
                 return NotFound();

@@ -1,0 +1,36 @@
+
+@model IEnumerable<Database.Models.MenuHeaderItemMap>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+							<th> @Html.DisplayNameFor(model => model.MenuHeaderId) </th>
+							<th> @Html.DisplayNameFor(model => model.MenuItemId) </th>
+							<th> @Html.DisplayNameFor(model => model.Comment) </th>
+			            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+												<td> @Html.DisplayFor(modelItem => item.MenuHeader.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.MenuItem.Title) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+				                        <td>
+                <a asp-action="Edit" asp-route-id="@item.MenuHeaderItemMapId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MenuHeaderItemMapId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MenuHeaderItemMapId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

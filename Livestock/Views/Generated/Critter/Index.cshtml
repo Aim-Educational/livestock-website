@@ -18,11 +18,11 @@
 							<th> @Html.DisplayNameFor(model => model.CritterTypeId) </th>
 							<th> @Html.DisplayNameFor(model => model.DadCritterId) </th>
 							<th> @Html.DisplayNameFor(model => model.MumCritterId) </th>
+							<th> @Html.DisplayNameFor(model => model.OwnerContactId) </th>
 							<th> @Html.DisplayNameFor(model => model.Comment) </th>
 							<th> @Html.DisplayNameFor(model => model.DadFurther) </th>
 							<th> @Html.DisplayNameFor(model => model.Gender) </th>
 							<th> @Html.DisplayNameFor(model => model.MumFurther) </th>
-							<th> @Html.DisplayNameFor(model => model.OwnerContactId) </th>
 			            <th></th>
         </tr>
     </thead>
@@ -34,11 +34,11 @@
 				            									<td> @Html.DisplayFor(modelItem => item.CritterType.Name) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.DadCritter.Name) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.MumCritter.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.OwnerContact.Name) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.DadFurther) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.Gender) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.MumFurther) </td>
-				            									<td> @Html.DisplayFor(modelItem => item.OwnerContactId) </td>
 				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.CritterId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.CritterId">Details</a> |
