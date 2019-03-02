@@ -14,10 +14,10 @@
     <thead>
         <tr>
 							<th> @Html.DisplayNameFor(model => model.Name) </th>
+							<th> @Html.DisplayNameFor(model => model.BreedId) </th>
 							<th> @Html.DisplayNameFor(model => model.CritterTypeId) </th>
 							<th> @Html.DisplayNameFor(model => model.DadCritterId) </th>
 							<th> @Html.DisplayNameFor(model => model.MumCritterId) </th>
-							<th> @Html.DisplayNameFor(model => model.BreedId) </th>
 							<th> @Html.DisplayNameFor(model => model.Comment) </th>
 							<th> @Html.DisplayNameFor(model => model.DadFurther) </th>
 							<th> @Html.DisplayNameFor(model => model.Gender) </th>
@@ -30,10 +30,10 @@
 @foreach (var item in Model) {
         <tr>
 							<td> @Html.DisplayFor(modelItem => item.Name) </td>
+            				<td> @Html.DisplayFor(modelItem => item.BreedId) </td>
             				<td> @Html.DisplayFor(modelItem => item.CritterTypeId) </td>
             				<td> @Html.DisplayFor(modelItem => item.DadCritterId) </td>
             				<td> @Html.DisplayFor(modelItem => item.MumCritterId) </td>
-            				<td> @Html.DisplayFor(modelItem => item.BreedId) </td>
             				<td> @Html.DisplayFor(modelItem => item.Comment) </td>
             				<td> @Html.DisplayFor(modelItem => item.DadFurther) </td>
             				<td> @Html.DisplayFor(modelItem => item.Gender) </td>

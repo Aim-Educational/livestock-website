@@ -11,21 +11,31 @@ using Website.Services;
 using System.Security.Claims;
 using Website.Filters;
 using System.Reflection;
+using Database.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Livestock.Controllers
 {
     public class HomeController : Controller
     {
-        [AimAuthorize(Roles: "superamdin")]
-        [HasPermission(UserPermission.LivestockModify)]
-        public string Test()
+        public IActionResult Index([FromServices] LivestockContext db)
         {
-            return "I smell like beef";
-        }
+            //var header = db.MenuHeader
+            //               .Include(h => h.MenuItem)
+            //               .FirstOrDefault(h => HttpContext.User.IsInRole(h.Role.Description));
+            MenuHeader header = null;
+            foreach (var h in db.MenuHeader.Include(h => h.Role))
+            {
+                if(HttpContext.User.IsInRole(h.Role?.Description ?? ""))
+                {
+                    db.Entry(h).Collection(h2 => h2.MenuItem).Load();
 
-        public IActionResult Index()
-        {
-            return View();
+                    header = h;
+                    break;
+                }
+            }
+
+            return View(header);
         }
 
         public IActionResult AllActions()

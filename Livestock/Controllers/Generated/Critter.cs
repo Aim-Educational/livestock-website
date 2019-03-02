@@ -24,7 +24,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.Critter.Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter);
+            var livestockContext = _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Critter.Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).FirstOrDefaultAsync(m => m.CritterId == id);
+            var val = await _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).FirstOrDefaultAsync(m => m.CritterId == id);
             if (val == null)
             {
                 return NotFound();
@@ -45,10 +45,10 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
-            ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name");
+            ViewData["BreedId"] = new SelectList(_context.Breed, "BreedId", "Description");
+ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name");
 ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name");
 ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name");
             return View();
@@ -57,7 +57,6 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name")
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("CritterId,BreedId,Comment,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
         {
 			this.FixNullFields(val);
@@ -67,14 +66,14 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name")
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
+            ViewData["BreedId"] = new SelectList(_context.Breed, "BreedId", "Description", val.BreedId);
+ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
 ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.DadCritterId);
 ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.MumCritterId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,7 +86,8 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
             {
                 return NotFound();
             }
-            ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
+            ViewData["BreedId"] = new SelectList(_context.Breed, "BreedId", "Description", val.BreedId);
+ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
 ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.DadCritterId);
 ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.MumCritterId);
             return View(val);
@@ -96,7 +96,6 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("CritterId,BreedId,Comment,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
         {
 			if(val.CritterId != id)
@@ -124,14 +123,14 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
+            ViewData["BreedId"] = new SelectList(_context.Breed, "BreedId", "Description", val.BreedId);
+ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
 ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.DadCritterId);
 ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.MumCritterId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,7 +138,7 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
                 return NotFound();
             }
 
-            var val = await _context.Critter.Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).FirstOrDefaultAsync(m => m.CritterId == id);
+            var val = await _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).FirstOrDefaultAsync(m => m.CritterId == id);
             if (val == null)
             {
                 return NotFound();
@@ -151,7 +150,6 @@ ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name",
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.Critter.FindAsync(id);

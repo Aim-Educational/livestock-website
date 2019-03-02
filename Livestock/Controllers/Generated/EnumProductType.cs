@@ -45,7 +45,6 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
             
@@ -55,7 +54,6 @@ namespace Website.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("EnumProductTypeId,Comment,Description,Timestamp,VersionNumber")]EnumProductType val)
         {
 			this.FixNullFields(val);
@@ -70,7 +68,6 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,7 +87,6 @@ namespace Website.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("EnumProductTypeId,Comment,Description,Timestamp,VersionNumber")]EnumProductType val)
         {
 			if(val.EnumProductTypeId != id)
@@ -123,7 +119,6 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -143,7 +138,6 @@ namespace Website.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.EnumProductType.FindAsync(id);

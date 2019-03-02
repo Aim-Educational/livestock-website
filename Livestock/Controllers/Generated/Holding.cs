@@ -24,7 +24,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.Holding;
+            var livestockContext = _context.Holding.Include(v => v.Contact);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Holding.FirstOrDefaultAsync(m => m.HoldingId == id);
+            var val = await _context.Holding.Include(v => v.Contact).FirstOrDefaultAsync(m => m.HoldingId == id);
             if (val == null)
             {
                 return NotFound();
@@ -45,17 +45,15 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
-            
+            ViewData["ContactId"] = new SelectList(_context.Contact, "ContactId", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("HoldingId,Address,Comment,ContactId,GridReference,HoldingNumber,Postcode,RegisterForCows,RegisterForFish,RegisterForPigs,RegisterForPoultry,RegisterForSheepGoats,Timestamp,VersionNumber")]Holding val)
         {
 			this.FixNullFields(val);
@@ -65,12 +63,11 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["ContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.ContactId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,14 +80,13 @@ namespace Website.Controllers
             {
                 return NotFound();
             }
-            
+            ViewData["ContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.ContactId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("HoldingId,Address,Comment,ContactId,GridReference,HoldingNumber,Postcode,RegisterForCows,RegisterForFish,RegisterForPigs,RegisterForPoultry,RegisterForSheepGoats,Timestamp,VersionNumber")]Holding val)
         {
 			if(val.HoldingId != id)
@@ -118,12 +114,11 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["ContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.ContactId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,7 +126,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Holding.FirstOrDefaultAsync(m => m.HoldingId == id);
+            var val = await _context.Holding.Include(v => v.Contact).FirstOrDefaultAsync(m => m.HoldingId == id);
             if (val == null)
             {
                 return NotFound();
@@ -143,7 +138,6 @@ namespace Website.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.Holding.FindAsync(id);

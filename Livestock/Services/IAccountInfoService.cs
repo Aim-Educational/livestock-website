@@ -15,43 +15,32 @@ namespace Website.Services
         LivestockModify = 1 << 0
     }
 
-    // This is here until we have a database version
-    public class User
-    {
-        [DataType(DataType.EmailAddress)]
-        public string Email;
-        public string Role;
-        public string Name;
-    }
-
     public interface IAccountInfoService
     {
         Task<User> GetUserByEmailAsync(string email);
         void AddClaimsFor(User user, ClaimsIdentity identity);
         void AddTemporaryUserClaims(ClaimsIdentity identity);
-        bool HasPermission(User user, UserPermission permission);
+        Task<Role> GetRoleByNameAsync(string name);
+        Task<IEnumerable<Role>> GetRolesForUserAsync(User user);
     }
 
     public class AccountInfoService : IAccountInfoService
     {
-        List<User> TEMP_DB = new List<User>()
-        {
-            new User{ Email = "sealabjaster@gmail.com", Role = "Andy's lacky" },
-            new User{ Email = "andyradford@hotmail.com", Role = "Lord of the forsaken" }
-        };
-
         public LivestockContext Db;
 
-        public AccountInfoService(/*LivestockContext db*/)
+        public AccountInfoService(LivestockContext db)
         {
-            /*this.Db = db;*/
+            this.Db = db;
         }
 
-        public void AddClaimsFor(User user, ClaimsIdentity identity)
+        public async void AddClaimsFor(User user, ClaimsIdentity identity)
         {
-            identity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Email));
             identity.AddClaim(new Claim(ClaimTypes.Name, user.Name ?? "NO NAME FOUND"));
+
+            var roles = await this.GetRolesForUserAsync(user);
+            foreach (var role in roles)
+                identity.AddClaim(new Claim(ClaimTypes.Role, role.Description));
         }
 
         public void AddTemporaryUserClaims(ClaimsIdentity identity)
@@ -61,22 +50,22 @@ namespace Website.Services
             identity.AddClaim(new Claim(ClaimTypes.Name, "TODO:Names"));
         }
 
-        public void TEMP_CreateTemporaryUser(ClaimsIdentity identity)
-        {
-            TEMP_DB.Add(new User{ Email = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "N/A", Name = "[DEBUG] TEMPORARY ACCOUNT", Role = "debug" });
-        }
-
         public Task<User> GetUserByEmailAsync(string email)
         {
-            // UNCOMMENT BELOW ONCE WE HAVE A DATABASE SOLUTION.
-            //return this.Db.User.FirstOrDefaultAsync(user => user.Email == email);
-            return Task.Run(() => TEMP_DB.FirstOrDefault(user => user.Email == email));
+            return this.Db.User
+                          .Include(u => u.UserRoleMap)
+                          .ThenInclude(map => map.Role)
+                          .FirstOrDefaultAsync(user => user.Email == email);
         }
 
-        public bool HasPermission(User user, UserPermission permission)
+        public Task<Role> GetRoleByNameAsync(string name)
         {
-            // TODO: When we have a solid plan forward for this, actually do checks here.
-            return true;
+            return this.Db.Role.FirstOrDefaultAsync(r => r.Description == name);
+        }
+
+        public Task<IEnumerable<Role>> GetRolesForUserAsync(User user)
+        {
+            return Task.Run(() => user.UserRoleMap.Select(map => map.Role));
         }
     }
 

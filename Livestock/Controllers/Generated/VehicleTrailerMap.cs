@@ -24,7 +24,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.VehicleTrailerMap;
+            var livestockContext = _context.VehicleTrailerMap.Include(v => v.Trailer).Include(v => v.VehicleMain);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.VehicleTrailerMap.FirstOrDefaultAsync(m => m.VehicleTrailerMapId == id);
+            var val = await _context.VehicleTrailerMap.Include(v => v.Trailer).Include(v => v.VehicleMain).FirstOrDefaultAsync(m => m.VehicleTrailerMapId == id);
             if (val == null)
             {
                 return NotFound();
@@ -45,17 +45,16 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
-            
+            ViewData["TrailerId"] = new SelectList(_context.Vehicle, "VehicleId", "Name");
+ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("VehicleTrailerMapId,Comment,Timestamp,TrailerId,VehicleMainId,VersionNumber")]VehicleTrailerMap val)
         {
 			this.FixNullFields(val);
@@ -65,12 +64,12 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["TrailerId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.TrailerId);
+ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.VehicleMainId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,14 +82,14 @@ namespace Website.Controllers
             {
                 return NotFound();
             }
-            
+            ViewData["TrailerId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.TrailerId);
+ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.VehicleMainId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("VehicleTrailerMapId,Comment,Timestamp,TrailerId,VehicleMainId,VersionNumber")]VehicleTrailerMap val)
         {
 			if(val.VehicleTrailerMapId != id)
@@ -118,12 +117,12 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["TrailerId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.TrailerId);
+ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.VehicleMainId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,7 +130,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.VehicleTrailerMap.FirstOrDefaultAsync(m => m.VehicleTrailerMapId == id);
+            var val = await _context.VehicleTrailerMap.Include(v => v.Trailer).Include(v => v.VehicleMain).FirstOrDefaultAsync(m => m.VehicleTrailerMapId == id);
             if (val == null)
             {
                 return NotFound();
@@ -143,7 +142,6 @@ namespace Website.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.VehicleTrailerMap.FindAsync(id);

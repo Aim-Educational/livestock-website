@@ -61,8 +61,7 @@ namespace Livestock
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<LivestockContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Livestock")));
-            services.AddSingleton<IAccountInfoService, AccountInfoService>();
-            // TEMP TODO: ^^ Turn back to AddScoped
+            services.AddScoped<IAccountInfoService, AccountInfoService>();
 
             services.AddAuthentication(options => 
             {

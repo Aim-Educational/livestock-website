@@ -20,14 +20,17 @@
 						<span asp-validation-for="Description" class="text-danger"></span>
 					</div>
 																<div class="form-group">
+						<label asp-for="CritterId" class="control-label"></label>
+						<select asp-for="CritterId" class ="form-control" asp-items="ViewBag.CritterId"></select>
+					</div>
+																<div class="form-group">
+						<label asp-for="EnumCritterLifeEventTypeId" class="control-label"></label>
+						<select asp-for="EnumCritterLifeEventTypeId" class ="form-control" asp-items="ViewBag.EnumCritterLifeEventTypeId"></select>
+					</div>
+																<div class="form-group">
 						<label asp-for="Comment" class="control-label"></label>
 						<input asp-for="Comment" class="form-control" />
 						<span asp-validation-for="Comment" class="text-danger"></span>
-					</div>
-																<div class="form-group">
-						<label asp-for="CritterId" class="control-label"></label>
-						<input asp-for="CritterId" class="form-control" />
-						<span asp-validation-for="CritterId" class="text-danger"></span>
 					</div>
 																<div class="form-group date" id="DateTime" data-target-input="nearest">
 						<label asp-for="DateTime" class="control-label"></label>
@@ -38,11 +41,6 @@
 								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 							</div>
 						</div>
-					</div>
-																<div class="form-group">
-						<label asp-for="EnumCritterLifeEventTypeId" class="control-label"></label>
-						<input asp-for="EnumCritterLifeEventTypeId" class="form-control" />
-						<span asp-validation-for="EnumCritterLifeEventTypeId" class="text-danger"></span>
 					</div>
 																@Html.HiddenFor(model => model.Timestamp)
 																@Html.HiddenFor(model => model.VersionNumber)

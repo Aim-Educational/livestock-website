@@ -14,10 +14,10 @@
     <thead>
         <tr>
 							<th> @Html.DisplayNameFor(model => model.Description) </th>
-							<th> @Html.DisplayNameFor(model => model.Comment) </th>
-							<th> @Html.DisplayNameFor(model => model.DateTime) </th>
 							<th> @Html.DisplayNameFor(model => model.EnumVehicleLifeEventTypeId) </th>
 							<th> @Html.DisplayNameFor(model => model.VehicleTrailerMapId) </th>
+							<th> @Html.DisplayNameFor(model => model.Comment) </th>
+							<th> @Html.DisplayNameFor(model => model.DateTime) </th>
 			            <th></th>
         </tr>
     </thead>
@@ -25,10 +25,10 @@
 @foreach (var item in Model) {
         <tr>
 							<td> @Html.DisplayFor(modelItem => item.Description) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Comment) </td>
-            				<td> @Html.DisplayFor(modelItem => item.DateTime) </td>
             				<td> @Html.DisplayFor(modelItem => item.EnumVehicleLifeEventTypeId) </td>
             				<td> @Html.DisplayFor(modelItem => item.VehicleTrailerMapId) </td>
+            				<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+            				<td> @Html.DisplayFor(modelItem => item.DateTime) </td>
                         <td>
                 <a asp-action="Edit" asp-route-id="@item.VehicleLifeEventId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.VehicleLifeEventId">Details</a> |

@@ -24,7 +24,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.VehicleLifeEvent;
+            var livestockContext = _context.VehicleLifeEvent.Include(v => v.EnumVehicleLifeEventType).Include(v => v.VehicleTrailerMap);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.VehicleLifeEvent.FirstOrDefaultAsync(m => m.VehicleLifeEventId == id);
+            var val = await _context.VehicleLifeEvent.Include(v => v.EnumVehicleLifeEventType).Include(v => v.VehicleTrailerMap).FirstOrDefaultAsync(m => m.VehicleLifeEventId == id);
             if (val == null)
             {
                 return NotFound();
@@ -45,17 +45,16 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
-            
+            ViewData["EnumVehicleLifeEventTypeId"] = new SelectList(_context.EnumVehicleLifeEventType, "EnumVehicleLifeEventTypeId", "Description");
+ViewData["VehicleTrailerMapId"] = new SelectList(_context.VehicleTrailerMap, "VehicleTrailerMapId", "VehicleTrailerMapId");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("VehicleLifeEventId,Comment,DateTime,Description,EnumVehicleLifeEventTypeId,Timestamp,VehicleTrailerMapId,VersionNumber")]VehicleLifeEvent val)
         {
 			this.FixNullFields(val);
@@ -65,12 +64,12 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["EnumVehicleLifeEventTypeId"] = new SelectList(_context.EnumVehicleLifeEventType, "EnumVehicleLifeEventTypeId", "Description", val.EnumVehicleLifeEventTypeId);
+ViewData["VehicleTrailerMapId"] = new SelectList(_context.VehicleTrailerMap, "VehicleTrailerMapId", "VehicleTrailerMapId", val.VehicleTrailerMapId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,14 +82,14 @@ namespace Website.Controllers
             {
                 return NotFound();
             }
-            
+            ViewData["EnumVehicleLifeEventTypeId"] = new SelectList(_context.EnumVehicleLifeEventType, "EnumVehicleLifeEventTypeId", "Description", val.EnumVehicleLifeEventTypeId);
+ViewData["VehicleTrailerMapId"] = new SelectList(_context.VehicleTrailerMap, "VehicleTrailerMapId", "VehicleTrailerMapId", val.VehicleTrailerMapId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("VehicleLifeEventId,Comment,DateTime,Description,EnumVehicleLifeEventTypeId,Timestamp,VehicleTrailerMapId,VersionNumber")]VehicleLifeEvent val)
         {
 			if(val.VehicleLifeEventId != id)
@@ -118,12 +117,12 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["EnumVehicleLifeEventTypeId"] = new SelectList(_context.EnumVehicleLifeEventType, "EnumVehicleLifeEventTypeId", "Description", val.EnumVehicleLifeEventTypeId);
+ViewData["VehicleTrailerMapId"] = new SelectList(_context.VehicleTrailerMap, "VehicleTrailerMapId", "VehicleTrailerMapId", val.VehicleTrailerMapId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,7 +130,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.VehicleLifeEvent.FirstOrDefaultAsync(m => m.VehicleLifeEventId == id);
+            var val = await _context.VehicleLifeEvent.Include(v => v.EnumVehicleLifeEventType).Include(v => v.VehicleTrailerMap).FirstOrDefaultAsync(m => m.VehicleLifeEventId == id);
             if (val == null)
             {
                 return NotFound();
@@ -143,7 +142,6 @@ namespace Website.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.VehicleLifeEvent.FindAsync(id);

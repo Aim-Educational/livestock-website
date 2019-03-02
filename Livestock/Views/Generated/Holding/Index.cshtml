@@ -13,9 +13,9 @@
 <table class="table">
     <thead>
         <tr>
+							<th> @Html.DisplayNameFor(model => model.ContactId) </th>
 							<th> @Html.DisplayNameFor(model => model.Address) </th>
 							<th> @Html.DisplayNameFor(model => model.Comment) </th>
-							<th> @Html.DisplayNameFor(model => model.ContactId) </th>
 							<th> @Html.DisplayNameFor(model => model.GridReference) </th>
 							<th> @Html.DisplayNameFor(model => model.HoldingNumber) </th>
 							<th> @Html.DisplayNameFor(model => model.Postcode) </th>
@@ -30,9 +30,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-							<td> @Html.DisplayFor(modelItem => item.Address) </td>
+							<td> @Html.DisplayFor(modelItem => item.ContactId) </td>
+            				<td> @Html.DisplayFor(modelItem => item.Address) </td>
             				<td> @Html.DisplayFor(modelItem => item.Comment) </td>
-            				<td> @Html.DisplayFor(modelItem => item.ContactId) </td>
             				<td> @Html.DisplayFor(modelItem => item.GridReference) </td>
             				<td> @Html.DisplayFor(modelItem => item.HoldingNumber) </td>
             				<td> @Html.DisplayFor(modelItem => item.Postcode) </td>

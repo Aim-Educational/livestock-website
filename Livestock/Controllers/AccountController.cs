@@ -30,13 +30,6 @@ namespace Website.Controllers
         {
             return View();
         }
-
-        public IActionResult TEMP_DebugFinalise([FromServices] IAccountInfoService accounts)
-        {
-            ((AccountInfoService)accounts).TEMP_CreateTemporaryUser((ClaimsIdentity)User.Identity);
-
-            return Redirect("/");
-        }
         
         public IActionResult Logout()
         {

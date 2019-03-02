@@ -35,3 +35,16 @@ body {
         display: none;
     }
 }
+
+.menu-card image {
+    width: 128px;
+    height: 128px;
+}
+
+.menu-card {
+    width: 8.5rem;
+}
+
+.list-inline {
+    white-space: nowrap;
+}

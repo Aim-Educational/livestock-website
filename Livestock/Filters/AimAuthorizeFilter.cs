@@ -9,19 +9,23 @@ namespace Website.Filters
 {
     public class AimAuthorizeAttribute : TypeFilterAttribute
     {
-        public AimAuthorizeAttribute(string Roles = "") : base(typeof(AimAuthorizeFilter))
+        public AimAuthorizeAttribute(string RolesAND = "", string RolesOR = "") : base(typeof(AimAuthorizeFilter))
         {
-            Arguments = new[] { Roles.Split(',', StringSplitOptions.RemoveEmptyEntries) };
+            Arguments = new[] { RolesAND.Split(',', StringSplitOptions.RemoveEmptyEntries),
+                                RolesOR.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                              };
         }
     }
 
     public class AimAuthorizeFilter : IAuthorizationFilter
     {
-        readonly string[] Roles;
+        readonly string[] RolesAND;
+        readonly string[] RolesOR;
 
-        public AimAuthorizeFilter(string[] roles)
+        public AimAuthorizeFilter(string[] rolesAND, string[] rolesOR)
         {
-            this.Roles = roles;
+            this.RolesAND = rolesAND;
+            this.RolesOR = rolesOR;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -38,9 +42,15 @@ namespace Website.Filters
                 return;
             }
 
-            if(this.Roles.Any(r => !context.HttpContext.User.IsInRole(r)))
+            if(this.RolesAND.Any(r => !context.HttpContext.User.IsInRole(r)) && this.RolesAND.Count() > 0)
             {
-                context.Result = new RedirectToActionResult("error", "home", new { message = "You don't have the correct role to access this page." });
+                context.Result = new RedirectToActionResult("error", "home", new { message = $"You require the {{{this.RolesAND.Aggregate((s1, s2) => s1 + ", " + s2)}}} roles to access this page. Yell at Andy." });
+                return;
+            }
+
+            if(!this.RolesOR.Any(r => context.HttpContext.User.IsInRole(r)) && this.RolesOR.Count() > 0)
+            {
+                context.Result = new RedirectToActionResult("error", "home", new { message = $"You require any of the {{{this.RolesOR.Aggregate((s1, s2) => s1 + ", " + s2)}}} roles to access this page. Yell at Andy." });
                 return;
             }
         }

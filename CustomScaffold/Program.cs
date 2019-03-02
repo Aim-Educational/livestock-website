@@ -65,7 +65,10 @@ namespace CustomScaffold
             foreach(var evilProp in entity.GetProperties())
             {
                 if(evilProp.Name == "Name"
-                || evilProp.Name == "Description")
+                || evilProp.Name == "Description"
+                || evilProp.Name == "MobileNumber"
+                || evilProp.Name == "RegistrationNumber"
+                || evilProp.Name == "VehicleTrailerMapId")
                 {
                     prop = evilProp;
                     break;

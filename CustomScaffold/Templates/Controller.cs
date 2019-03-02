@@ -18,7 +18,7 @@ namespace CustomScaffold.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+    #line 1 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class Controller : ControllerBase
     {
@@ -45,7 +45,7 @@ namespace Website.Controllers
 {
 	public class ");
             
-            #line 22 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 22 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
@@ -53,7 +53,7 @@ namespace Website.Controllers
             this.Write("Controller : Controller\r\n    {\r\n        private readonly LivestockContext _contex" +
                     "t;\r\n\r\n        public ");
             
-            #line 26 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 26 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
@@ -62,7 +62,7 @@ namespace Website.Controllers
                     "\n        }\r\n\r\n        public async Task<IActionResult> Index()\r\n        {\r\n     " +
                     "       var livestockContext = _context.");
             
-            #line 33 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 33 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ContextGetterString));
             
             #line default
@@ -80,50 +80,39 @@ namespace Website.Controllers
 
             var val = await _context.");
             
-            #line 44 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 44 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ContextGetterString));
             
             #line default
             #line hidden
             this.Write(".FirstOrDefaultAsync(m => m.");
             
-            #line 44 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 44 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default
             #line hidden
-            this.Write(@" == id);
-            if (val == null)
-            {
-                return NotFound();
-            }
-
-            return View(val);
-        }
-
-		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
-        public IActionResult Create()
-        {
-            ");
+            this.Write(" == id);\r\n            if (val == null)\r\n            {\r\n                return Not" +
+                    "Found();\r\n            }\r\n\r\n            return View(val);\r\n        }\r\n\r\n\t\t[AimAut" +
+                    "horize]\r\n        public IActionResult Create()\r\n        {\r\n            ");
             
-            #line 57 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 56 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ForeignKeyDropDownCreationString));
             
             #line default
             #line hidden
             this.Write("\r\n            return View();\r\n        }\r\n\r\n        [HttpPost]\r\n        [ValidateA" +
-                    "ntiForgeryToken]\r\n\t\t[AimAuthorize]\r\n\t\t[HasPermission(UserPermission.LivestockMod" +
-                    "ify)]\r\n        public async Task<IActionResult> Create([Bind(\"");
+                    "ntiForgeryToken]\r\n\t\t[AimAuthorize]\r\n        public async Task<IActionResult> Cre" +
+                    "ate([Bind(\"");
             
-            #line 65 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 63 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(FormBindingParams));
             
             #line default
             #line hidden
             this.Write("\")]");
             
-            #line 65 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 63 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
@@ -139,7 +128,7 @@ namespace Website.Controllers
             }
             ");
             
-            #line 74 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 72 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ForeignKeyDropDownCreationWithSelectedIndexString));
             
             #line default
@@ -149,7 +138,6 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -159,7 +147,7 @@ namespace Website.Controllers
 
             var val = await _context.");
             
-            #line 87 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 84 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
@@ -167,30 +155,30 @@ namespace Website.Controllers
             this.Write(".FindAsync(id);\r\n            if (val == null)\r\n            {\r\n                ret" +
                     "urn NotFound();\r\n            }\r\n            ");
             
-            #line 92 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 89 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ForeignKeyDropDownCreationWithSelectedIndexString));
             
             #line default
             #line hidden
             this.Write("\r\n            return View(val);\r\n        }\r\n\r\n        [HttpPost]\r\n        [Valida" +
-                    "teAntiForgeryToken]\r\n\t\t[AimAuthorize]\r\n\t\t[HasPermission(UserPermission.Livestock" +
-                    "Modify)]\r\n        public async Task<IActionResult> Edit(int id, [Bind(\"");
+                    "teAntiForgeryToken]\r\n\t\t[AimAuthorize]\r\n        public async Task<IActionResult> " +
+                    "Edit(int id, [Bind(\"");
             
-            #line 100 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 96 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(FormBindingParams));
             
             #line default
             #line hidden
             this.Write("\")]");
             
-            #line 100 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 96 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
             #line hidden
             this.Write(" val)\r\n        {\r\n\t\t\tif(val.");
             
-            #line 102 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 98 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default
@@ -211,7 +199,7 @@ namespace Website.Controllers
                 {
                     if (!Exists(val.");
             
-            #line 116 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 112 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default
@@ -229,7 +217,7 @@ namespace Website.Controllers
             }
             ");
             
-            #line 127 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 123 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ForeignKeyDropDownCreationWithSelectedIndexString));
             
             #line default
@@ -239,7 +227,6 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -249,14 +236,14 @@ namespace Website.Controllers
 
             var val = await _context.");
             
-            #line 140 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 135 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ContextGetterString));
             
             #line default
             #line hidden
             this.Write(".FirstOrDefaultAsync(m => m.");
             
-            #line 140 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 135 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default
@@ -273,19 +260,18 @@ namespace Website.Controllers
         [HttpPost, ActionName(""Delete"")]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.");
             
-            #line 155 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 149 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
             #line hidden
             this.Write(".FindAsync(id);\r\n            _context.");
             
-            #line 156 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 150 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
@@ -293,14 +279,14 @@ namespace Website.Controllers
             this.Write(".Remove(val);\r\n            await _context.SaveChangesAsync();\r\n            return" +
                     " RedirectToAction(nameof(Index));\r\n        }\r\n\r\n\t\tprivate void FixNullFields(");
             
-            #line 161 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 155 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
             #line hidden
             this.Write(" val)\r\n\t\t{\r\n\t\t\t");
             
-            #line 163 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 157 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(FixNullFieldsCode));
             
             #line default
@@ -308,14 +294,14 @@ namespace Website.Controllers
             this.Write("\r\n\t\t}\r\n\r\n        private bool Exists(int id)\r\n        {\r\n            return _cont" +
                     "ext.");
             
-            #line 168 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 162 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
             #line hidden
             this.Write(".Any(e => e.");
             
-            #line 168 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Controller.tt"
+            #line 162 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Controller.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default

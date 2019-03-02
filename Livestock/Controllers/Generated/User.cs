@@ -24,7 +24,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.User;
+            var livestockContext = _context.User.Include(v => v.PreferredMobileNumber);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.User.FirstOrDefaultAsync(m => m.UserId == id);
+            var val = await _context.User.Include(v => v.PreferredMobileNumber).FirstOrDefaultAsync(m => m.UserId == id);
             if (val == null)
             {
                 return NotFound();
@@ -45,18 +45,16 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
-            
+            ViewData["PreferredMobileNumberId"] = new SelectList(_context.UserMobileNumber, "UserMobileNumberId", "MobileNumber");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
-        public async Task<IActionResult> Create([Bind("UserId,Comment,Name,Timestamp,VersionNumber")]User val)
+        public async Task<IActionResult> Create([Bind("UserId,Comment,Email,Name,Nickname,PreferredMobileNumberId,Timestamp,VersionNumber")]User val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -65,12 +63,11 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["PreferredMobileNumberId"] = new SelectList(_context.UserMobileNumber, "UserMobileNumberId", "MobileNumber", val.PreferredMobileNumberId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,15 +80,14 @@ namespace Website.Controllers
             {
                 return NotFound();
             }
-            
+            ViewData["PreferredMobileNumberId"] = new SelectList(_context.UserMobileNumber, "UserMobileNumberId", "MobileNumber", val.PreferredMobileNumberId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,Comment,Name,Timestamp,VersionNumber")]User val)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,Comment,Email,Name,Nickname,PreferredMobileNumberId,Timestamp,VersionNumber")]User val)
         {
 			if(val.UserId != id)
 				return NotFound();
@@ -118,12 +114,11 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["PreferredMobileNumberId"] = new SelectList(_context.UserMobileNumber, "UserMobileNumberId", "MobileNumber", val.PreferredMobileNumberId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,7 +126,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.User.FirstOrDefaultAsync(m => m.UserId == id);
+            var val = await _context.User.Include(v => v.PreferredMobileNumber).FirstOrDefaultAsync(m => m.UserId == id);
             if (val == null)
             {
                 return NotFound();
@@ -143,7 +138,6 @@ namespace Website.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.User.FindAsync(id);
@@ -155,7 +149,9 @@ namespace Website.Controllers
 		private void FixNullFields(User val)
 		{
 			if(String.IsNullOrWhiteSpace(val.Comment)) val.Comment = "N/A";
+if(String.IsNullOrWhiteSpace(val.Email)) val.Email = "N/A";
 if(String.IsNullOrWhiteSpace(val.Name)) val.Name = "N/A";
+if(String.IsNullOrWhiteSpace(val.Nickname)) val.Nickname = "N/A";
 		}
 
         private bool Exists(int id)

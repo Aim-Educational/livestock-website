@@ -24,7 +24,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.ProductPurchase.Include(v => v.Product).Include(v => v.Supplier);
+            var livestockContext = _context.ProductPurchase.Include(v => v.Location).Include(v => v.Product).Include(v => v.Supplier);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.ProductPurchase.Include(v => v.Product).Include(v => v.Supplier).FirstOrDefaultAsync(m => m.ProductPurchaseId == id);
+            var val = await _context.ProductPurchase.Include(v => v.Location).Include(v => v.Product).Include(v => v.Supplier).FirstOrDefaultAsync(m => m.ProductPurchaseId == id);
             if (val == null)
             {
                 return NotFound();
@@ -45,10 +45,10 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
-            ViewData["ProductId"] = new SelectList(_context.Product, "ProductId", "Description");
+            ViewData["LocationId"] = new SelectList(_context.Location, "LocationId", "Name");
+ViewData["ProductId"] = new SelectList(_context.Product, "ProductId", "Description");
 ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name");
             return View();
         }
@@ -56,7 +56,6 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name");
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("ProductPurchaseId,BatchNumber,Comment,Cost,DateTime,Expiry,LocationId,ProductId,SupplierId,Timestamp,VersionNumber,Volume")]ProductPurchase val)
         {
 			this.FixNullFields(val);
@@ -66,13 +65,13 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name");
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Product, "ProductId", "Description", val.ProductId);
+            ViewData["LocationId"] = new SelectList(_context.Location, "LocationId", "Name", val.LocationId);
+ViewData["ProductId"] = new SelectList(_context.Product, "ProductId", "Description", val.ProductId);
 ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", val.SupplierId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,7 +84,8 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
             {
                 return NotFound();
             }
-            ViewData["ProductId"] = new SelectList(_context.Product, "ProductId", "Description", val.ProductId);
+            ViewData["LocationId"] = new SelectList(_context.Location, "LocationId", "Name", val.LocationId);
+ViewData["ProductId"] = new SelectList(_context.Product, "ProductId", "Description", val.ProductId);
 ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", val.SupplierId);
             return View(val);
         }
@@ -93,7 +93,6 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("ProductPurchaseId,BatchNumber,Comment,Cost,DateTime,Expiry,LocationId,ProductId,SupplierId,Timestamp,VersionNumber,Volume")]ProductPurchase val)
         {
 			if(val.ProductPurchaseId != id)
@@ -121,13 +120,13 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Product, "ProductId", "Description", val.ProductId);
+            ViewData["LocationId"] = new SelectList(_context.Location, "LocationId", "Name", val.LocationId);
+ViewData["ProductId"] = new SelectList(_context.Product, "ProductId", "Description", val.ProductId);
 ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", val.SupplierId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,7 +134,7 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
                 return NotFound();
             }
 
-            var val = await _context.ProductPurchase.Include(v => v.Product).Include(v => v.Supplier).FirstOrDefaultAsync(m => m.ProductPurchaseId == id);
+            var val = await _context.ProductPurchase.Include(v => v.Location).Include(v => v.Product).Include(v => v.Supplier).FirstOrDefaultAsync(m => m.ProductPurchaseId == id);
             if (val == null)
             {
                 return NotFound();
@@ -147,7 +146,6 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.ProductPurchase.FindAsync(id);

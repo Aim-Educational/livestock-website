@@ -1,5 +1,25 @@
-﻿@{
+﻿@model Database.Models.MenuHeader
+@{
     ViewData["Title"] = "Home Page";
 }
 
-I'm so empty ;_;
+@if (Model != null)
+{
+<div class="row">
+        @foreach (var item in Model.MenuItem.OrderBy(i => i.SequenceNumber).ThenBy(i => i.Title))
+        {
+            <div class="col-md-2">
+                <a asp-controller="@item.Controller" asp-action="@item.Action">
+                    <div class="card menu-card text-center" style="width: 128px">
+                        <img class="card-img-top" src="@item.IconUri" alt="Critter">
+                        <div class="card-body">
+                            <p class="card-text">
+                                @item.Title
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+</div>
+}

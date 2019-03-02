@@ -24,7 +24,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.Breed;
+            var livestockContext = _context.Breed.Include(v => v.BreedSocietyContact).Include(v => v.CritterType);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Breed.FirstOrDefaultAsync(m => m.BreedId == id);
+            var val = await _context.Breed.Include(v => v.BreedSocietyContact).Include(v => v.CritterType).FirstOrDefaultAsync(m => m.BreedId == id);
             if (val == null)
             {
                 return NotFound();
@@ -45,17 +45,16 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
-            
+            ViewData["BreedSocietyContactId"] = new SelectList(_context.Contact, "ContactId", "Name");
+ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("BreedId,BreedSocietyContactId,Comment,CritterTypeId,Description,Registerable,Timestamp,VersionNumber")]Breed val)
         {
 			this.FixNullFields(val);
@@ -65,12 +64,12 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["BreedSocietyContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.BreedSocietyContactId);
+ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,14 +82,14 @@ namespace Website.Controllers
             {
                 return NotFound();
             }
-            
+            ViewData["BreedSocietyContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.BreedSocietyContactId);
+ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("BreedId,BreedSocietyContactId,Comment,CritterTypeId,Description,Registerable,Timestamp,VersionNumber")]Breed val)
         {
 			if(val.BreedId != id)
@@ -118,12 +117,12 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["BreedSocietyContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.BreedSocietyContactId);
+ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,7 +130,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Breed.FirstOrDefaultAsync(m => m.BreedId == id);
+            var val = await _context.Breed.Include(v => v.BreedSocietyContact).Include(v => v.CritterType).FirstOrDefaultAsync(m => m.BreedId == id);
             if (val == null)
             {
                 return NotFound();
@@ -143,7 +142,6 @@ namespace Website.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.Breed.FindAsync(id);

@@ -24,7 +24,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.Location;
+            var livestockContext = _context.Location.Include(v => v.EnumLocationType);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Location.FirstOrDefaultAsync(m => m.LocationId == id);
+            var val = await _context.Location.Include(v => v.EnumLocationType).FirstOrDefaultAsync(m => m.LocationId == id);
             if (val == null)
             {
                 return NotFound();
@@ -45,17 +45,15 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
-            
+            ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("LocationId,Comment,EnumLocationTypeId,HoldingId,Name,ParentId,Timestamp,VersionNumber")]Location val)
         {
 			this.FixNullFields(val);
@@ -65,12 +63,11 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description", val.EnumLocationTypeId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,14 +80,13 @@ namespace Website.Controllers
             {
                 return NotFound();
             }
-            
+            ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description", val.EnumLocationTypeId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("LocationId,Comment,EnumLocationTypeId,HoldingId,Name,ParentId,Timestamp,VersionNumber")]Location val)
         {
 			if(val.LocationId != id)
@@ -118,12 +114,11 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description", val.EnumLocationTypeId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,7 +126,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Location.FirstOrDefaultAsync(m => m.LocationId == id);
+            var val = await _context.Location.Include(v => v.EnumLocationType).FirstOrDefaultAsync(m => m.LocationId == id);
             if (val == null)
             {
                 return NotFound();
@@ -143,7 +138,6 @@ namespace Website.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.Location.FindAsync(id);

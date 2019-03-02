@@ -24,7 +24,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.CritterLifeEvent;
+            var livestockContext = _context.CritterLifeEvent.Include(v => v.Critter).Include(v => v.EnumCritterLifeEventType);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.CritterLifeEvent.FirstOrDefaultAsync(m => m.CritterLifeEventId == id);
+            var val = await _context.CritterLifeEvent.Include(v => v.Critter).Include(v => v.EnumCritterLifeEventType).FirstOrDefaultAsync(m => m.CritterLifeEventId == id);
             if (val == null)
             {
                 return NotFound();
@@ -45,17 +45,16 @@ namespace Website.Controllers
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public IActionResult Create()
         {
-            
+            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "Name");
+ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLifeEventType, "EnumCritterLifeEventTypeId", "Description");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Create([Bind("CritterLifeEventId,Comment,CritterId,DateTime,Description,EnumCritterLifeEventTypeId,Timestamp,VersionNumber")]CritterLifeEvent val)
         {
 			this.FixNullFields(val);
@@ -65,12 +64,12 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.CritterId);
+ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLifeEventType, "EnumCritterLifeEventTypeId", "Description", val.EnumCritterLifeEventTypeId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,14 +82,14 @@ namespace Website.Controllers
             {
                 return NotFound();
             }
-            
+            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.CritterId);
+ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLifeEventType, "EnumCritterLifeEventTypeId", "Description", val.EnumCritterLifeEventTypeId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Edit(int id, [Bind("CritterLifeEventId,Comment,CritterId,DateTime,Description,EnumCritterLifeEventTypeId,Timestamp,VersionNumber")]CritterLifeEvent val)
         {
 			if(val.CritterLifeEventId != id)
@@ -118,12 +117,12 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.CritterId);
+ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLifeEventType, "EnumCritterLifeEventTypeId", "Description", val.EnumCritterLifeEventTypeId);
             return View(val);
         }
 
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,7 +130,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.CritterLifeEvent.FirstOrDefaultAsync(m => m.CritterLifeEventId == id);
+            var val = await _context.CritterLifeEvent.Include(v => v.Critter).Include(v => v.EnumCritterLifeEventType).FirstOrDefaultAsync(m => m.CritterLifeEventId == id);
             if (val == null)
             {
                 return NotFound();
@@ -143,7 +142,6 @@ namespace Website.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
 		[AimAuthorize]
-		[HasPermission(UserPermission.LivestockModify)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.CritterLifeEvent.FindAsync(id);
