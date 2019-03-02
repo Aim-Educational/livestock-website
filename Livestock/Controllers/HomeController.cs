@@ -18,21 +18,32 @@ namespace Livestock.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index([FromServices] LivestockContext db)
+        public async Task<IActionResult> Index([FromServices] LivestockContext db)
         {
             //var header = db.MenuHeader
             //               .Include(h => h.MenuItem)
             //               .FirstOrDefault(h => HttpContext.User.IsInRole(h.Role.Description));
             MenuHeader header = null;
-            foreach (var h in db.MenuHeader.Include(h => h.Role))
-            {
-                if(HttpContext.User.IsInRole(h.Role?.Description ?? ""))
-                {
-                    db.Entry(h).Collection(h2 => h2.MenuItem).Load();
 
-                    header = h;
-                    break;
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                foreach (var h in db.MenuHeader.Include(h => h.Role).Where(h => h.ApplicationCode == 1)) // 1 = Main Menu
+                {
+                    if (HttpContext.User.IsInRole(h.Role?.Description ?? ""))
+                    {
+                        await db.Entry(h).Collection(h2 => h2.MenuItem).LoadAsync();
+
+                        header = h;
+                        break;
+                    }
                 }
+            }
+            else
+            {
+                // -1 = Not logged in.
+                header = db.MenuHeader.Include(h => h.Role).FirstOrDefault(h => h.RoleId == -1 && h.ApplicationCode == 1);
+                if (header != null)
+                    await db.Entry(header).Collection(h => h.MenuItem).LoadAsync();
             }
 
             return View(header);
