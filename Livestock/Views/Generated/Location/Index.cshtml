@@ -24,12 +24,12 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-							<td> @Html.DisplayFor(modelItem => item.Name) </td>
-            				<td> @Html.DisplayFor(modelItem => item.EnumLocationTypeId) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Comment) </td>
-            				<td> @Html.DisplayFor(modelItem => item.HoldingId) </td>
-            				<td> @Html.DisplayFor(modelItem => item.ParentId) </td>
-                        <td>
+												<td> @Html.DisplayFor(modelItem => item.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.EnumLocationType.Description) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.HoldingId) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.ParentId) </td>
+				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.LocationId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.LocationId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.LocationId">Delete</a>

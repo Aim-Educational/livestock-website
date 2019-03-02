@@ -30,18 +30,18 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-							<td> @Html.DisplayFor(modelItem => item.ContactId) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Address) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Comment) </td>
-            				<td> @Html.DisplayFor(modelItem => item.GridReference) </td>
-            				<td> @Html.DisplayFor(modelItem => item.HoldingNumber) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Postcode) </td>
-            				<td> @Html.DisplayFor(modelItem => item.RegisterForCows) </td>
-            				<td> @Html.DisplayFor(modelItem => item.RegisterForFish) </td>
-            				<td> @Html.DisplayFor(modelItem => item.RegisterForPigs) </td>
-            				<td> @Html.DisplayFor(modelItem => item.RegisterForPoultry) </td>
-            				<td> @Html.DisplayFor(modelItem => item.RegisterForSheepGoats) </td>
-                        <td>
+												<td> @Html.DisplayFor(modelItem => item.Contact.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Address) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.GridReference) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.HoldingNumber) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Postcode) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.RegisterForCows) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.RegisterForFish) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.RegisterForPigs) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.RegisterForPoultry) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.RegisterForSheepGoats) </td>
+				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.HoldingId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.HoldingId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.HoldingId">Delete</a>

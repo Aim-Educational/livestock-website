@@ -23,11 +23,11 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-							<td> @Html.DisplayFor(modelItem => item.Comment) </td>
-            				<td> @Html.DisplayFor(modelItem => item.DateTime) </td>
-            				<td> @Html.DisplayFor(modelItem => item.UserId) </td>
-            				<td> @Html.DisplayFor(modelItem => item.VehicleLifeEventId) </td>
-                        <td>
+												<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.DateTime) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.UserId) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.VehicleLifeEventId) </td>
+				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.VehicleLifeEventWashId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.VehicleLifeEventWashId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.VehicleLifeEventWashId">Delete</a>

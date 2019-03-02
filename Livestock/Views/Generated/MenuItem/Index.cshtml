@@ -27,15 +27,15 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-							<td> @Html.DisplayFor(modelItem => item.MenuHeaderId) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Action) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Comment) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Controller) </td>
-            				<td> @Html.DisplayFor(modelItem => item.IconUri) </td>
-            				<td> @Html.DisplayFor(modelItem => item.RoleId) </td>
-            				<td> @Html.DisplayFor(modelItem => item.SequenceNumber) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Title) </td>
-                        <td>
+												<td> @Html.DisplayFor(modelItem => item.MenuHeader.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Action) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Controller) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.IconUri) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.RoleId) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.SequenceNumber) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Title) </td>
+				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.MenuItemId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.MenuItemId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.MenuItemId">Delete</a>

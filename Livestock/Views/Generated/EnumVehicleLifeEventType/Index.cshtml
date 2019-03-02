@@ -21,9 +21,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-							<td> @Html.DisplayFor(modelItem => item.Description) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Comment) </td>
-                        <td>
+												<td> @Html.DisplayFor(modelItem => item.Description) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.EnumVehicleLifeEventTypeId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.EnumVehicleLifeEventTypeId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.EnumVehicleLifeEventTypeId">Delete</a>

@@ -28,7 +28,11 @@
 @foreach (var item in Model) {
         <tr>
 			<# foreach(var column in ColumnNames){ #>
-				<td> @Html.DisplayFor(modelItem => item.<#= column #>) </td>
+				<# if(DisplayOverrides.ContainsKey(column)) { #>
+					<td> @Html.DisplayFor(modelItem => item.<#= DisplayOverrides[column] #>) </td>
+				<#}else{#>
+					<td> @Html.DisplayFor(modelItem => item.<#= column #>) </td>
+				<#}#>
             <# } #>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.<#= EntityIdName #>">Edit</a> |

@@ -181,6 +181,13 @@ namespace CustomScaffold
             template.EntityIdName = entity.GetKeys().First().Properties.First().Name;
             template.ColumnNames = entity.GetPropertiesFilterInternal().OrderByUserExperience(entity).Select(p => p.Name).ToList();
 
+            template.DisplayOverrides = new Dictionary<string, string>();
+            foreach(var fk in entity.GetForeignKeys())
+            {
+                template.DisplayOverrides[fk.Properties.First().Name]
+                    = $"{fk.DependentToPrincipal.Name}.{this.GetDisplayNameField(fk.PrincipalEntityType).Name}";
+            }
+
             return new EntityFile() { data = template.TransformText(), path = $"Views/Generated/{entity.ClrType.Name}/Index.cshtml" };
         }
     }

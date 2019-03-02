@@ -25,13 +25,13 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-							<td> @Html.DisplayFor(modelItem => item.CritterId) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Comment) </td>
-            				<td> @Html.DisplayFor(modelItem => item.DateTime) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Rfid) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Tag1) </td>
-            				<td> @Html.DisplayFor(modelItem => item.UserId) </td>
-                        <td>
+												<td> @Html.DisplayFor(modelItem => item.Critter.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.DateTime) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Rfid) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Tag1) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.UserId) </td>
+				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.TagId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.TagId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.TagId">Delete</a>

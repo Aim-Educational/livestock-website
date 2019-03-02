@@ -28,16 +28,16 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-							<td> @Html.DisplayFor(modelItem => item.LocationId) </td>
-            				<td> @Html.DisplayFor(modelItem => item.ProductId) </td>
-            				<td> @Html.DisplayFor(modelItem => item.SupplierId) </td>
-            				<td> @Html.DisplayFor(modelItem => item.BatchNumber) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Comment) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Cost) </td>
-            				<td> @Html.DisplayFor(modelItem => item.DateTime) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Expiry) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Volume) </td>
-                        <td>
+												<td> @Html.DisplayFor(modelItem => item.Location.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Product.Description) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Supplier.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.BatchNumber) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Cost) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.DateTime) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Expiry) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Volume) </td>
+				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.ProductPurchaseId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ProductPurchaseId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ProductPurchaseId">Delete</a>

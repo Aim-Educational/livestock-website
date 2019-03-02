@@ -17,6 +17,7 @@ namespace CustomScaffold.Templates
 
     partial class Index
     {
+        public Dictionary<string, string> DisplayOverrides;
         public List<string> ColumnNames;
         public string EntityIdName;
         public string EntityName;

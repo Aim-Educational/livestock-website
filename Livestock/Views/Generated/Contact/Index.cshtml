@@ -29,17 +29,17 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-							<td> @Html.DisplayFor(modelItem => item.Name) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Address) </td>
-            				<td> @Html.DisplayFor(modelItem => item.Comment) </td>
-            				<td> @Html.DisplayFor(modelItem => item.EmailAddress) </td>
-            				<td> @Html.DisplayFor(modelItem => item.IsCustomer) </td>
-            				<td> @Html.DisplayFor(modelItem => item.IsSupplier) </td>
-            				<td> @Html.DisplayFor(modelItem => item.PhoneNumber1) </td>
-            				<td> @Html.DisplayFor(modelItem => item.PhoneNumber2) </td>
-            				<td> @Html.DisplayFor(modelItem => item.PhoneNumber3) </td>
-            				<td> @Html.DisplayFor(modelItem => item.PhoneNumber4) </td>
-                        <td>
+												<td> @Html.DisplayFor(modelItem => item.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Address) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.EmailAddress) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.IsCustomer) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.IsSupplier) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.PhoneNumber1) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.PhoneNumber2) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.PhoneNumber3) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.PhoneNumber4) </td>
+				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.ContactId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ContactId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ContactId">Delete</a>

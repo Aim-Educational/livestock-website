@@ -18,7 +18,7 @@ namespace CustomScaffold.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Index.tt"
+    #line 1 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class Index : IndexBase
     {
@@ -30,7 +30,7 @@ namespace CustomScaffold.Templates
         {
             this.Write("\r\n@model IEnumerable<Database.Models.");
             
-            #line 7 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Index.tt"
+            #line 7 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityName));
             
             #line default
@@ -39,21 +39,21 @@ namespace CustomScaffold.Templates
                     "-action=\"Create\">Create New</a>\r\n</p>\r\n<table class=\"table\">\r\n    <thead>\r\n     " +
                     "   <tr>\r\n\t\t\t");
             
-            #line 21 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Index.tt"
+            #line 21 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
  foreach(var column in ColumnNames) { 
             
             #line default
             #line hidden
             this.Write("\t\t\t\t<th> @Html.DisplayNameFor(model => model.");
             
-            #line 22 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Index.tt"
+            #line 22 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(column));
             
             #line default
             #line hidden
             this.Write(") </th>\r\n\t\t\t");
             
-            #line 23 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Index.tt"
+            #line 23 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
  } 
             
             #line default
@@ -61,42 +61,70 @@ namespace CustomScaffold.Templates
             this.Write("            <th></th>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n@foreach (var it" +
                     "em in Model) {\r\n        <tr>\r\n\t\t\t");
             
-            #line 30 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Index.tt"
+            #line 30 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
  foreach(var column in ColumnNames){ 
             
             #line default
             #line hidden
-            this.Write("\t\t\t\t<td> @Html.DisplayFor(modelItem => item.");
+            this.Write("\t\t\t\t");
             
-            #line 31 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Index.tt"
+            #line 31 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
+ if(DisplayOverrides.ContainsKey(column)) { 
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t\t\t<td> @Html.DisplayFor(modelItem => item.");
+            
+            #line 32 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(DisplayOverrides[column]));
+            
+            #line default
+            #line hidden
+            this.Write(") </td>\r\n\t\t\t\t");
+            
+            #line 33 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
+}else{
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t\t\t<td> @Html.DisplayFor(modelItem => item.");
+            
+            #line 34 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(column));
             
             #line default
             #line hidden
-            this.Write(") </td>\r\n            ");
+            this.Write(") </td>\r\n\t\t\t\t");
             
-            #line 32 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Index.tt"
+            #line 35 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("            ");
+            
+            #line 36 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
  } 
             
             #line default
             #line hidden
             this.Write("            <td>\r\n                <a asp-action=\"Edit\" asp-route-id=\"@item.");
             
-            #line 34 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Index.tt"
+            #line 38 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default
             #line hidden
             this.Write("\">Edit</a> |\r\n                <a asp-action=\"Details\" asp-route-id=\"@item.");
             
-            #line 35 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Index.tt"
+            #line 39 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default
             #line hidden
             this.Write("\">Details</a> |\r\n                <a asp-action=\"Delete\" asp-route-id=\"@item.");
             
-            #line 36 "D:\Coding\C#\Livestock\CustomScaffold\Templates\Index.tt"
+            #line 40 "C:\Users\bradley chatha\Desktop\livestock-website\CustomScaffold\Templates\Index.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityIdName));
             
             #line default
