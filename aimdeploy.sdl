@@ -1,0 +1,12 @@
+DeployConfig {
+    name "Livestock"
+    domain "livestock.chatha.dev"
+    port 5010
+    requiredVars {
+        // TODO: Put these in once the aimdeploy rewrite actually works for this.
+        var {
+            name ""
+            description ""
+        }
+    }
+}
