@@ -21,6 +21,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Livestock
 {
@@ -38,7 +39,6 @@ namespace Livestock
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -82,6 +82,12 @@ namespace Livestock
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            // For nginx
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseRequestLocalization();
             app.UseHttpsRedirection();
