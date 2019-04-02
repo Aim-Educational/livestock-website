@@ -18,10 +18,8 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
-using Website.Services;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
-using Website.Middleware;
 using Microsoft.AspNetCore.Localization;
 
 namespace Livestock
@@ -61,46 +59,14 @@ namespace Livestock
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<LivestockContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Livestock")));
-            services.AddScoped<IAccountInfoService, AccountInfoService>();
 
             services.AddAuthentication(options => 
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme       = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme    = "Github";
+                options.DefaultChallengeScheme    = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-            .AddCookie()
-            .AddOAuth("Github", options =>
-            {
-                options.ClientId     = Configuration["LIVESTOCK_OAUTH_GITHUB_ID"];
-                options.ClientSecret = Configuration["LIVESTOCK_OAUTH_GITHUB_SECRET"];
-                options.CallbackPath = new PathString("/oauth-github");
-
-                options.AuthorizationEndpoint   = "https://github.com/login/oauth/authorize";
-                options.TokenEndpoint           = "https://github.com/login/oauth/access_token";
-                options.UserInformationEndpoint = "https://api.github.com/user";
-
-                options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "email");
-
-                options.Events = new OAuthEvents
-                {
-                    OnCreatingTicket = async context =>
-                    {
-                        var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
-                        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
-
-                        var response = await context.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, context.HttpContext.RequestAborted);
-                        response.EnsureSuccessStatusCode();
-
-                        var user = JObject.Parse(await response.Content.ReadAsStringAsync());
-                        if(user["email"].Type == JTokenType.Null)
-                            throw new Exception("No public email is associated with this account.");
-
-                        context.RunClaimActions(user);
-                    }
-                };
-            });
+            .AddCookie();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -123,7 +89,6 @@ namespace Livestock
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-            app.UseAuthenticatedUserClaimsMiddleware();
 
             app.UseMvc(routes =>
             {
