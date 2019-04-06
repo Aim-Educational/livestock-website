@@ -8,6 +8,7 @@ using Database.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Website.Models;
 using Website.Other;
 
@@ -35,7 +36,7 @@ namespace Website.Controllers
         public async Task<IActionResult> UserList()
         {
             var info = new List<UserListViewModel>();
-            foreach(var user in this.loginDb.Users)
+            foreach(var user in this.loginDb.Users.Include(u => u.UserDataMaps))
             {
                 info.Add(new UserListViewModel
                 {
@@ -49,7 +50,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> UserEdit([FromRoute] int id)
         {
-            var user = this.loginDb.Users.First(u => u.UserId == id);
+            var user = this.loginDb.Users.Include(u => u.UserDataMaps).First(u => u.UserId == id);
             var info = new UserEditViewModel
             {
                 UserId = id,
@@ -71,7 +72,7 @@ namespace Website.Controllers
                 var model = new UserEditViewModel();
                 model.UserId = Convert.ToInt32(Request.Form["UserId"]);
 
-                var user = this.loginDb.Users.First(u => u.UserId == model.UserId);
+                var user = this.loginDb.Users.Include(u => u.UserDataMaps).First(u => u.UserId == model.UserId);
                 model.Info = await this.data.FetchFirstFor<AlUserInfo>(user);
                 model.Role = await this.data.FetchFirstFor<Role>(user);
 
@@ -88,7 +89,7 @@ namespace Website.Controllers
             }
             catch(Exception ex)
             {
-                ModelState.AddModelError(null, ex.Message);
+                ModelState.AddModelError(string.Empty, ex.Message);
                 return View();
             }
         }
