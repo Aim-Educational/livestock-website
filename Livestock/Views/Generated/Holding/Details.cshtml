@@ -1,0 +1,86 @@
+@model Database.Models.Holding
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+
+<div>
+    <h4>Holding</h4>
+    <hr />
+    <dl class="dl-horizontal">
+					<dt>
+				@Html.DisplayNameFor(model => model.ContactId)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.ContactId)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.Address)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Address)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.Comment)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Comment)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.GridReference)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.GridReference)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.HoldingNumber)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.HoldingNumber)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.Postcode)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Postcode)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.RegisterForCows)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.RegisterForCows)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.RegisterForFish)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.RegisterForFish)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.RegisterForPigs)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.RegisterForPigs)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.RegisterForPoultry)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.RegisterForPoultry)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.RegisterForSheepGoats)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.RegisterForSheepGoats)
+			</dd>
+		    </dl>
+
+			<div>
+			<a asp-action="Edit" asp-route-id="@Model.HoldingId">Edit</a> |
+			<a asp-action="Index">Back to List</a>
+		</div>
+	</div>

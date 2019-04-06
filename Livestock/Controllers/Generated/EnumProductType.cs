@@ -1,9 +1,3 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name="System.Core" #>
-<#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
-<#@ output extension=".cs" #>
 
 using System;
 using System.Collections.Generic;
@@ -17,19 +11,19 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	<#= ControllerAuthAttrib #>
-	public class <#= EntityName #>Controller : Controller
+	[Authorize(Roles = "[Forbidden to all]")]
+	public class EnumProductTypeController : Controller
     {
         private readonly LivestockContext _context;
 
-        public <#= EntityName #>Controller(LivestockContext context)
+        public EnumProductTypeController(LivestockContext context)
         {
             _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.<#= ContextGetterString #>;
+            var livestockContext = _context.EnumProductType;
             return View(await livestockContext.ToListAsync());
         }
 
@@ -40,7 +34,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.<#= ContextGetterString #>.FirstOrDefaultAsync(m => m.<#= EntityIdName #> == id);
+            var val = await _context.EnumProductType.FirstOrDefaultAsync(m => m.EnumProductTypeId == id);
             if (val == null)
             {
                 return NotFound();
@@ -52,14 +46,14 @@ namespace Website.Controllers
 		[Authorize]
         public IActionResult Create()
         {
-            <#= ForeignKeyDropDownCreationString  #>
+            
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Create([Bind("<#= FormBindingParams #>")]<#= EntityName #> val)
+        public async Task<IActionResult> Create([Bind("EnumProductTypeId,Comment,Description,Timestamp,VersionNumber")]EnumProductType val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -68,7 +62,7 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            <#= ForeignKeyDropDownCreationWithSelectedIndexString #>
+            
             return View(val);
         }
 
@@ -80,21 +74,21 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.<#= EntityName #>.FindAsync(id);
+            var val = await _context.EnumProductType.FindAsync(id);
             if (val == null)
             {
                 return NotFound();
             }
-            <#= ForeignKeyDropDownCreationWithSelectedIndexString #>
+            
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("<#= FormBindingParams #>")]<#= EntityName #> val)
+        public async Task<IActionResult> Edit(int id, [Bind("EnumProductTypeId,Comment,Description,Timestamp,VersionNumber")]EnumProductType val)
         {
-			if(val.<#= EntityIdName #> != id)
+			if(val.EnumProductTypeId != id)
 				return NotFound();
 
 			this.FixNullFields(val);
@@ -108,7 +102,7 @@ namespace Website.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!Exists(val.<#= EntityIdName #>))
+                    if (!Exists(val.EnumProductTypeId))
                     {
                         return NotFound();
                     }
@@ -119,7 +113,7 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            <#= ForeignKeyDropDownCreationWithSelectedIndexString #>
+            
             return View(val);
         }
 
@@ -131,7 +125,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.<#= ContextGetterString #>.FirstOrDefaultAsync(m => m.<#= EntityIdName #> == id);
+            var val = await _context.EnumProductType.FirstOrDefaultAsync(m => m.EnumProductTypeId == id);
             if (val == null)
             {
                 return NotFound();
@@ -145,20 +139,21 @@ namespace Website.Controllers
 		[Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var val = await _context.<#= EntityName #>.FindAsync(id);
-            _context.<#= EntityName #>.Remove(val);
+            var val = await _context.EnumProductType.FindAsync(id);
+            _context.EnumProductType.Remove(val);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-		private void FixNullFields(<#= EntityName #> val)
+		private void FixNullFields(EnumProductType val)
 		{
-			<#= FixNullFieldsCode #>
+			if(String.IsNullOrWhiteSpace(val.Comment)) val.Comment = "N/A";
+if(String.IsNullOrWhiteSpace(val.Description)) val.Description = "N/A";
 		}
 
         private bool Exists(int id)
         {
-            return _context.<#= EntityName #>.Any(e => e.<#= EntityIdName #> == id);
+            return _context.EnumProductType.Any(e => e.EnumProductTypeId == id);
         }
     }
 }

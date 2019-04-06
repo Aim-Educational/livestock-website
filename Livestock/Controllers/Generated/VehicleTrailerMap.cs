@@ -1,9 +1,3 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name="System.Core" #>
-<#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
-<#@ output extension=".cs" #>
 
 using System;
 using System.Collections.Generic;
@@ -17,19 +11,19 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	<#= ControllerAuthAttrib #>
-	public class <#= EntityName #>Controller : Controller
+	[Authorize(Roles = "admin,")]
+	public class VehicleTrailerMapController : Controller
     {
         private readonly LivestockContext _context;
 
-        public <#= EntityName #>Controller(LivestockContext context)
+        public VehicleTrailerMapController(LivestockContext context)
         {
             _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.<#= ContextGetterString #>;
+            var livestockContext = _context.VehicleTrailerMap.Include(v => v.Trailer).Include(v => v.VehicleMain);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -40,7 +34,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.<#= ContextGetterString #>.FirstOrDefaultAsync(m => m.<#= EntityIdName #> == id);
+            var val = await _context.VehicleTrailerMap.Include(v => v.Trailer).Include(v => v.VehicleMain).FirstOrDefaultAsync(m => m.VehicleTrailerMapId == id);
             if (val == null)
             {
                 return NotFound();
@@ -52,14 +46,15 @@ namespace Website.Controllers
 		[Authorize]
         public IActionResult Create()
         {
-            <#= ForeignKeyDropDownCreationString  #>
+            ViewData["TrailerId"] = new SelectList(_context.Vehicle, "VehicleId", "Name");
+ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Create([Bind("<#= FormBindingParams #>")]<#= EntityName #> val)
+        public async Task<IActionResult> Create([Bind("VehicleTrailerMapId,Comment,Timestamp,TrailerId,VehicleMainId,VersionNumber")]VehicleTrailerMap val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -68,7 +63,8 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            <#= ForeignKeyDropDownCreationWithSelectedIndexString #>
+            ViewData["TrailerId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.TrailerId);
+ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.VehicleMainId);
             return View(val);
         }
 
@@ -80,21 +76,22 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.<#= EntityName #>.FindAsync(id);
+            var val = await _context.VehicleTrailerMap.FindAsync(id);
             if (val == null)
             {
                 return NotFound();
             }
-            <#= ForeignKeyDropDownCreationWithSelectedIndexString #>
+            ViewData["TrailerId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.TrailerId);
+ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.VehicleMainId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("<#= FormBindingParams #>")]<#= EntityName #> val)
+        public async Task<IActionResult> Edit(int id, [Bind("VehicleTrailerMapId,Comment,Timestamp,TrailerId,VehicleMainId,VersionNumber")]VehicleTrailerMap val)
         {
-			if(val.<#= EntityIdName #> != id)
+			if(val.VehicleTrailerMapId != id)
 				return NotFound();
 
 			this.FixNullFields(val);
@@ -108,7 +105,7 @@ namespace Website.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!Exists(val.<#= EntityIdName #>))
+                    if (!Exists(val.VehicleTrailerMapId))
                     {
                         return NotFound();
                     }
@@ -119,7 +116,8 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            <#= ForeignKeyDropDownCreationWithSelectedIndexString #>
+            ViewData["TrailerId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.TrailerId);
+ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name", val.VehicleMainId);
             return View(val);
         }
 
@@ -131,7 +129,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.<#= ContextGetterString #>.FirstOrDefaultAsync(m => m.<#= EntityIdName #> == id);
+            var val = await _context.VehicleTrailerMap.Include(v => v.Trailer).Include(v => v.VehicleMain).FirstOrDefaultAsync(m => m.VehicleTrailerMapId == id);
             if (val == null)
             {
                 return NotFound();
@@ -145,20 +143,20 @@ namespace Website.Controllers
 		[Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var val = await _context.<#= EntityName #>.FindAsync(id);
-            _context.<#= EntityName #>.Remove(val);
+            var val = await _context.VehicleTrailerMap.FindAsync(id);
+            _context.VehicleTrailerMap.Remove(val);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-		private void FixNullFields(<#= EntityName #> val)
+		private void FixNullFields(VehicleTrailerMap val)
 		{
-			<#= FixNullFieldsCode #>
+			if(String.IsNullOrWhiteSpace(val.Comment)) val.Comment = "N/A";
 		}
 
         private bool Exists(int id)
         {
-            return _context.<#= EntityName #>.Any(e => e.<#= EntityIdName #> == id);
+            return _context.VehicleTrailerMap.Any(e => e.VehicleTrailerMapId == id);
         }
     }
 }

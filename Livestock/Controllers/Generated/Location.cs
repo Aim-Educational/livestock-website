@@ -1,9 +1,3 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name="System.Core" #>
-<#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
-<#@ output extension=".cs" #>
 
 using System;
 using System.Collections.Generic;
@@ -17,19 +11,19 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	<#= ControllerAuthAttrib #>
-	public class <#= EntityName #>Controller : Controller
+	[Authorize(Roles = "admin,")]
+	public class LocationController : Controller
     {
         private readonly LivestockContext _context;
 
-        public <#= EntityName #>Controller(LivestockContext context)
+        public LocationController(LivestockContext context)
         {
             _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.<#= ContextGetterString #>;
+            var livestockContext = _context.Location.Include(v => v.EnumLocationType).Include(v => v.Holding).Include(v => v.Parent);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -40,7 +34,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.<#= ContextGetterString #>.FirstOrDefaultAsync(m => m.<#= EntityIdName #> == id);
+            var val = await _context.Location.Include(v => v.EnumLocationType).Include(v => v.Holding).Include(v => v.Parent).FirstOrDefaultAsync(m => m.LocationId == id);
             if (val == null)
             {
                 return NotFound();
@@ -52,14 +46,16 @@ namespace Website.Controllers
 		[Authorize]
         public IActionResult Create()
         {
-            <#= ForeignKeyDropDownCreationString  #>
+            ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description");
+ViewData["HoldingId"] = new SelectList(_context.Holding, "HoldingId", "Postcode");
+ViewData["ParentId"] = new SelectList(_context.Location, "LocationId", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Create([Bind("<#= FormBindingParams #>")]<#= EntityName #> val)
+        public async Task<IActionResult> Create([Bind("LocationId,Comment,EnumLocationTypeId,HoldingId,Name,ParentId,Timestamp,VersionNumber")]Location val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -68,7 +64,9 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            <#= ForeignKeyDropDownCreationWithSelectedIndexString #>
+            ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description", val.EnumLocationTypeId);
+ViewData["HoldingId"] = new SelectList(_context.Holding, "HoldingId", "Postcode", val.HoldingId);
+ViewData["ParentId"] = new SelectList(_context.Location, "LocationId", "Name", val.ParentId);
             return View(val);
         }
 
@@ -80,21 +78,23 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.<#= EntityName #>.FindAsync(id);
+            var val = await _context.Location.FindAsync(id);
             if (val == null)
             {
                 return NotFound();
             }
-            <#= ForeignKeyDropDownCreationWithSelectedIndexString #>
+            ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description", val.EnumLocationTypeId);
+ViewData["HoldingId"] = new SelectList(_context.Holding, "HoldingId", "Postcode", val.HoldingId);
+ViewData["ParentId"] = new SelectList(_context.Location, "LocationId", "Name", val.ParentId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("<#= FormBindingParams #>")]<#= EntityName #> val)
+        public async Task<IActionResult> Edit(int id, [Bind("LocationId,Comment,EnumLocationTypeId,HoldingId,Name,ParentId,Timestamp,VersionNumber")]Location val)
         {
-			if(val.<#= EntityIdName #> != id)
+			if(val.LocationId != id)
 				return NotFound();
 
 			this.FixNullFields(val);
@@ -108,7 +108,7 @@ namespace Website.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!Exists(val.<#= EntityIdName #>))
+                    if (!Exists(val.LocationId))
                     {
                         return NotFound();
                     }
@@ -119,7 +119,9 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            <#= ForeignKeyDropDownCreationWithSelectedIndexString #>
+            ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description", val.EnumLocationTypeId);
+ViewData["HoldingId"] = new SelectList(_context.Holding, "HoldingId", "Postcode", val.HoldingId);
+ViewData["ParentId"] = new SelectList(_context.Location, "LocationId", "Name", val.ParentId);
             return View(val);
         }
 
@@ -131,7 +133,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.<#= ContextGetterString #>.FirstOrDefaultAsync(m => m.<#= EntityIdName #> == id);
+            var val = await _context.Location.Include(v => v.EnumLocationType).Include(v => v.Holding).Include(v => v.Parent).FirstOrDefaultAsync(m => m.LocationId == id);
             if (val == null)
             {
                 return NotFound();
@@ -145,20 +147,21 @@ namespace Website.Controllers
 		[Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var val = await _context.<#= EntityName #>.FindAsync(id);
-            _context.<#= EntityName #>.Remove(val);
+            var val = await _context.Location.FindAsync(id);
+            _context.Location.Remove(val);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-		private void FixNullFields(<#= EntityName #> val)
+		private void FixNullFields(Location val)
 		{
-			<#= FixNullFieldsCode #>
+			if(String.IsNullOrWhiteSpace(val.Comment)) val.Comment = "N/A";
+if(String.IsNullOrWhiteSpace(val.Name)) val.Name = "N/A";
 		}
 
         private bool Exists(int id)
         {
-            return _context.<#= EntityName #>.Any(e => e.<#= EntityIdName #> == id);
+            return _context.Location.Any(e => e.LocationId == id);
         }
     }
 }

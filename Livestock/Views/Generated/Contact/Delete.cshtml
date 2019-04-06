@@ -1,0 +1,82 @@
+@model Database.Models.Contact
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+	<h3>Are you sure you want to delete this?</h3>
+
+<div>
+    <h4>Contact</h4>
+    <hr />
+    <dl class="dl-horizontal">
+					<dt>
+				@Html.DisplayNameFor(model => model.Name)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Name)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.Address)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Address)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.Comment)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Comment)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.EmailAddress)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.EmailAddress)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.IsCustomer)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.IsCustomer)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.IsSupplier)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.IsSupplier)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.PhoneNumber1)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.PhoneNumber1)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.PhoneNumber2)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.PhoneNumber2)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.PhoneNumber3)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.PhoneNumber3)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.PhoneNumber4)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.PhoneNumber4)
+			</dd>
+		    </dl>
+
+			<form asp-action="Delete">
+			<input type="hidden" asp-for="ContactId" />
+			<input type="submit" value="Delete" class="btn btn-danger" /> |
+			<a asp-action="Index">Back to List</a>
+		</form>
+	</div>

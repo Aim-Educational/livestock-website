@@ -1,0 +1,48 @@
+
+@model IEnumerable<Database.Models.ProductPurchase>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+							<th> @Html.DisplayNameFor(model => model.LocationId) </th>
+							<th> @Html.DisplayNameFor(model => model.ProductId) </th>
+							<th> @Html.DisplayNameFor(model => model.SupplierId) </th>
+							<th> @Html.DisplayNameFor(model => model.BatchNumber) </th>
+							<th> @Html.DisplayNameFor(model => model.Comment) </th>
+							<th> @Html.DisplayNameFor(model => model.Cost) </th>
+							<th> @Html.DisplayNameFor(model => model.DateTime) </th>
+							<th> @Html.DisplayNameFor(model => model.Expiry) </th>
+							<th> @Html.DisplayNameFor(model => model.Volume) </th>
+			            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+												<td> @Html.DisplayFor(modelItem => item.Location.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Product.Description) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Supplier.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.BatchNumber) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Cost) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.DateTime) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Expiry) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Volume) </td>
+				                        <td>
+                <a asp-action="Edit" asp-route-id="@item.ProductPurchaseId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ProductPurchaseId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductPurchaseId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
