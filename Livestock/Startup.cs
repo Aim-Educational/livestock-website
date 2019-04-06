@@ -21,6 +21,12 @@ using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.HttpOverrides;
+using AimLogin.Middleware;
+using AimLogin.DbModel;
+using AimLogin.Services;
+using Website.Other;
+using AimLogin.Misc;
 
 namespace Livestock
 {
@@ -38,7 +44,6 @@ namespace Livestock
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -57,9 +62,37 @@ namespace Livestock
                 options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("en-GB") };
             });
 
+            // Setup AimLogin
+            services.Configure<AimLoginMiddlewareConfig>(c =>
+            {
+                // When the user is logged in, set their Name and Role claims.
+                c.OnAddUserClaims += (_, args) =>
+                {
+                    var claims = new List<Claim>();
+
+                    var info = args.dataMap.FetchFirstFor<AlUserInfo>(args.userDb).Result;
+                    claims.Add(new Claim(ClaimTypes.Name, $"{info.FirstName} {info.LastName}"));
+
+                    var role = args.dataMap.FetchFirstFor<Role>(args.userDb).Result;
+                    if(role != null)
+                        claims.Add(new Claim(ClaimTypes.Role, role.Description));
+
+                    args.userPrincipal.AddIdentity(new ClaimsIdentity(claims));
+                };
+            });
+            services.AddDbContext<AimLoginContext>(o => o.UseSqlServer(Configuration.GetConnectionString("AimLogin")));
+            services.AddAimLogin();
+
+            // Setup custom data providers
+            var providers = new AimGenericProviderBuilder<LivestockContext, LivestockEntityTypes>(services);
+            providers.AddSingleReferenceProvider<Role>();
+            providers.AddSingleProvider<AlUserInfo>();
+
+            // Setup Misc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<LivestockContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Livestock")));
 
+            // Setup Auth
             services.AddAuthentication(options => 
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -70,8 +103,9 @@ namespace Livestock
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, AimLoginContext loginDb)
         {
+            //loginDb.Database.EnsureCreated();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -83,12 +117,19 @@ namespace Livestock
                 app.UseHsts();
             }
 
+            // For nginx
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             app.UseRequestLocalization();
             app.UseHttpsRedirection();
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+            app.UseMiddleware<AimLoginMiddleware>();
 
             app.UseMvc(routes =>
             {

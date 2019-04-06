@@ -1,0 +1,73 @@
+﻿<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!--Toggler (only shown if not all of the navbar can fit on screen)-->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapseArea">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!--Brand-->
+    <a class="navbar-brand" href="/">Livestock</a>
+
+    <!--Content that can be put into the collapse area-->
+    <div id="navbarCollapseArea" class="collapse navbar-collapse">
+        
+        <!--Left-hand side-->
+        <ul class="navbar-nav list-unstyled">
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+            
+            <!--Admin menu-->
+            @if(User.Identity.IsAuthenticated && User.IsInRole("admin"))
+            {
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Admin</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Claims">Claims</a></li>
+                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="UserList">User List</a></li>
+                </ul>
+            </li>
+            }
+        </ul>
+
+        <!--Right-hand side-->
+        <ul class="navbar-nav ml-auto">
+
+            <!--Account stuff-->
+            @if(User.Identity.IsAuthenticated)
+            {
+                <li class="nav-item">
+                    <div class="navbar-text">Welcome</div>
+                    <strong class="navbar-text">
+                        @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? "NO NAME")
+                    </strong>
+                </li>
+
+                <li class="nav-item">
+                    <form method="post" asp-controller="Account" asp-action="Logout">
+                        <button type="submit" class="btn form-control btn-outline-warning">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <form method="get" asp-controller="Account" asp-action="Login">
+                        <button type="submit" class="btn form-control btn-outline-success">
+                            Login
+                        </button>
+                    </form>
+                </li>
+
+                <li class="nav-item">
+                    <form method="get" asp-controller="Account" asp-action="Signup">
+                        <button type="submit" class="btn form-control btn-outline-primary">
+                            Signup
+                        </button>
+                    </form>
+                </li>
+            }
+        </ul>
+    </div>
+</nav>

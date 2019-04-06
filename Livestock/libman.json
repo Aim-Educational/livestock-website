@@ -13,6 +13,10 @@
     {
       "library": "tempusdominus-bootstrap-4@5.1.2",
       "destination": "wwwroot/lib/tempusdominus-bootstrap-4/"
+    },
+    {
+      "library": "bootstrap-material-design@4.0.2",
+      "destination": "wwwroot/lib/bootstrap-material-design/"
     }
   ]
 }

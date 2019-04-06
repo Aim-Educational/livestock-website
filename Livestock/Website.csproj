@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\aimlogin\AimLogin\AimLogin.csproj" />
     <ProjectReference Include="..\Database\Database.csproj" />
   </ItemGroup>
 
@@ -36,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Middleware\" />
     <Folder Include="Services\" />
   </ItemGroup>
