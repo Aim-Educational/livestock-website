@@ -86,43 +86,50 @@ namespace Website.Controllers
         {
             if(ModelState.IsValid)
             {
-                // Create the user, showing any error to them if one happens.
-                AimLogin.DbModel.User user = null;
-                try
-                { 
-                    user = await this.aimloginUsers.CreateNewUser(model.Username, model.Password);
-                    if(user == null)
-                        throw new Exception($"Could not create new user.");
-                }
-                catch(Exception ex)
+                using (var aimTransact = await this.aimloginDb.Database.BeginTransactionAsync())
+                using (var liveTransact = await this.livestockDb.Database.BeginTransactionAsync())
                 {
-                    ModelState.AddModelError(nameof(model.Username), ex.Message);
-                    return View(model);
-                }
-
-                // Create their user info.
-                await this.aimLoginData.SetSingleFor(
-                    user,
-                    new AlUserInfo
+                    // Create the user, showing any error to them if one happens.
+                    AimLogin.DbModel.User user = null;
+                    try
                     {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        EmailAddress = model.EmailAddress,
-                        PrivacyConsent = model.PrivacyConsent,
-                        TosConsent = model.ToSConsent,
-                        Comment = "N/A"
-                    },
-                    this.aimloginDb
-                );
+                        user = await this.aimloginUsers.CreateNewUser(model.Username, model.Password);
+                        if (user == null)
+                            throw new Exception($"Could not create new user.");
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError(nameof(model.Username), ex.Message);
+                        return View(model);
+                    }
 
-                // If they're the first user, set them as an admin so there's at least one admin account.
-                if(this.aimloginDb.Users.Count() == 1)
-                    await this.aimLoginData.SetRoleFor(user, RoleEnum.Admin, this.livestockDb);
-                else
-                    await this.aimLoginData.SetRoleFor(user, RoleEnum.Student, this.livestockDb);
+                    // Create their user info.
+                    await this.aimLoginData.SetSingleFor(
+                        user,
+                        new AlUserInfo
+                        {
+                            FirstName = model.FirstName,
+                            LastName = model.LastName,
+                            EmailAddress = model.EmailAddress,
+                            PrivacyConsent = model.PrivacyConsent,
+                            TosConsent = model.ToSConsent,
+                            Comment = "N/A"
+                        }
+                    );
 
-                // Sign them in.
-                await HttpContext.AimSignInAsync(user, this.aimloginUsers);
+                    // If they're the first user, set them as an admin so there's at least one admin account.
+                    if (this.aimloginDb.Users.Count() == 1)
+                        await this.aimLoginData.SetRoleFor(user, RoleEnum.Admin, this.livestockDb);
+                    else
+                        await this.aimLoginData.SetRoleFor(user, RoleEnum.Student, this.livestockDb);
+
+                    // Sign them in.
+                    // NOTE: This internally calls SaveChanges, so we don't have to.
+                    await HttpContext.AimSignInAsync(user, this.aimloginUsers);
+
+                    liveTransact.Commit();
+                    aimTransact.Commit();
+                }
                 return RedirectToActionPermanent("Index", "Home");
             }
 

@@ -82,8 +82,9 @@ namespace Website.Controllers
                 model.Info.EmailAddress = Request.Form["Info.EmailAddress"];
                 model.Role              = this.livestockDb.Role.Find(Convert.ToInt32(Request.Form["Role.RoleId"]));
        
-                await this.data.SetSingleFor(user, model.Info, this.loginDb);
+                await this.data.SetSingleFor(user, model.Info);
                 await this.data.SetSingleReferenceFor(user, model.Role);
+                await this.data.SaveChanges();
 
                 return RedirectToActionPermanent("UserList", "Admin");
             }
