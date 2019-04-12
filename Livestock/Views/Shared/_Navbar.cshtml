@@ -15,18 +15,6 @@
             <li class="nav-item">
                 <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
             </li>
-            
-            <!--Admin menu-->
-            @if(User.Identity.IsAuthenticated && User.IsInRole("admin"))
-            {
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Admin</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Claims">Claims</a></li>
-                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="UserList">User List</a></li>
-                </ul>
-            </li>
-            }
         </ul>
 
         <!--Right-hand side-->
