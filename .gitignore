@@ -15,6 +15,7 @@
 
 *.dll
 *.exe
+*.error
 
 *.tlog
 *.lastbuildstate
