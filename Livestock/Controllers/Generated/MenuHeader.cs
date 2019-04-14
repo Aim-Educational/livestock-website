@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
-using Website.Filters;
-using Website.Services;
-using User = Database.Models.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	[AimAuthorize(RolesOR: "[Forbidden to all]")]
+	[Authorize(Roles = "[Forbidden to all]")]
 	public class MenuHeaderController : Controller
     {
         private readonly LivestockContext _context;
@@ -45,7 +43,7 @@ namespace Website.Controllers
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public IActionResult Create()
         {
             ViewData["MenuHeaderParentId"] = new SelectList(_context.MenuHeader, "MenuHeaderId", "Name");
@@ -55,7 +53,7 @@ ViewData["RoleId"] = new SelectList(_context.Role, "RoleId", "Description");
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Create([Bind("MenuHeaderId,ApplicationCode,Comment,ImageUri,MenuHeaderParentId,Name,RoleId,Timestamp,Title,VersionNumber")]MenuHeader val)
         {
 			this.FixNullFields(val);
@@ -70,7 +68,7 @@ ViewData["RoleId"] = new SelectList(_context.Role, "RoleId", "Description", val.
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,7 +88,7 @@ ViewData["RoleId"] = new SelectList(_context.Role, "RoleId", "Description", val.
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("MenuHeaderId,ApplicationCode,Comment,ImageUri,MenuHeaderParentId,Name,RoleId,Timestamp,Title,VersionNumber")]MenuHeader val)
         {
 			if(val.MenuHeaderId != id)
@@ -123,7 +121,7 @@ ViewData["RoleId"] = new SelectList(_context.Role, "RoleId", "Description", val.
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,7 +140,7 @@ ViewData["RoleId"] = new SelectList(_context.Role, "RoleId", "Description", val.
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.MenuHeader.FindAsync(id);

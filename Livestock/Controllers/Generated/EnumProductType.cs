@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
-using Website.Filters;
-using Website.Services;
-using User = Database.Models.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	[AimAuthorize(RolesOR: "[Forbidden to all]")]
+	[Authorize(Roles = "[Forbidden to all]")]
 	public class EnumProductTypeController : Controller
     {
         private readonly LivestockContext _context;
@@ -45,7 +43,7 @@ namespace Website.Controllers
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public IActionResult Create()
         {
             
@@ -54,7 +52,7 @@ namespace Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Create([Bind("EnumProductTypeId,Comment,Description,Timestamp,VersionNumber")]EnumProductType val)
         {
 			this.FixNullFields(val);
@@ -68,7 +66,7 @@ namespace Website.Controllers
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,7 +85,7 @@ namespace Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("EnumProductTypeId,Comment,Description,Timestamp,VersionNumber")]EnumProductType val)
         {
 			if(val.EnumProductTypeId != id)
@@ -119,7 +117,7 @@ namespace Website.Controllers
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -138,7 +136,7 @@ namespace Website.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.EnumProductType.FindAsync(id);

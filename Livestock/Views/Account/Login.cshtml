@@ -1,28 +1,26 @@
-﻿@{
+﻿@model Website.Models.LoginViewModel
+@{
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
+<h1>Login</h1>
 
-<div class="row">
-    <div class="col-md-4">
-        <a class="btn btn-block btn-social btn-github" asp-area="" asp-controller="Account" asp-action="ChallengeGithub" asp-route-returnUrl="@ViewData["ReturnUrl"]">
-            <span class="fa fa-github"></span> Login with Github
-        </a>
+<form method="post" asp-controller="Account" asp-action="Login">
+    <input type="hidden" asp-for="ReturnUrl" value="@ViewBag.ReturnUrl" />
+    <div class="form-group">
+        <label asp-for="Username"></label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
     </div>
-</div>
-
-<div class="pt-5" />
-
-<div class="row">
-    <div class="col-md-12">
-        <div class="alert alert-primary">
-            Your account info, no matter which service you use to log in with, is primarily associated with your email address.
-            <br />
-            For example, if you log in using <strong>Facebook</strong> which uses <code>john@gmail.com</code>, but then you later log in with
-            <strong>Twitter</strong> which uses <code>johnny@yahoo.com</code> you're essentially using two different accounts.
-            <br />
-            However, if your Twitter and Facebook use the same email address, then they both can be used to log into the same account on this site.
-        </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
-</div>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <div asp-validation-summary="All" class="text-danger"></div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

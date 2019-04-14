@@ -1,0 +1,36 @@
+﻿@model IList<Website.Models.UserListViewModel>
+@{
+    ViewData["Title"] = "UserList";
+}
+
+<h1>UserList</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Role</th>
+            <th scope="col">Email</th>
+            <th scope="col">Comment</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var user in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(u => user.info.FirstName)</td>
+                <td>@Html.DisplayFor(u => user.info.LastName)</td>
+                <td>@Html.DisplayFor(u => user.role.Description)</td>
+                <td>@Html.DisplayFor(u => user.info.EmailAddress)</td>
+                <td>@Html.DisplayFor(u => user.info.Comment)</td>
+                <td>
+                    <a asp-controller="Admin" asp-action="UserEdit" asp-route-id="@(user.user.UserId)">Edit</a>
+                    |
+                    <a asp-controller="Admin" asp-action="UserDelete" asp-route-id="@(user.user.UserId)">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

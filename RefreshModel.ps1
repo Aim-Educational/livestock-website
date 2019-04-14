@@ -19,7 +19,7 @@ $TABLE_OBJECT_NAME_TRUNCATE_MATCHES = "* Contact Id","* Id"
 $CONNECTION = (Get-Content $APPSETTINGS | ConvertFrom-Json | Select-Object ConnectionStrings).psobject.properties["ConnectionStrings"].Value.psobject.properties["Livestock"].Value
 
 # Reverse-engineer the database.
-Scaffold-DbContext $CONNECTION Microsoft.EntityFrameworkCore.SqlServer -OutputDir $OUTPUT_DIR -Project $PROJECT -Force
+Scaffold-DbContext $CONNECTION Microsoft.EntityFrameworkCore.SqlServer -OutputDir $OUTPUT_DIR -Project $PROJECT -Force -DataAnnotations 
 
 # Patch the DbContext
 [System.Collections.ArrayList]$DbContextContent = [System.IO.File]::ReadAllLines($CONTEXT_PATH);
@@ -100,7 +100,7 @@ foreach ($filePath in $fileList)
             }
         }
 
-        $lines.Insert($i++, "[DisplayName(`"$newName`")]")
+        $lines.Insert($i++, '[DisplayName("' + $newName + '")]')
     }
 
     Out-File -FilePath $filePath -InputObject $([System.String]::Join("`n", $lines.ToArray())) -Encoding string

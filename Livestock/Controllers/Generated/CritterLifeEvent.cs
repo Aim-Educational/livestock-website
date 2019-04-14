@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
-using Website.Filters;
-using Website.Services;
-using User = Database.Models.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	[AimAuthorize(RolesOR: "admin,student,")]
+	[Authorize(Roles = "admin,student,")]
 	public class CritterLifeEventController : Controller
     {
         private readonly LivestockContext _context;
@@ -45,7 +43,7 @@ namespace Website.Controllers
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public IActionResult Create()
         {
             ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "Name");
@@ -55,7 +53,7 @@ ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLife
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Create([Bind("CritterLifeEventId,Comment,CritterId,DateTime,Description,EnumCritterLifeEventTypeId,Timestamp,VersionNumber")]CritterLifeEvent val)
         {
 			this.FixNullFields(val);
@@ -70,7 +68,7 @@ ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLife
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,7 +88,7 @@ ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLife
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("CritterLifeEventId,Comment,CritterId,DateTime,Description,EnumCritterLifeEventTypeId,Timestamp,VersionNumber")]CritterLifeEvent val)
         {
 			if(val.CritterLifeEventId != id)
@@ -123,7 +121,7 @@ ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLife
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,7 +140,7 @@ ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLife
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.CritterLifeEvent.FindAsync(id);

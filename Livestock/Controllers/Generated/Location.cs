@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
-using Website.Filters;
-using Website.Services;
-using User = Database.Models.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	[AimAuthorize(RolesOR: "admin,")]
+	[Authorize(Roles = "admin,")]
 	public class LocationController : Controller
     {
         private readonly LivestockContext _context;
@@ -25,7 +23,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.Location.Include(v => v.EnumLocationType);
+            var livestockContext = _context.Location.Include(v => v.EnumLocationType).Include(v => v.Holding).Include(v => v.Parent);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -36,7 +34,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Location.Include(v => v.EnumLocationType).FirstOrDefaultAsync(m => m.LocationId == id);
+            var val = await _context.Location.Include(v => v.EnumLocationType).Include(v => v.Holding).Include(v => v.Parent).FirstOrDefaultAsync(m => m.LocationId == id);
             if (val == null)
             {
                 return NotFound();
@@ -45,16 +43,18 @@ namespace Website.Controllers
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public IActionResult Create()
         {
             ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description");
+ViewData["HoldingId"] = new SelectList(_context.Holding, "HoldingId", "Postcode");
+ViewData["ParentId"] = new SelectList(_context.Location, "LocationId", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Create([Bind("LocationId,Comment,EnumLocationTypeId,HoldingId,Name,ParentId,Timestamp,VersionNumber")]Location val)
         {
 			this.FixNullFields(val);
@@ -65,10 +65,12 @@ namespace Website.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description", val.EnumLocationTypeId);
+ViewData["HoldingId"] = new SelectList(_context.Holding, "HoldingId", "Postcode", val.HoldingId);
+ViewData["ParentId"] = new SelectList(_context.Location, "LocationId", "Name", val.ParentId);
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,12 +84,14 @@ namespace Website.Controllers
                 return NotFound();
             }
             ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description", val.EnumLocationTypeId);
+ViewData["HoldingId"] = new SelectList(_context.Holding, "HoldingId", "Postcode", val.HoldingId);
+ViewData["ParentId"] = new SelectList(_context.Location, "LocationId", "Name", val.ParentId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("LocationId,Comment,EnumLocationTypeId,HoldingId,Name,ParentId,Timestamp,VersionNumber")]Location val)
         {
 			if(val.LocationId != id)
@@ -116,10 +120,12 @@ namespace Website.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EnumLocationTypeId"] = new SelectList(_context.EnumLocationType, "EnumLocationTypeId", "Description", val.EnumLocationTypeId);
+ViewData["HoldingId"] = new SelectList(_context.Holding, "HoldingId", "Postcode", val.HoldingId);
+ViewData["ParentId"] = new SelectList(_context.Location, "LocationId", "Name", val.ParentId);
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -127,7 +133,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Location.Include(v => v.EnumLocationType).FirstOrDefaultAsync(m => m.LocationId == id);
+            var val = await _context.Location.Include(v => v.EnumLocationType).Include(v => v.Holding).Include(v => v.Parent).FirstOrDefaultAsync(m => m.LocationId == id);
             if (val == null)
             {
                 return NotFound();
@@ -138,7 +144,7 @@ namespace Website.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.Location.FindAsync(id);

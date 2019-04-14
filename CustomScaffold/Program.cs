@@ -69,7 +69,8 @@ namespace CustomScaffold
                 || evilProp.Name == "MobileNumber"
                 || evilProp.Name == "RegistrationNumber"
                 || evilProp.Name == "VehicleTrailerMapId"
-                || evilProp.Name == "Title")
+                || evilProp.Name == "Title"
+                || evilProp.Name == "Postcode")
                 {
                     prop = evilProp;
                     break;
@@ -165,7 +166,7 @@ namespace CustomScaffold
                         .Aggregate((one, two) => one + "\n" + two);
 
             // Create the authorise attribute
-            // [AimAuthorize(RolesOR = "admin,staff")]
+            // [Authorize(RolesOR = "admin,staff")]
             string rolesOR = "";
             foreach(var item in db.MenuItem.Where(i => i.Controller == entity.ClrType.Name))
             {
@@ -181,7 +182,7 @@ namespace CustomScaffold
             if (String.IsNullOrWhiteSpace(rolesOR))
                 rolesOR = "[Forbidden to all]";
 
-            template.ControllerAuthAttrib = $"[AimAuthorize(RolesOR: \"{rolesOR}\")]";
+            template.ControllerAuthAttrib = $"[Authorize(Roles = \"{rolesOR}\")]";
 
             return new EntityFile(){ data = template.TransformText(), path = Path.Join("Controllers/Generated/", entity.ClrType.Name + ".cs") };
         }

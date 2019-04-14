@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
-using Website.Filters;
-using Website.Services;
-using User = Database.Models.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	[AimAuthorize(RolesOR: "admin,")]
+	[Authorize(Roles = "admin,")]
 	public class CritterController : Controller
     {
         private readonly LivestockContext _context;
@@ -45,7 +43,7 @@ namespace Website.Controllers
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public IActionResult Create()
         {
             ViewData["BreedId"] = new SelectList(_context.Breed, "BreedId", "Description");
@@ -58,7 +56,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Create([Bind("CritterId,BreedId,Comment,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
         {
 			this.FixNullFields(val);
@@ -76,7 +74,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -99,7 +97,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("CritterId,BreedId,Comment,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
         {
 			if(val.CritterId != id)
@@ -135,7 +133,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -154,7 +152,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.Critter.FindAsync(id);

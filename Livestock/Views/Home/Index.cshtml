@@ -1,17 +1,19 @@
-﻿@model Database.Models.MenuHeader
+﻿@model IList<Database.Models.MenuItem>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Index";
 }
+
+<h1>Index</h1>
 
 @if (Model != null)
 {
-<div class="row">
-        @foreach (var item in Model.MenuHeaderItemMap.Select(i => i.MenuItem).OrderBy(i => i.SequenceNumber).ThenBy(i => i.Title))
+    <div class="row">
+        @foreach (var item in Model.OrderBy(i => i.SequenceNumber).ThenBy(i => i.Title))
         {
             <div class="col-sm-8 col-md-6 col-lg-2 col-xl-2">
                 <a asp-controller="@item.Controller" asp-action="@item.Action">
                     <div class="card menu-card text-center">
-                        <img class="card-img-top" src="@item.IconUri" alt="Critter">
+                        <img class="card-img-top border-bottom" src="@item.IconUri" alt="Critter">
                         <div class="card-body">
                             <p class="card-text">
                                 @item.Title
@@ -21,5 +23,11 @@
                 </a>
             </div>
         }
-</div>
+    </div>
+}
+else if(!User.Identity.IsAuthenticated)
+{
+    <div class="alert alert-info">
+        Please login before doing anything.
+    </div>
 }

@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
-using Website.Filters;
-using Website.Services;
-using User = Database.Models.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	[AimAuthorize(RolesOR: "admin,")]
+	[Authorize(Roles = "admin,")]
 	public class ProductPurchaseController : Controller
     {
         private readonly LivestockContext _context;
@@ -45,7 +43,7 @@ namespace Website.Controllers
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public IActionResult Create()
         {
             ViewData["LocationId"] = new SelectList(_context.Location, "LocationId", "Name");
@@ -56,7 +54,7 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name");
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Create([Bind("ProductPurchaseId,BatchNumber,Comment,Cost,DateTime,Expiry,LocationId,ProductId,SupplierId,Timestamp,VersionNumber,Volume")]ProductPurchase val)
         {
 			this.FixNullFields(val);
@@ -72,7 +70,7 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -93,7 +91,7 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("ProductPurchaseId,BatchNumber,Comment,Cost,DateTime,Expiry,LocationId,ProductId,SupplierId,Timestamp,VersionNumber,Volume")]ProductPurchase val)
         {
 			if(val.ProductPurchaseId != id)
@@ -127,7 +125,7 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -146,7 +144,7 @@ ViewData["SupplierId"] = new SelectList(_context.Contact, "ContactId", "Name", v
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.ProductPurchase.FindAsync(id);

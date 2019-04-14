@@ -1,0 +1,3 @@
+[submodule "aimlogin"]
+	path = aimlogin
+	url = https://gitlab.com/aimmis/aimlogin

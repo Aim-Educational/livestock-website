@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
-using Website.Filters;
-using Website.Services;
-using User = Database.Models.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	[AimAuthorize(RolesOR: "admin,")]
+	[Authorize(Roles = "admin,")]
 	public class VehicleTrailerMapController : Controller
     {
         private readonly LivestockContext _context;
@@ -45,7 +43,7 @@ namespace Website.Controllers
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public IActionResult Create()
         {
             ViewData["TrailerId"] = new SelectList(_context.Vehicle, "VehicleId", "Name");
@@ -55,7 +53,7 @@ ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name"
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Create([Bind("VehicleTrailerMapId,Comment,Timestamp,TrailerId,VehicleMainId,VersionNumber")]VehicleTrailerMap val)
         {
 			this.FixNullFields(val);
@@ -70,7 +68,7 @@ ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name"
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,7 +88,7 @@ ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name"
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("VehicleTrailerMapId,Comment,Timestamp,TrailerId,VehicleMainId,VersionNumber")]VehicleTrailerMap val)
         {
 			if(val.VehicleTrailerMapId != id)
@@ -123,7 +121,7 @@ ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name"
             return View(val);
         }
 
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,7 +140,7 @@ ViewData["VehicleMainId"] = new SelectList(_context.Vehicle, "VehicleId", "Name"
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-		[AimAuthorize]
+		[Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var val = await _context.VehicleTrailerMap.FindAsync(id);
