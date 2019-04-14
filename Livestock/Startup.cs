@@ -99,7 +99,10 @@ namespace Livestock
                 options.DefaultSignInScheme       = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme    = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-            .AddCookie();
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

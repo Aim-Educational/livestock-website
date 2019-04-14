@@ -50,8 +50,9 @@ namespace Website.Controllers
             return View();
         }
 
-        public IActionResult Login()
+        public IActionResult Login([FromQuery] string ReturnUrl)
         {
+            ViewData["ReturnUrl"] = ReturnUrl;
             return View();
         }
 
@@ -59,6 +60,9 @@ namespace Website.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            if(model.ReturnUrl == null || !Url.IsLocalUrl(model.ReturnUrl))
+                model.ReturnUrl = "/";
+
             if (!ModelState.IsValid)
                 return View(model);
 
@@ -77,7 +81,7 @@ namespace Website.Controllers
             }
 
             await HttpContext.AimSignInAsync(user, this.aimloginUsers);
-            return RedirectToActionPermanent("Index", "Home");
+            return Redirect(model.ReturnUrl);
         }
         
         [HttpPost]
