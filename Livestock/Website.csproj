@@ -7,13 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Middleware\**" />
     <Compile Remove="netcoreapp2.1\**" />
+    <Compile Remove="Services\**" />
     <Compile Remove="Views\Breeds\**" />
+    <Content Remove="Middleware\**" />
     <Content Remove="netcoreapp2.1\**" />
+    <Content Remove="Services\**" />
     <Content Remove="Views\Breeds\**" />
+    <EmbeddedResource Remove="Middleware\**" />
     <EmbeddedResource Remove="netcoreapp2.1\**" />
+    <EmbeddedResource Remove="Services\**" />
     <EmbeddedResource Remove="Views\Breeds\**" />
+    <None Remove="Middleware\**" />
     <None Remove="netcoreapp2.1\**" />
+    <None Remove="Services\**" />
     <None Remove="Views\Breeds\**" />
   </ItemGroup>
 
@@ -34,11 +42,6 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\dummy.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Middleware\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
