@@ -1,0 +1,127 @@
+@model Website.Models.CritterExEditViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Critter</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div class="form-group">
+                <label asp-for="Critter.Name" class="control-label"></label>
+                <input asp-for="Critter.Name" class="form-control" />
+                <span asp-validation-for="Critter.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Critter.CritterTypeId" class="control-label"></label>
+                <select asp-for="Critter.CritterTypeId" class="form-control" asp-items="ViewBag.CritterTypeId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Critter.BreedId" class="control-label"></label>
+                <select asp-for="Critter.BreedId" class="form-control" asp-items="ViewBag.BreedId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Critter.Gender" class="control-label"></label>
+                <input asp-for="Critter.Gender" class="form-control" />
+                <span asp-validation-for="Critter.Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Critter.DadCritterId" class="control-label"></label>
+                <select asp-for="Critter.DadCritterId" class="form-control" asp-items="ViewBag.DadCritterId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Critter.MumCritterId" class="control-label"></label>
+                <select asp-for="Critter.MumCritterId" class="form-control" asp-items="ViewBag.MumCritterId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Critter.OwnerContactId" class="control-label"></label>
+                <select asp-for="Critter.OwnerContactId" class="form-control" asp-items="ViewBag.OwnerContactId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Critter.Comment" class="control-label"></label>
+                <input asp-for="Critter.Comment" class="form-control" />
+                <span asp-validation-for="Critter.Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Critter.DadFurther" class="control-label"></label>
+                <input asp-for="Critter.DadFurther" class="form-control" />
+                <span asp-validation-for="Critter.DadFurther" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Critter.MumFurther" class="control-label"></label>
+                <input asp-for="Critter.MumFurther" class="form-control" />
+                <span asp-validation-for="Critter.MumFurther" class="text-danger"></span>
+            </div>
+            @Html.HiddenFor(model => model.Critter.CritterId)
+            @Html.HiddenFor(model => model.Critter.Timestamp)
+            @Html.HiddenFor(model => model.Critter.VersionNumber)
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-success" />
+            </div>
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </form>
+    </div>
+</div>
+
+<br />
+<h4>New Life Event</h4>
+<hr />
+<!--Event selector-->
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label class="form-text">Event</label>
+            <select id="editorSelect" class="form-control"></select>
+        </div>
+    </div>
+</div>
+
+<hr />
+<!--Event editors-->
+<div class="row">
+    <div class="col-md-4">
+        <!--'datetime' EDITOR-->
+        <div id="editor-datetime" class="d-none">
+            <form asp-action="NewDateTime" asp-route-id="@Model.Critter.CritterId">
+                <!--Date input-->
+                <label asp-for="DateTime.DateTime" class="control-label"></label>
+                <div class="form-inline">
+                    <div class="input-group">
+                        <input id="datetimeDateTime" type="text" asp-for="DateTime.DateTime" class="form-control datetimepicker-input" data-target="#datetimeDateTime" />
+                        <div class="input-group-append" data-target="#datetimeDateTime" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                    <small class="form-text text-muted">When did this event occur?</small>
+
+                    <span asp-validation-for="DateTime.DateTime" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" asp-for="EventTypeName" class="data-type-input" />
+                <br />
+
+                <!--Submit button-->
+                <div class="form-group">
+                    <input type="submit" value="Create New Event" class="btn btn-success" />
+                </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/life_event.min.js" asp-append-version="true"></script>
+
+    <script>
+        setupEditors({
+            @(Html.Raw(Model.Javascript?.Select(i => $"\"{i.Name}\": \"{i.DataType}\"").Aggregate((one, two) => $"{one},{two}") ?? ""))
+        });
+    </script>
+}

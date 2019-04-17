@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Scripts\dummy.ts" />
+    <None Remove="Scripts\life_event.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,7 +41,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\dummy.ts" />
+    <TypeScriptCompile Include="Scripts\life_event.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
 </Project>

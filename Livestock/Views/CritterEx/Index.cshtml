@@ -1,0 +1,40 @@
+﻿@model IList<Database.Models.Critter>
+@{
+    ViewData["Title"] = "UserList";
+}
+
+<h1>UserList</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Breed</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Dad</th>
+            <th scope="col">Mum</th>
+            <th scope="col">Owner</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+        <tr>
+            <td> @Html.DisplayFor(modelItem => item.Name) </td>
+            <td> @Html.DisplayFor(modelItem => item.CritterType.Name) </td>
+            <td> @Html.DisplayFor(modelItem => item.Breed.Description) </td>
+            <td> @Html.DisplayFor(modelItem => item.Gender) </td>
+            <td> @Html.DisplayFor(modelItem => item.DadCritter.Name) </td>
+            <td> @Html.DisplayFor(modelItem => item.MumCritter.Name) </td>
+            <td> @Html.DisplayFor(modelItem => item.OwnerContact.Name) </td>
+            <td>
+                <a asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(item.CritterId)">Edit</a>
+                |
+                <a asp-controller="CritterEx" asp-action="Delete" asp-route-id="@(item.CritterId)">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

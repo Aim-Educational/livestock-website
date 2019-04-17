@@ -7,9 +7,9 @@
   },
 
   {
-    "outputFileName": "wwwroot/js/site.min.js",
+    "outputFileName": "wwwroot/js/life_event.min.js",
     "inputFiles": [
-      "wwwroot/js/site.js"
+      "wwwroot/js/life_event.js"
     ]
   }
 ]
