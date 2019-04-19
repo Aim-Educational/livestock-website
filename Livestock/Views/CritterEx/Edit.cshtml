@@ -115,6 +115,35 @@
     </div>
 </div>
 
+<!--Life event list-->
+<br />
+<h4>All Life Events</h4>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Type</th>
+            <th scope="col">Description</th>
+            <th scope="col">Date <abbr title="This is when the event was registered, not when it happened.">?</abbr></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LifeEventTableInfo)
+        {
+            <tr>
+                <td> @Html.DisplayFor(modelItem => item.Type) </td>
+                <td> @Html.DisplayFor(modelItem => item.Description) </td>
+                <td> @Html.DisplayFor(modelItem => item.DateTime) </td>
+                <td>
+                    TODO
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/life_event.min.js" asp-append-version="true"></script>

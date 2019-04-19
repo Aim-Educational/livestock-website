@@ -14,12 +14,20 @@ namespace Website.Models
                                 // Note: DataTypes must be converted to lowercase ("DateTime" -> "datetime").
     }
 
+    public class CritterLifeEventTableInfo
+    {
+        public string Type;
+        public string Description;
+        public DateTime DateTime;
+    }
+
     public class CritterExEditViewModel
     {
         public Critter Critter { get; set; }
 
         // Only needed for the GET web page, POST version of the page doesn't need this.
         public IList<CritterLifeEventJavascriptInfo> Javascript;
+        public IList<CritterLifeEventTableInfo> LifeEventTableInfo;
 
         // Common fields for each POST
         public string EventTypeName { get; set; }

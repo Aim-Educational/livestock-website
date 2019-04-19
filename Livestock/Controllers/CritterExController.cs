@@ -46,7 +46,9 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await this._livestock.Critter.FindAsync(id);
+            var val = await this._livestock.Critter
+                                           .Include(c => c.CritterLifeEvent)
+                                           .FirstAsync(c => c.CritterId == id);
             if (val == null)
             {
                 return NotFound();
@@ -63,7 +65,18 @@ namespace Website.Controllers
                                                   .Where(e => e.DataType != "None")
                                                   .OrderBy(e => e.Description)
                                                   .Select(e => new CritterLifeEventJavascriptInfo{ Name = e.Description, DataType = e.DataType.ToLower() })
-                                                  .ToListAsync()
+                                                  .ToListAsync(),
+                LifeEventTableInfo = val.CritterLifeEvent
+                                        .Select(e => new CritterLifeEventTableInfo
+                                        {
+                                             DateTime = e.DateTime,
+                                             Description = e.Description,
+                                             Type = this._livestock.EnumCritterLifeEventType
+                                                                   .FirstAsync(t => t.EnumCritterLifeEventTypeId == e.EnumCritterLifeEventTypeId)
+                                                                   .Result
+                                                                   .Description
+                                        })
+                                        .ToList() // For some reason, this can't be async.
             });
         }
 
