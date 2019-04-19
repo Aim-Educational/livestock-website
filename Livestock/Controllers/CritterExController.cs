@@ -97,13 +97,9 @@ namespace Website.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!this._livestock.Critter.Any(c => c.CritterId == model.Critter.CritterId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
