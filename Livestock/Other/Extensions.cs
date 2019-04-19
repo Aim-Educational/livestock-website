@@ -14,7 +14,8 @@ namespace Website.Other
     {
         Student,
         Staff,
-        Admin
+        Admin,
+        Temp
     }
 
     public static class LivestockMiscExtensions
@@ -25,12 +26,7 @@ namespace Website.Other
             Contract.Requires(data != null);
             Contract.Requires(db != null);
             
-            var roleName = (role == RoleEnum.Admin) 
-                           ? "admin"
-                           : (role == RoleEnum.Staff)
-                             ? "staff"
-                             : "student";
-
+            var roleName = Convert.ToString(role).ToLower();
             var dbRole = await db.Role.FirstOrDefaultAsync(r => r.Description == roleName);
             if(dbRole == null)
             {

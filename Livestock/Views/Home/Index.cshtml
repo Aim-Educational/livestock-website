@@ -25,9 +25,21 @@
         }
     </div>
 }
+else if(User.IsInRole("temp"))
+{
+    <div class="alert alert-danger">
+        You currently aren't set to a role. Yell at Andy to finish setting up your account.
+    </div>
+}
 else if(!User.Identity.IsAuthenticated)
 {
     <div class="alert alert-info">
         Please login before doing anything.
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">
+        Unhandled corner case. Yell at Andy.
     </div>
 }

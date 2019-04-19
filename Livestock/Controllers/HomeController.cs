@@ -40,7 +40,8 @@ namespace Website.Controllers
                                                     .ThenInclude(map => map.MenuItem)
                                                    .FirstOrDefaultAsync(m => m.RoleId == role.RoleId);
 
-                return View(header.MenuHeaderItemMap.Select(mh => mh.MenuItem).ToList());
+                return (header == null) ? View(null)
+                                        : View(header.MenuHeaderItemMap.Select(mh => mh.MenuItem).ToList());
             }
             else
                 return View(null);

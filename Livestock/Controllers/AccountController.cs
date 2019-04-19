@@ -94,7 +94,7 @@ namespace Website.Controllers
                 using (var liveTransact = await this.livestockDb.Database.BeginTransactionAsync())
                 {
                     // Create the user, showing any error to them if one happens.
-                    AimLogin.DbModel.User user = null;
+                    User user = null;
                     try
                     {
                         user = await this.aimloginUsers.CreateNewUser(model.Username, model.Password);
@@ -125,7 +125,7 @@ namespace Website.Controllers
                     if (this.aimloginDb.Users.Count() == 1)
                         await this.aimLoginData.SetRoleFor(user, RoleEnum.Admin, this.livestockDb);
                     else
-                        await this.aimLoginData.SetRoleFor(user, RoleEnum.Student, this.livestockDb);
+                        await this.aimLoginData.SetRoleFor(user, RoleEnum.Temp, this.livestockDb);
 
                     // Sign them in.
                     // NOTE: This internally calls SaveChanges, so we don't have to.
