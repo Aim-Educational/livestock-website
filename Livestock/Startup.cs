@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,8 @@ using AimLogin.DbModel;
 using AimLogin.Services;
 using Website.Other;
 using AimLogin.Misc;
+using System.IO;
+using System.Text;
 
 namespace Livestock
 {
@@ -77,6 +80,17 @@ namespace Livestock
                     if(role != null)
                         claims.Add(new Claim(ClaimTypes.Role, role.Description));
 
+                    using (var md5 = MD5.Create())
+                    {
+                        var emailFormatted = info.EmailAddress.Trim().ToLower();
+                        var emailBytes = md5.ComputeHash(Encoding.UTF8.GetBytes(emailFormatted));
+                        var emailHex = emailBytes.Select(b => b.ToString("x2"));
+                        var emailHexString = emailHex.Aggregate((s1, s2) => $"{s1}{s2}");
+                        claims.Add(new Claim(LivestockClaims.ProfileImage,
+                            $"https://s.gravatar.com/avatar/{emailHexString}"
+                        ));
+                    }
+
                     args.userPrincipal.AddIdentity(new ClaimsIdentity(claims));
                 };
             });
@@ -85,8 +99,8 @@ namespace Livestock
 
             // Setup custom data providers
             var providers = new AimGenericProviderBuilder<LivestockContext, LivestockEntityTypes>(services);
-            providers.AddSingleReferenceProvider<Role>();
-            providers.AddSingleProvider<AlUserInfo>();
+            providers.AddSingleReferenceProvider<Role>()
+                     .AddSingleProvider<AlUserInfo>();
 
             // Setup Misc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
