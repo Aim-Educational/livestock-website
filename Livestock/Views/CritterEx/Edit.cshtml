@@ -74,10 +74,13 @@
 <!--Event selector-->
 <div class="row">
     <div class="col-md-4">
+        <!--Select box-->
         <div class="form-group">
             <label class="form-text">Event</label>
             <select id="editorSelect" class="form-control"></select>
         </div>
+
+        <small class="form-text text-muted">What type of event took place?</small>
     </div>
 </div>
 
@@ -102,7 +105,7 @@
                     <span asp-validation-for="DateTime.DateTime" class="text-danger"></span>
                 </div>
 
-                <input type="hidden" asp-for="EventTypeName" class="data-type-input" />
+                <partial name="_EditorCommon" />
                 <br />
 
                 <!--Submit button-->

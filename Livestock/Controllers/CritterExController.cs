@@ -82,21 +82,21 @@ namespace Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Critter")]CritterExEditViewModel val)
+        public async Task<IActionResult> Edit(int id, [Bind("Critter")]CritterExEditViewModel model)
         {
-            if (val.Critter.CritterId != id)
+            if (model.Critter.CritterId != id)
                 return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    this._livestock.Update(val);
+                    this._livestock.Update(model.Critter);
                     await this._livestock.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!this._livestock.Critter.Any(c => c.CritterId == val.Critter.CritterId))
+                    if (!this._livestock.Critter.Any(c => c.CritterId == model.Critter.CritterId))
                     {
                         return NotFound();
                     }
@@ -107,12 +107,12 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BreedId"] = new SelectList(this._livestock.Breed, "BreedId", "Description", val.Critter.BreedId);
-            ViewData["CritterTypeId"] = new SelectList(this._livestock.CritterType, "CritterTypeId", "Name", val.Critter.CritterTypeId);
-            ViewData["DadCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name", val.Critter.DadCritterId);
-            ViewData["MumCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name", val.Critter.MumCritterId);
-            ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact, "ContactId", "Name", val.Critter.OwnerContactId);
-            return View(val);
+            ViewData["BreedId"] = new SelectList(this._livestock.Breed, "BreedId", "Description", model.Critter.BreedId);
+            ViewData["CritterTypeId"] = new SelectList(this._livestock.CritterType, "CritterTypeId", "Name", model.Critter.CritterTypeId);
+            ViewData["DadCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name", model.Critter.DadCritterId);
+            ViewData["MumCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name", model.Critter.MumCritterId);
+            ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact, "ContactId", "Name", model.Critter.OwnerContactId);
+            return View(model);
         }
 
         private async Task AddNewEvent(int critterId, int dataId, string eventTypeName, string description)
@@ -133,7 +133,7 @@ namespace Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewDateTime(int? id, [Bind("DateTime,EventTypeName")]CritterExEditViewModel model)
+        public async Task<IActionResult> NewDateTime(int? id, [Bind("DateTime,EventTypeName,EventDescription")]CritterExEditViewModel model)
         {
             if(id == null)
                 throw new Exception("ID isn't being passed.");
@@ -149,7 +149,7 @@ namespace Website.Controllers
                 await this._livestock.AddAsync(dateTime);
                 await this._livestock.SaveChangesAsync(); // We have to save here so dateTime gets an Id
 
-                await this.AddNewEvent(id.Value, dateTime.CritterLifeEventGiveBirthId, model.EventTypeName, description: "TODO: Let user set this");
+                await this.AddNewEvent(id.Value, dateTime.CritterLifeEventGiveBirthId, model.EventTypeName, model.EventDescription);
                 transact.Commit();
             }
 
