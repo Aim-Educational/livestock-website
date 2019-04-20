@@ -80,6 +80,7 @@ namespace Livestock
                     if(role != null)
                         claims.Add(new Claim(ClaimTypes.Role, role.Description));
 
+                    // Get a profile pic from Gravatar
                     using (var md5 = MD5.Create())
                     {
                         var emailFormatted = info.EmailAddress.Trim().ToLower();
