@@ -128,8 +128,8 @@
         <tr>
             <th scope="col">Type</th>
             <th scope="col">Description</th>
-            <th scope="col">Date <abbr title="This is when the event was registered, not when it happened.">?</abbr></th>
-            <th scope="col"></th>
+            <th scope="col">Date </th>
+            <th scope="col">[Actions]</th>
         </tr>
     </thead>
     <tbody>
@@ -140,12 +140,34 @@
                 <td> @Html.DisplayFor(modelItem => item.Description) </td>
                 <td> @Html.DisplayFor(modelItem => item.DateTime) </td>
                 <td>
-                    TODO
+                    <a href="#">Edit</a>
+                    |
+                    <a href="#">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@foreach(var item in Model.LifeEventTableInfo)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@item.Type</h5>
+            <h6 class="card-subtitle text-muted">
+                @item.DateTime
+                <abbr title="This is when the event was registered, not when it happened.">?</abbr>
+            </h6>
+            <p class="card-text">@item.Description</p>
+
+            <hr />
+
+            <a href="#" class="card-link">Edit</a>
+            <a href="#" class="card-link">Delete</a>
+        </div>
+    </div>
+    <br />
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
