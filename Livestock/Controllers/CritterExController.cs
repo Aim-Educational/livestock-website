@@ -24,6 +24,7 @@ namespace Website.Controllers
             this._livestock = livestock;
         }
 
+        #region Critter
         public async Task<IActionResult> Index()
         {
             return View(
@@ -116,6 +117,7 @@ namespace Website.Controllers
             ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact, "ContactId", "Name", model.Critter.OwnerContactId);
             return View(model);
         }
+        #endregion
 
         private async Task AddNewEvent(int critterId, int dataId, string eventTypeName, string description)
         {
@@ -133,6 +135,7 @@ namespace Website.Controllers
             await this._livestock.SaveChangesAsync();
         }
 
+        #region DateTime
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewDateTime(int? id, [Bind("DateTime,EventTypeName,EventDescription")]CritterExEditViewModel model)
@@ -224,5 +227,6 @@ namespace Website.Controllers
 
             return RedirectToAction(nameof(Edit), routeValues: new { id });
         }
+        #endregion
     }
 }
