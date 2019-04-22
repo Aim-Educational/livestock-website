@@ -17,8 +17,10 @@ namespace Website.Models
     public class CritterLifeEventTableInfo
     {
         public string Type;
+        public string DataType; // Same as JavascriptInfo.DataType
         public string Description;
         public DateTime DateTime;
+        public int Id;
     }
 
     public class CritterExEditViewModel

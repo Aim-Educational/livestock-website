@@ -74,7 +74,14 @@ namespace Website.Controllers
                                              Type = this._livestock.EnumCritterLifeEventType
                                                                    .FirstAsync(t => t.EnumCritterLifeEventTypeId == e.EnumCritterLifeEventTypeId)
                                                                    .Result
-                                                                   .Description
+                                                                   .Description,
+                                             Id = e.CritterLifeEventId,
+                                             DataType = this._livestock.EnumCritterLifeEventType
+                                                                       .FirstAsync(t => t.EnumCritterLifeEventTypeId == e.EnumCritterLifeEventTypeId)
+                                                                       .Result
+                                                                       .DataType
+                                                                       .ToLower()
+
                                         })
                                         .ToList() // For some reason, this can't be async.
             });
@@ -150,6 +157,40 @@ namespace Website.Controllers
             }
 
             return RedirectToAction(nameof(Edit), new { id });
+        }
+
+        [HttpGet("/CritterEx/edit_datetime/{id}")]
+        public async Task<IActionResult> EditDateTime(int id)
+        {
+            var @event = await this._livestock.CritterLifeEvent.FindAsync(id);
+            var value = await this._livestock.CritterLifeEventDatetime.FindAsync(@event.EnumCritterLifeEventDataId);
+            return View(
+                new LifeEventEditDateTime
+                {
+                    Common = new LifeEventEditCommon
+                    {
+                        Id = id,
+                        Description = @event.Description
+                    },
+
+                    DateTime = value.DateTime
+                }
+            );
+        }
+
+        [HttpPost("/CritterEx/edit_datetime")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditDateTime([Bind("DateTime,Common")]LifeEventEditDateTime model)
+        {
+            var @event = await this._livestock.CritterLifeEvent.FindAsync(model.Common.Id);
+            var value = await this._livestock.CritterLifeEventDatetime.FindAsync(@event.EnumCritterLifeEventDataId);
+
+            @event.Description = model.Common.Description;
+            value.DateTime = model.DateTime;
+
+            await this._livestock.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Edit), routeValues: new { id = model.Common.Id });
         }
     }
 }
