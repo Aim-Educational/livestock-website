@@ -162,8 +162,8 @@
 
             <hr />
 
-            <a asp-action="edit_@(item.DataType)" asp-route-id="@(item.Id)" class="card-link">Edit</a>
-            <a href="#" class="card-link">Delete</a>
+            <a asp-action="Edit@(item.DataType)" asp-route-id="@(item.Id)" class="card-link">Edit</a>
+            <a asp-action="Delete@(item.DataType)" asp-route-id="@(item.Id)" class="card-link">Delete</a>
         </div>
     </div>
     <br />

@@ -80,7 +80,6 @@ namespace Website.Controllers
                                                                        .FirstAsync(t => t.EnumCritterLifeEventTypeId == e.EnumCritterLifeEventTypeId)
                                                                        .Result
                                                                        .DataType
-                                                                       .ToLower()
 
                                         })
                                         .ToList() // For some reason, this can't be async.
@@ -158,8 +157,7 @@ namespace Website.Controllers
 
             return RedirectToAction(nameof(Edit), new { id });
         }
-
-        [HttpGet("/CritterEx/edit_datetime/{id}")]
+        
         public async Task<IActionResult> EditDateTime(int id)
         {
             var @event = await this._livestock.CritterLifeEvent.FindAsync(id);
@@ -177,8 +175,8 @@ namespace Website.Controllers
                 }
             );
         }
-
-        [HttpPost("/CritterEx/edit_datetime")]
+        
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDateTime([Bind("DateTime,Common")]LifeEventEditDateTime model)
         {
@@ -191,6 +189,40 @@ namespace Website.Controllers
             await this._livestock.SaveChangesAsync();
 
             return RedirectToAction(nameof(Edit), routeValues: new { id = model.Common.Id });
+        }
+        
+        public async Task<IActionResult> DeleteDateTime(int id)
+        {
+            // TODO: Make a function like "DateTimeFromId"
+            var @event = await this._livestock.CritterLifeEvent.FindAsync(id);
+            var value = await this._livestock.CritterLifeEventDatetime.FindAsync(@event.EnumCritterLifeEventDataId);
+            return View(
+                new LifeEventEditDateTime
+                {
+                    Common = new LifeEventEditCommon
+                    {
+                        Id = id,
+                        Description = @event.Description
+                    },
+
+                    DateTime = value.DateTime
+                }
+            );
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteDateTimePost()
+        {
+            var id = Convert.ToInt32(Request.Form["Common.Id"]);
+            var @event = await this._livestock.CritterLifeEvent.FindAsync(id);
+            var value = await this._livestock.CritterLifeEventDatetime.FindAsync(@event.EnumCritterLifeEventDataId);
+
+            this._livestock.CritterLifeEvent.Remove(@event);
+            this._livestock.CritterLifeEventDatetime.Remove(value);
+            await this._livestock.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Edit), routeValues: new { id });
         }
     }
 }

@@ -12,12 +12,13 @@ namespace Website.Models
         public string Name;
         public string DataType; // The javascript will call the appropriate callback based off of this.
                                 // Note: DataTypes must be converted to lowercase ("DateTime" -> "datetime").
+                                //       This is just because it's more common in both HTML, CSS, and JS to use lower-case names.
     }
 
     public class CritterLifeEventTableInfo
     {
         public string Type;
-        public string DataType; // Same as JavascriptInfo.DataType
+        public string DataType; // Unlike the Javascript one, this isn't modified in any way.
         public string Description;
         public DateTime DateTime;
         public int Id;
