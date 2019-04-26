@@ -10,7 +10,7 @@ namespace Website.Other
     /// </summary>
     public class LivestockEntityTypes
     {
-        public static int Role = 1000;
-        public static int AlUserInfo = 1001;
+        public static int Role => 1000;
+        public static int AlUserInfo => 1001;
     }
 }

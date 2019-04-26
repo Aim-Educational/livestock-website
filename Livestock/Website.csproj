@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\aimlogin\aimdatamapper\AimDataMapper\AimDataMapper.csproj" />
     <ProjectReference Include="..\aimlogin\AimLogin\AimLogin.csproj" />
     <ProjectReference Include="..\Database\Database.csproj" />
   </ItemGroup>

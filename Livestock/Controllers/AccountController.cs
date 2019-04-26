@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Aim.DataMapper;
 using AimLogin.DbModel;
 using AimLogin.Misc;
 using AimLogin.Services;
@@ -19,7 +20,7 @@ namespace Website.Controllers
         readonly LivestockContext livestockDb;
         readonly AimLoginContext aimloginDb;
         readonly IAimUserManager aimloginUsers;
-        readonly IAimUserDataMapManager aimLoginData;
+        readonly DataMapService<User> aimLoginData;
 
         private CookieOptions DEFAULT_COOKIE_OPTIONS
         {
@@ -32,7 +33,7 @@ namespace Website.Controllers
             };
         }
 
-        public AccountController(LivestockContext livestockDb, AimLoginContext aimloginDb, IAimUserManager aimloginUsers, IAimUserDataMapManager aimLoginData)
+        public AccountController(LivestockContext livestockDb, AimLoginContext aimloginDb, IAimUserManager aimloginUsers, DataMapService<User> aimLoginData)
         {
             this.livestockDb = livestockDb;
             this.aimLoginData = aimLoginData;
@@ -108,7 +109,7 @@ namespace Website.Controllers
                     }
 
                     // Create their user info.
-                    await this.aimLoginData.SetSingleFor(
+                    await this.aimLoginData.SingleValue<AlUserInfo>().SetAsync(
                         user,
                         new AlUserInfo
                         {

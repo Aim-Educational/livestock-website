@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Aim.DataMapper;
 using AimLogin.DbModel;
 using AimLogin.Services;
 using Database.Models;
@@ -19,9 +20,9 @@ namespace Website.Controllers
     {
         readonly AimLoginContext loginDb;
         readonly LivestockContext livestockDb;
-        readonly IAimUserDataMapManager data;
+        readonly DataMapService<User> data;
 
-        public AdminController(AimLoginContext loginDb, LivestockContext livestockDb, IAimUserDataMapManager data)
+        public AdminController(AimLoginContext loginDb, LivestockContext livestockDb, DataMapService<User> data)
         {
             this.loginDb = loginDb;
             this.livestockDb = livestockDb;
@@ -41,8 +42,8 @@ namespace Website.Controllers
                 info.Add(new UserListViewModel
                 {
                     user = user,
-                    info = await this.data.FetchFirstFor<AlUserInfo>(user),
-                    role = await this.data.FetchFirstFor<Role>(user)
+                    info = await this.data.SingleValue<AlUserInfo>().GetOrDefaultAsync(user),
+                    role = await this.data.SingleReference<Role>().GetOrDefaultAsync(user)
                 });
             }
             return View(info);
@@ -54,8 +55,8 @@ namespace Website.Controllers
             var info = new UserEditViewModel
             {
                 UserId = id,
-                Info = await this.data.FetchFirstFor<AlUserInfo>(user),
-                Role = await this.data.FetchFirstFor<Role>(user)
+                Info = await this.data.SingleValue<AlUserInfo>().GetOrDefaultAsync(user),
+                Role = await this.data.SingleReference<Role>().GetOrDefaultAsync(user)
             };
 
             ViewData["Roles"] = this.livestockDb.Role.ToList();
@@ -73,8 +74,8 @@ namespace Website.Controllers
                 model.UserId = Convert.ToInt32(Request.Form["UserId"]);
 
                 var user = this.loginDb.Users.Include(u => u.UserDataMaps).First(u => u.UserId == model.UserId);
-                model.Info = await this.data.FetchFirstFor<AlUserInfo>(user);
-                model.Role = await this.data.FetchFirstFor<Role>(user);
+                model.Info = await this.data.SingleValue<AlUserInfo>().GetOrDefaultAsync(user);
+                model.Role = await this.data.SingleReference<Role>().GetOrDefaultAsync(user);
 
                 // Modify things
                 model.Info.FirstName    = Request.Form["Info.FirstName"];
@@ -82,9 +83,8 @@ namespace Website.Controllers
                 model.Info.EmailAddress = Request.Form["Info.EmailAddress"];
                 model.Role              = this.livestockDb.Role.Find(Convert.ToInt32(Request.Form["Role.RoleId"]));
        
-                await this.data.SetSingleFor(user, model.Info);
-                await this.data.SetSingleReferenceFor(user, model.Role);
-                await this.data.SaveChanges();
+                await this.data.SingleValue<AlUserInfo>().SetAsync(user, model.Info);
+                await this.data.SingleReference<Role>().SetAsync(user, model.Role);
 
                 return RedirectToActionPermanent("UserList", "Admin");
             }

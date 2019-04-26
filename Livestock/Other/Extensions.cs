@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
+using Aim.DataMapper;
 using AimLogin.DbModel;
 using AimLogin.Services;
 using Database.Models;
@@ -20,7 +21,7 @@ namespace Website.Other
 
     public static class LivestockMiscExtensions
     {
-        public static async Task SetRoleFor(this IAimUserDataMapManager data, User user, RoleEnum role, LivestockContext db)
+        public static async Task SetRoleFor(this DataMapService<User> data, User user, RoleEnum role, LivestockContext db)
         {
             Contract.Requires(user != null);
             Contract.Requires(data != null);
@@ -40,7 +41,7 @@ namespace Website.Other
                 await db.SaveChangesAsync();
             }
 
-            await data.SetSingleReferenceFor(user, dbRole);
+            await data.SingleReference<Role>().SetAsync(user, dbRole);
         }
     }
 }

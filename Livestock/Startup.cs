@@ -30,6 +30,7 @@ using Website.Other;
 using AimLogin.Misc;
 using System.IO;
 using System.Text;
+using Aim.DataMapper;
 
 namespace Livestock
 {
@@ -73,10 +74,10 @@ namespace Livestock
                 {
                     var claims = new List<Claim>();
 
-                    var info = args.dataMap.FetchFirstFor<AlUserInfo>(args.userDb).Result;
+                    var info = args.dataMap.SingleValue<AlUserInfo>().GetOrDefaultAsync(args.userDb).Result;
                     claims.Add(new Claim(ClaimTypes.Name, $"{info.FirstName} {info.LastName}"));
 
-                    var role = args.dataMap.FetchFirstFor<Role>(args.userDb).Result;
+                    var role = args.dataMap.SingleReference<Role>().GetOrDefaultAsync(args.userDb).Result;
                     if(role != null)
                         claims.Add(new Claim(ClaimTypes.Role, role.Description));
 
@@ -98,10 +99,9 @@ namespace Livestock
             services.AddDbContext<AimLoginContext>(o => o.UseSqlServer(Configuration.GetConnectionString("AimLogin")));
             services.AddAimLogin();
 
-            // Setup custom data providers
-            var providers = new AimGenericProviderBuilder<LivestockContext, LivestockEntityTypes>(services);
-            providers.AddSingleReferenceProvider<Role>()
-                     .AddSingleProvider<AlUserInfo>();
+            new DataMapBuilder<AimLoginContext, LivestockContext, UserDataMap, LivestockEntityTypes>(services)
+                .UseSingleReference<User, Role>()
+                .UseSingleValue<User, AlUserInfo>();
 
             // Setup Misc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
