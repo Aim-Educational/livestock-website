@@ -126,7 +126,6 @@ namespace Website.Controllers
                         await this.aimLoginData.SetRoleFor(user, RoleEnum.Temp, this.livestockDb);
 
                     // Sign them in.
-                    // NOTE: This internally calls SaveChanges, so we don't have to.
                     await HttpContext.AimSignInAsync(user, this.aimloginUsers);
 
                     liveTransact.Commit();
