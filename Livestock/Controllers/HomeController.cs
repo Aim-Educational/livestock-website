@@ -7,6 +7,7 @@ using AimLogin.DbModel;
 using AimLogin.Misc;
 using AimLogin.Services;
 using Database.Models;
+using Livestock.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +35,9 @@ namespace Website.Controllers
             {
                 var user = await this.loginDb.Users.FirstAsync(u => u.UserId == Convert.ToInt32(User.FindFirst(AimLoginClaims.UserId).Value));
                 var role = await this.data.SingleReference<Role>().GetOrDefaultAsync(user);
+                if(role == null)
+                    return RedirectToAction("Error", "Home", new { message = "You somehow don't have a role. This means something's up with the database. Yell at Andy." });
+
                 var header = await this.livestockDb.MenuHeader
                                                    .Select(m => m)
                                                    .Include(m => m.Role)
@@ -46,6 +50,11 @@ namespace Website.Controllers
             }
             else
                 return View(null);
+        }
+
+        public IActionResult Error(string message)
+        {
+            return View(new ErrorViewModel{ RequestId = HttpContext.TraceIdentifier, AdditionalInfo = message });
         }
     }
 }
