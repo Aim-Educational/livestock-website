@@ -22,16 +22,13 @@ namespace Website.Controllers
         readonly IAimUserManager aimloginUsers;
         readonly DataMapService<User> aimLoginData;
 
-        private CookieOptions DEFAULT_COOKIE_OPTIONS
+        private CookieOptions DEFAULT_COOKIE_OPTIONS => new CookieOptions
         {
-            get => new CookieOptions
-            {
-                Expires = DateTime.Now.AddHours(4),
-                IsEssential = true,
-                SameSite = SameSiteMode.Strict,
-                Secure = true
-            };
-        }
+            Expires = DateTime.Now.AddHours(4),
+            IsEssential = true,
+            SameSite = SameSiteMode.Strict,
+            Secure = true
+        };
 
         public AccountController(LivestockContext livestockDb, AimLoginContext aimloginDb, IAimUserManager aimloginUsers, DataMapService<User> aimLoginData)
         {
