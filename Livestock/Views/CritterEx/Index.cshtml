@@ -19,22 +19,84 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in Model)
+        @foreach (var item in Model)
         {
-        <tr>
-            <td> @Html.DisplayFor(modelItem => item.Name) </td>
-            <td> @Html.DisplayFor(modelItem => item.CritterType.Name) </td>
-            <td> @Html.DisplayFor(modelItem => item.Breed.Description) </td>
-            <td> @Html.DisplayFor(modelItem => item.Gender) </td>
-            <td> @Html.DisplayFor(modelItem => item.DadCritter.Name) </td>
-            <td> @Html.DisplayFor(modelItem => item.MumCritter.Name) </td>
-            <td> @Html.DisplayFor(modelItem => item.OwnerContact.Name) </td>
-            <td>
-                <a asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(item.CritterId)">Edit</a>
-                |
-                <a asp-controller="CritterEx" asp-action="Delete" asp-route-id="@(item.CritterId)">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td> @Html.DisplayFor(modelItem => item.Name) </td>
+                <td> @Html.DisplayFor(modelItem => item.CritterType.Name) </td>
+                <td> @Html.DisplayFor(modelItem => item.Breed.Description) </td>
+                <td> @Html.DisplayFor(modelItem => item.Gender) </td>
+                <td> @Html.DisplayFor(modelItem => item.DadCritter.Name) </td>
+                <td> @Html.DisplayFor(modelItem => item.MumCritter.Name) </td>
+                <td> @Html.DisplayFor(modelItem => item.OwnerContact.Name) </td>
+                <td>
+                    <a asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(item.CritterId)">Edit</a>
+                    |
+                    <a asp-controller="CritterEx" asp-action="Delete" asp-route-id="@(item.CritterId)">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+
+<hr />
+
+<h1>Possible Design #1</h1>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 pb-2">
+            <div class="card">
+                <img class="card-img-top" src="https://via.placeholder.com/200" />
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <h6 class="card-subtitle text-muted">
+                        @(item.Gender == "M" ? "Male"
+                                             : item.Gender == "F" ? "Female"
+                                                                  : item.Gender)
+                        @item.CritterType.Name - @item.Breed.Description
+                    </h6>
+
+                    <hr />
+
+                    <a class="card-link" asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(item.CritterId)">Edit</a>
+                    <a class="card-link" asp-controller="CritterEx" asp-action="Delete" asp-route-id="@(item.CritterId)">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<hr />
+<h1>Possible Design #2</h1>
+
+@foreach(var item in Model)
+{
+    <div class="row pb-2">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img class="card-img" src="https://via.placeholder.com/150" height="150"/>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <h6 class="card-subtitle text-muted">
+                                @(item.Gender == "M" ? "Male"
+                                                : item.Gender == "F" ? "Female"
+                                                : item.Gender)
+                                @item.CritterType.Name - @item.Breed.Description
+                            </h6>
+
+                            <hr />
+
+                            <a class="card-link" asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(item.CritterId)">Edit</a>
+                            <a class="card-link" asp-controller="CritterEx" asp-action="Delete" asp-route-id="@(item.CritterId)">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
