@@ -9,8 +9,8 @@
 <div class="row">
     <div class="col-md-4">
         <div class="btn-group">
-            <button type="button" class="btn btn-secondary" onclick="changeDesign('design-table')">1</button>
-            <button type="button" class="btn btn-secondary" onclick="changeDesign('design-card-horiz')">2</button>
+            <button type="button" class="btn btn-secondary" onclick="changeDesign('design-card-horiz')">1</button>
+            <button type="button" class="btn btn-secondary" onclick="changeDesign('design-table')">2</button>
             <button type="button" class="btn btn-secondary" onclick="changeDesign('design-card-vert')">3</button>
         </div>
     </div>
@@ -22,7 +22,7 @@
 </div>
 
 <!--Table design-->
-<table id="design-table" class="table">
+<table id="design-table" class="table d-none">
     <thead>
         <tr>
             <th scope="col">Name</th>
@@ -57,7 +57,7 @@
 </table>
 
 <!--Horizontal card design-->
-<div id="design-card-horiz" class="row d-none">
+<div id="design-card-horiz" class="row">
     @foreach (var item in Model)
     {
         <div class="col-md-4 pb-2">
