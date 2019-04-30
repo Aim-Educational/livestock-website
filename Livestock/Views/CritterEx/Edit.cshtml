@@ -6,7 +6,29 @@
 
 <h2>Edit</h2>
 
-<h4>Critter</h4>
+<h4>Image</h4>
+<hr />
+
+<!--Image uploader-->
+<div class="row">
+    <div class="col-md-4">
+        <img id="image" src="/CritterEx/Image?critterId=@Model.Critter.CritterId" width="459" height="459" />
+        <form asp-action="Image" method="post" enctype="multipart/form-data">
+            <div class="pt-2 form-group">
+                <input class="form-control-file" name="file" type="file" accept="image/*" onchange="previewFile(event)" />
+            </div>
+            <div class="form-group">
+                <input class="btn btn-success" type="submit" value="Upload" />
+            </div>
+
+            <input type="hidden" value="@Model.Critter.CritterId" name="critterId" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </form>
+    </div>
+</div>
+
+<!--General critter info editor-->
+<h4>General</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -177,5 +199,10 @@
         setupEditors({
             @(Html.Raw(Model.Javascript?.Select(i => $"\"{i.Name}\": \"{i.DataType}\"").Aggregate((one, two) => $"{one},{two}") ?? ""))
         });
+
+        function previewFile(event) {
+            var output = document.getElementById('image');
+            output.src = URL.createObjectURL(event.target.files[0]);
+        }
     </script>
 }

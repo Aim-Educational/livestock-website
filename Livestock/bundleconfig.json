@@ -11,5 +11,12 @@
     "inputFiles": [
       "wwwroot/js/life_event.js"
     ]
+  },
+
+  {
+    "outputFileName": "wwwroot/js/design_select.min.js",
+    "inputFiles": [
+      "wwwroot/js/design_select.js"
+    ]
   }
 ]

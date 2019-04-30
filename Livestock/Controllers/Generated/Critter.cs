@@ -23,7 +23,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).Include(v => v.OwnerContact);
+            var livestockContext = _context.Critter.Include(v => v.Breed).Include(v => v.CritterImage).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).Include(v => v.OwnerContact);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).Include(v => v.OwnerContact).FirstOrDefaultAsync(m => m.CritterId == id);
+            var val = await _context.Critter.Include(v => v.Breed).Include(v => v.CritterImage).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).Include(v => v.OwnerContact).FirstOrDefaultAsync(m => m.CritterId == id);
             if (val == null)
             {
                 return NotFound();
@@ -47,9 +47,10 @@ namespace Website.Controllers
         public IActionResult Create()
         {
             ViewData["BreedId"] = new SelectList(_context.Breed, "BreedId", "Description");
+ViewData["CritterImageId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId");
 ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name");
-ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name");
-ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name");
+ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId");
+ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId");
 ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name");
             return View();
         }
@@ -57,7 +58,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Create([Bind("CritterId,BreedId,Comment,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
+        public async Task<IActionResult> Create([Bind("CritterId,BreedId,Comment,CritterImageId,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -67,9 +68,10 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BreedId"] = new SelectList(_context.Breed, "BreedId", "Description", val.BreedId);
+ViewData["CritterImageId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId", val.CritterImageId);
 ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
-ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.DadCritterId);
-ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.MumCritterId);
+ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId", val.DadCritterId);
+ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId", val.MumCritterId);
 ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.OwnerContactId);
             return View(val);
         }
@@ -88,9 +90,10 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
                 return NotFound();
             }
             ViewData["BreedId"] = new SelectList(_context.Breed, "BreedId", "Description", val.BreedId);
+ViewData["CritterImageId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId", val.CritterImageId);
 ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
-ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.DadCritterId);
-ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.MumCritterId);
+ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId", val.DadCritterId);
+ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId", val.MumCritterId);
 ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.OwnerContactId);
             return View(val);
         }
@@ -98,7 +101,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("CritterId,BreedId,Comment,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
+        public async Task<IActionResult> Edit(int id, [Bind("CritterId,BreedId,Comment,CritterImageId,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
         {
 			if(val.CritterId != id)
 				return NotFound();
@@ -126,9 +129,10 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BreedId"] = new SelectList(_context.Breed, "BreedId", "Description", val.BreedId);
+ViewData["CritterImageId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId", val.CritterImageId);
 ViewData["CritterTypeId"] = new SelectList(_context.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
-ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.DadCritterId);
-ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.MumCritterId);
+ViewData["DadCritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId", val.DadCritterId);
+ViewData["MumCritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId", val.MumCritterId);
 ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name", val.OwnerContactId);
             return View(val);
         }
@@ -141,7 +145,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
                 return NotFound();
             }
 
-            var val = await _context.Critter.Include(v => v.Breed).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).Include(v => v.OwnerContact).FirstOrDefaultAsync(m => m.CritterId == id);
+            var val = await _context.Critter.Include(v => v.Breed).Include(v => v.CritterImage).Include(v => v.CritterType).Include(v => v.DadCritter).Include(v => v.MumCritter).Include(v => v.OwnerContact).FirstOrDefaultAsync(m => m.CritterId == id);
             if (val == null)
             {
                 return NotFound();

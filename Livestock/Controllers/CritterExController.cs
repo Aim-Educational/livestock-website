@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AimLogin.DbModel;
 using AimLogin.Services;
 using Database.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +26,57 @@ namespace Website.Controllers
             this._livestock = livestock;
         }
 
+        #region CritterImage
+        [ResponseCache(Duration = 60 * 60 * 24 * 7)]
+        public async Task<IActionResult> Image(int critterId)
+        {
+            var critter = await this._livestock.Critter.Include(c => c.CritterImage).FirstAsync(c => c.CritterId == critterId);
+            
+            if(critter.CritterImageId != null)
+            {
+                var image = critter.CritterImage.Data;
+                return File(image, "image/png");
+            }
+            else
+                return Redirect("https://via.placeholder.com/200");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Image(IFormFile file, [Bind("critterId")] int critterId)
+        {
+            if(ModelState.IsValid)
+            {
+                if(!file.ContentType.StartsWith("image/"))
+                {
+                    ModelState.AddModelError("file", "The file is not an image.");
+                    return RedirectToAction("Edit", new { id = critterId });
+                }
+
+                var critter = await this._livestock.Critter.Include(c => c.CritterImage)
+                                                           .FirstAsync(c => c.CritterId == critterId);
+                
+                if(critter.CritterImage == null)
+                {
+                    critter.CritterImage = new CritterImage();
+                    this._livestock.Add(critter.CritterImage);
+                }
+
+                var stream = new MemoryStream();
+
+                await file.CopyToAsync(stream);
+                stream.Position = 0;
+
+                critter.CritterImage.Data = new byte[stream.Length];
+                stream.Read(critter.CritterImage.Data, 0, (int)stream.Length);
+
+                await this._livestock.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Edit", new { id = critterId });
+        }
+        #endregion
+
         #region Critter
         public async Task<IActionResult> Index()
         {
@@ -39,7 +92,6 @@ namespace Website.Controllers
             );
         }
 
-        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -115,6 +167,34 @@ namespace Website.Controllers
             ViewData["DadCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name", model.Critter.DadCritterId);
             ViewData["MumCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name", model.Critter.MumCritterId);
             ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact, "ContactId", "Name", model.Critter.OwnerContactId);
+            return View(model);
+        }
+
+        public IActionResult Create()
+        {
+            ViewData["BreedId"] = new SelectList(this._livestock.Breed, "BreedId", "Description");
+            ViewData["CritterTypeId"] = new SelectList(this._livestock.CritterType, "CritterTypeId", "Name");
+            ViewData["DadCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name");
+            ViewData["MumCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name");
+            ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact, "ContactId", "Name");
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Critter,File")] CritterExCreateViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                this.FixNullFields(model.Critter);
+
+                await this._livestock.AddAsync(model.Critter);
+                await this._livestock.SaveChangesAsync();
+
+                return await this.Image(model.File, model.Critter.CritterId);
+            }
+
             return View(model);
         }
         #endregion
@@ -228,5 +308,14 @@ namespace Website.Controllers
             return RedirectToAction(nameof(Edit), routeValues: new { id });
         }
         #endregion
+
+        private void FixNullFields(Critter val)
+        {
+            if (String.IsNullOrWhiteSpace(val.Comment)) val.Comment = "N/A";
+            if (String.IsNullOrWhiteSpace(val.DadFurther)) val.DadFurther = "N/A";
+            if (String.IsNullOrWhiteSpace(val.Gender)) val.Gender = "?";
+            if (String.IsNullOrWhiteSpace(val.MumFurther)) val.MumFurther = "N/A";
+            if (String.IsNullOrWhiteSpace(val.Name)) val.Name = "N/A";
+        }
     }
 }

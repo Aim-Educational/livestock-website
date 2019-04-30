@@ -5,7 +5,24 @@
 
 <h1>Critters</h1>
 
-<table class="table">
+<!--Design selector & Create button-->
+<div class="row">
+    <div class="col-md-4">
+        <div class="btn-group">
+            <button type="button" class="btn btn-secondary" onclick="changeDesign('design-table')">1</button>
+            <button type="button" class="btn btn-secondary" onclick="changeDesign('design-card-horiz')">2</button>
+            <button type="button" class="btn btn-secondary" onclick="changeDesign('design-card-vert')">3</button>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <form asp-action="Create" method="get">
+            <button type="submit" class="btn btn-primary">Create New Critter</button>
+        </form>
+    </div>
+</div>
+
+<!--Table design-->
+<table id="design-table" class="table">
     <thead>
         <tr>
             <th scope="col">Name</th>
@@ -39,15 +56,13 @@
     </tbody>
 </table>
 
-<hr />
-
-<h1>Possible Design #1</h1>
-<div class="row">
+<!--Horizontal card design-->
+<div id="design-card-horiz" class="row d-none">
     @foreach (var item in Model)
     {
         <div class="col-md-4 pb-2">
             <div class="card">
-                <img class="card-img-top" src="~/images/TEMP_critters/thumbnail_IMG_20190430_110251.jpg" />
+                <img class="card-img-top" src="/CritterEx/Image?critterId=@item.CritterId" />
                 <div class="card-body">
                     <h5 class="card-title">@item.Name</h5>
                     <h6 class="card-subtitle text-muted">
@@ -67,36 +82,40 @@
     }
 </div>
 
-<hr />
-<h1>Possible Design #2</h1>
+<!--Vertical card design-->
+<div id="design-card-vert" class="d-none">
+    @foreach (var item in Model)
+    {
+        <div class="row pb-2">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img class="card-img" src="/CritterEx/Image?critterId=@item.CritterId" height="150" />
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <h6 class="card-subtitle text-muted">
+                                    @(item.Gender == "M" ? "Male"
+                                                            : item.Gender == "F" ? "Female"
+                                                            : item.Gender)
+                                    @item.CritterType.Name - @item.Breed.Description
+                                </h6>
 
-@foreach(var item in Model)
-{
-    <div class="row pb-2">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="row">
-                    <div class="col-md-2">
-                        <img class="card-img" src="~/images/TEMP_critters/thumbnail_IMG_20190430_110251.jpg" height="150"/>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
-                            <h6 class="card-subtitle text-muted">
-                                @(item.Gender == "M" ? "Male"
-                                                : item.Gender == "F" ? "Female"
-                                                : item.Gender)
-                                @item.CritterType.Name - @item.Breed.Description
-                            </h6>
+                                <hr />
 
-                            <hr />
-
-                            <a class="card-link" asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(item.CritterId)">Edit</a>
-                            <a class="card-link" asp-controller="CritterEx" asp-action="Delete" asp-route-id="@(item.CritterId)">Delete</a>
+                                <a class="card-link" asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(item.CritterId)">Edit</a>
+                                <a class="card-link" asp-controller="CritterEx" asp-action="Delete" asp-route-id="@(item.CritterId)">Delete</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/design_select.js" asp-append-version="true"></script>
 }

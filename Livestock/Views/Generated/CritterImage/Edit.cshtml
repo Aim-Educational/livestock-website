@@ -1,0 +1,36 @@
+@model Database.Models.CritterImage
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>@Html.DisplayNameFor(model => model.CritterImageId)</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+												@Html.HiddenFor(model => model.CritterImageId)
+																<div class="form-group">
+						<label asp-for="Data" class="control-label"></label>
+						<input asp-for="Data" class="form-control" />
+						<span asp-validation-for="Data" class="text-danger"></span>
+					</div>
+							            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-success" />
+            </div>
+			
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+	}
