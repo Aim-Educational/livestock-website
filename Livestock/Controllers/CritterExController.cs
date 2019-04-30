@@ -108,8 +108,8 @@ namespace Website.Controllers
             }
             ViewData["BreedId"] = new SelectList(this._livestock.Breed, "BreedId", "Description", val.BreedId);
             ViewData["CritterTypeId"] = new SelectList(this._livestock.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
-            ViewData["DadCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name", val.DadCritterId);
-            ViewData["MumCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name", val.MumCritterId);
+            ViewData["DadCritterId"] = new SelectList(this._livestock.Critter.Where(c => c.Gender == "M"), "CritterId", "Name", val.DadCritterId);
+            ViewData["MumCritterId"] = new SelectList(this._livestock.Critter.Where(c => c.Gender == "F"), "CritterId", "Name", val.MumCritterId);
             ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact, "ContactId", "Name", val.OwnerContactId);
             return View(new CritterExEditViewModel
             {
