@@ -9,18 +9,22 @@
   <ItemGroup>
     <Compile Remove="Middleware\**" />
     <Compile Remove="netcoreapp2.1\**" />
+    <Compile Remove="netcoreapp2.2\**" />
     <Compile Remove="Services\**" />
     <Compile Remove="Views\Breeds\**" />
     <Content Remove="Middleware\**" />
     <Content Remove="netcoreapp2.1\**" />
+    <Content Remove="netcoreapp2.2\**" />
     <Content Remove="Services\**" />
     <Content Remove="Views\Breeds\**" />
     <EmbeddedResource Remove="Middleware\**" />
     <EmbeddedResource Remove="netcoreapp2.1\**" />
+    <EmbeddedResource Remove="netcoreapp2.2\**" />
     <EmbeddedResource Remove="Services\**" />
     <EmbeddedResource Remove="Views\Breeds\**" />
     <None Remove="Middleware\**" />
     <None Remove="netcoreapp2.1\**" />
+    <None Remove="netcoreapp2.2\**" />
     <None Remove="Services\**" />
     <None Remove="Views\Breeds\**" />
   </ItemGroup>
@@ -46,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\TEMP_critters\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
