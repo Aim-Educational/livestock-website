@@ -28,7 +28,7 @@ namespace Website.Controllers
 
         #region CritterImage
         [ResponseCache(Duration = 60 * 60 * 24 * 7)]
-        public async Task<IActionResult> Image(int critterId)
+        public async Task<IActionResult> Image(int critterId, int cacheVersion) // cacheVerison is unused, but needs to be there for routing.
         {
             var critter = await this._livestock.Critter.Include(c => c.CritterImage).FirstAsync(c => c.CritterId == critterId);
             
@@ -70,6 +70,11 @@ namespace Website.Controllers
                 critter.CritterImage.Data = new byte[stream.Length];
                 stream.Read(critter.CritterImage.Data, 0, (int)stream.Length);
 
+                // Basically, we embed the version number of the critter in the image request URL.
+                // What this means is, browsers can cache the URL for version 1, but when version 2 is made, they need to download
+                // and cache the version 2 image of the critter.
+                // This allows us to cache, while still being able to update the images in a timely manner.
+                critter.VersionNumber++;
                 await this._livestock.SaveChangesAsync();
             }
 
