@@ -18,5 +18,12 @@
     "inputFiles": [
       "wwwroot/js/design_select.js"
     ]
+  },
+
+  {
+    "outputFileName": "wwwroot/js/breed_dropdown_ajax.min.js",
+    "inputFiles": [
+      "wwwroot/js/breed_dropdown_ajax.js"
+    ]
   }
 ]

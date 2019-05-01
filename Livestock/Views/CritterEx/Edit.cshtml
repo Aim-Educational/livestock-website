@@ -48,11 +48,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="Critter.CritterTypeId" class="control-label"></label>
-                <select asp-for="Critter.CritterTypeId" class="form-control" asp-items="ViewBag.CritterTypeId"></select>
+                <select id="selectCritterType" asp-for="Critter.CritterTypeId" class="form-control" asp-items="ViewBag.CritterTypeId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Critter.BreedId" class="control-label"></label>
-                <select asp-for="Critter.BreedId" class="form-control" asp-items="ViewBag.BreedId"></select>
+                <select id="selectBreed" asp-for="Critter.BreedId" class="form-control"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Critter.Gender" class="control-label"></label>
@@ -200,17 +200,27 @@
 }
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/life_event.min.js" asp-append-version="true"></script>
+
+    <environment exclude="Development">
+        <script src="~/js/breed_dropdown_ajax.min.js" asp-append-version="true"></script>
+    </environment>
+    <environment include="Development">
+        <script src="~/js/breed_dropdown_ajax.js"></script>
+    </environment>
 
     <script>
         setupEditors({
             @(Html.Raw(Model.Javascript?.Select(i => $"\"{i.Name}\": \"{i.DataType}\"").Aggregate((one, two) => $"{one},{two}") ?? ""))
         });
 
+        handleBreedDropdown(document.getElementById("selectCritterType"), document.getElementById("selectBreed"));
+
         function previewFile(event) {
             var output = document.getElementById('image');
             output.src = URL.createObjectURL(event.target.files[0]);
         }
     </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

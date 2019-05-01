@@ -111,11 +111,7 @@ namespace Website.Controllers
             {
                 return NotFound();
             }
-            ViewData["BreedId"] = new SelectList(this._livestock.Breed, "BreedId", "Description", val.BreedId);
-            ViewData["CritterTypeId"] = new SelectList(this._livestock.CritterType, "CritterTypeId", "Name", val.CritterTypeId);
-            ViewData["DadCritterId"] = new SelectList(this._livestock.Critter.Where(c => c.Gender == "M"), "CritterId", "Name", val.DadCritterId);
-            ViewData["MumCritterId"] = new SelectList(this._livestock.Critter.Where(c => c.Gender == "F"), "CritterId", "Name", val.MumCritterId);
-            ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact, "ContactId", "Name", val.OwnerContactId);
+            this.SetupCritterViewData(val);
             return View(new CritterExEditViewModel
             {
                 Critter = val,
@@ -167,21 +163,13 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BreedId"] = new SelectList(this._livestock.Breed, "BreedId", "Description", model.Critter.BreedId);
-            ViewData["CritterTypeId"] = new SelectList(this._livestock.CritterType, "CritterTypeId", "Name", model.Critter.CritterTypeId);
-            ViewData["DadCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name", model.Critter.DadCritterId);
-            ViewData["MumCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name", model.Critter.MumCritterId);
-            ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact, "ContactId", "Name", model.Critter.OwnerContactId);
+            this.SetupCritterViewData(model.Critter);
             return View(model);
         }
 
         public IActionResult Create()
         {
-            ViewData["BreedId"] = new SelectList(this._livestock.Breed, "BreedId", "Description");
-            ViewData["CritterTypeId"] = new SelectList(this._livestock.CritterType, "CritterTypeId", "Name");
-            ViewData["DadCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name");
-            ViewData["MumCritterId"] = new SelectList(this._livestock.Critter, "CritterId", "Name");
-            ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact, "ContactId", "Name");
+            this.SetupCritterViewData(null);
 
             return View();
         }
@@ -201,6 +189,29 @@ namespace Website.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpPost] // This is a POST since it's an AJAX request.
+        public async Task<IActionResult> GetBreedList([FromBody] CritterExGetBreedListAjax ajax)
+        {
+            if(ajax == null)
+                return Json(null);
+
+            var breeds = await this._livestock.Breed
+                                              .Where(b => b.CritterTypeId == ajax.CritterTypeId)
+                                              .Select(b => new { description = b.Description, value = b.BreedId })
+                                              .OrderBy(b => b.description)
+                                              .OrderBy(b => b.value == -1)
+                                              .ToListAsync();
+            return Json(breeds);
+        }
+
+        private void SetupCritterViewData(Critter val)
+        {
+            ViewData["CritterTypeId"]  = new SelectList(this._livestock.CritterType.OrderBy(c => c.Name),                         "CritterTypeId", "Name", val?.CritterTypeId);
+            ViewData["DadCritterId"]   = new SelectList(this._livestock.Critter.Where(c => c.Gender == "M").OrderBy(c => c.Name), "CritterId",     "Name", val?.DadCritterId);
+            ViewData["MumCritterId"]   = new SelectList(this._livestock.Critter.Where(c => c.Gender == "F").OrderBy(c => c.Name), "CritterId",     "Name", val?.MumCritterId);
+            ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact.OrderBy(c => c.Name),                             "ContactId",     "Name", val?.OwnerContactId);
         }
         #endregion
 
@@ -322,5 +333,10 @@ namespace Website.Controllers
             if (String.IsNullOrWhiteSpace(val.MumFurther)) val.MumFurther = "N/A";
             if (String.IsNullOrWhiteSpace(val.Name)) val.Name = "N/A";
         }
+    }
+
+    public class CritterExGetBreedListAjax
+    {
+        public int CritterTypeId { get; set; }
     }
 }
