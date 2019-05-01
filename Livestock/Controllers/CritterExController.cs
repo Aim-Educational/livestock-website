@@ -198,10 +198,10 @@ namespace Website.Controllers
                 return Json(null);
 
             var breeds = await this._livestock.Breed
-                                              .Where(b => b.CritterTypeId == ajax.CritterTypeId)
+                                              .Where(b => b.CritterTypeId == ajax.CritterTypeId || b.Description == "Unknown")
                                               .Select(b => new { description = b.Description, value = b.BreedId })
                                               .OrderBy(b => b.description)
-                                              .OrderBy(b => b.value == -1)
+                                              .ThenBy(b => b.value == -1)
                                               .ToListAsync();
             return Json(breeds);
         }

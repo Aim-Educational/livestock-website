@@ -210,7 +210,7 @@
     </environment>
 
     <script>
-        handleBreedDropdown(document.getElementById("selectCritterType"), document.getElementById("selectBreed"));
+        handleBreedDropdown(document.getElementById("selectCritterType"), document.getElementById("selectBreed"), @Model.Critter.BreedId);
 
         setupEditors({
             @(Html.Raw(Model.Javascript?.Select(i => $"\"{i.Name}\": \"{i.DataType}\"").Aggregate((one, two) => $"{one},{two}") ?? ""))

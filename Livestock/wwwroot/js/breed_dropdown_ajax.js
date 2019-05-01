@@ -1,12 +1,14 @@
-function setDropdownValues(values, select) {
+function setDropdownValues(values, select, defaultBreedId) {
     values.forEach(function (obj) {
         var opt = document.createElement("option");
         opt.value = obj.value;
         opt.innerHTML = obj.description;
         select.options.add(opt);
+        if (defaultBreedId === parseInt(opt.value))
+            select.selectedIndex = select.options.length - 1;
     });
 }
-function handleBreedDropdown(critterTypeSelect, breedSelect) {
+function handleBreedDropdown(critterTypeSelect, breedSelect, defaultBreedId) {
     if (critterTypeSelect == null) {
         alert("Dev error: critterTypeSelect is null");
         return;
@@ -22,7 +24,7 @@ function handleBreedDropdown(critterTypeSelect, breedSelect) {
         }
         var selectedType = critterTypeSelect.selectedOptions[0].value;
         if (selectedType in cache) {
-            setDropdownValues(cache[selectedType], breedSelect);
+            setDropdownValues(cache[selectedType], breedSelect, defaultBreedId);
             return;
         }
         $.ajax({
@@ -32,7 +34,7 @@ function handleBreedDropdown(critterTypeSelect, breedSelect) {
             dataType: "json",
             data: JSON.stringify({ CritterTypeId: parseInt(selectedType) })
         }).done(function (response) {
-            setDropdownValues(response, breedSelect);
+            setDropdownValues(response, breedSelect, defaultBreedId);
             cache[selectedType] = response;
         });
     });

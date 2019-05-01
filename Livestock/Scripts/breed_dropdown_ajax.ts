@@ -3,16 +3,19 @@
 declare var $: { ajax: (arg0: { type: string; url: string; contentType: string; dataType: string; data: string; }) => { done: (arg0: (response: { value: string; description: string; }[]) => void) => void; }; };
 type CritterInfo = { value: string, description: string };
 
-function setDropdownValues(values: CritterInfo[], select: HTMLSelectElement) {
+function setDropdownValues(values: CritterInfo[], select: HTMLSelectElement, defaultBreedId: number) {
     values.forEach(obj => {
         let opt = document.createElement("option");
         opt.value = obj.value;
         opt.innerHTML = obj.description;
         select.options.add(opt);
+
+        if (defaultBreedId === parseInt(opt.value))
+            select.selectedIndex = select.options.length - 1;
     });
 }
 
-function handleBreedDropdown(critterTypeSelect: HTMLSelectElement, breedSelect: HTMLSelectElement) {
+function handleBreedDropdown(critterTypeSelect: HTMLSelectElement, breedSelect: HTMLSelectElement, defaultBreedId: number) {
     // Error checking.
     if (critterTypeSelect == null) {
         alert("Dev error: critterTypeSelect is null");
@@ -38,7 +41,7 @@ function handleBreedDropdown(critterTypeSelect: HTMLSelectElement, breedSelect: 
 
         // Use the response from the cache if we have one.
         if (selectedType in cache) {
-            setDropdownValues(cache[selectedType], breedSelect);
+            setDropdownValues(cache[selectedType], breedSelect, defaultBreedId);
             return;
         }
 
@@ -53,7 +56,7 @@ function handleBreedDropdown(critterTypeSelect: HTMLSelectElement, breedSelect: 
             }
         ).done(function (response: CritterInfo[]) {
             // Add options based on the results.
-            setDropdownValues(response, breedSelect);
+            setDropdownValues(response, breedSelect, defaultBreedId);
 
             // Add the response to the cache so we don't need to use it again.
             cache[selectedType] = response;
