@@ -201,7 +201,6 @@ namespace Website.Controllers
                                               .Where(b => b.CritterTypeId == ajax.CritterTypeId || b.Description == "Unknown")
                                               .Select(b => new { description = b.Description, value = b.BreedId })
                                               .OrderBy(b => b.description)
-                                              .ThenBy(b => b.value == -1)
                                               .ToListAsync();
             return Json(breeds);
         }
