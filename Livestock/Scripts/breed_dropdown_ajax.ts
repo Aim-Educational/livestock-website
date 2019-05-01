@@ -59,4 +59,7 @@ function handleBreedDropdown(critterTypeSelect: HTMLSelectElement, breedSelect: 
             cache[selectedType] = response;
         });
     });
+
+    // Set off a change event just to populate it initially.
+    critterTypeSelect.dispatchEvent(new Event("change"));
 }

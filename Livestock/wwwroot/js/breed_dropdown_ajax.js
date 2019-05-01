@@ -36,5 +36,6 @@ function handleBreedDropdown(critterTypeSelect, breedSelect) {
             cache[selectedType] = response;
         });
     });
+    critterTypeSelect.dispatchEvent(new Event("change"));
 }
 //# sourceMappingURL=breed_dropdown_ajax.js.map
