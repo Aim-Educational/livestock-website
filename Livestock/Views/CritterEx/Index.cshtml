@@ -5,19 +5,23 @@
 
 <h1>Critters</h1>
 
-<!--Design selector & Create button-->
-<div class="row">
+<!--Design selector-->
+<div class="row pb-2">
     <div class="col-md-4">
         <div class="btn-group">
             <button type="button" class="btn btn-secondary" onclick="changeDesign('design-card-horiz')">1</button>
-            <button type="button" class="btn btn-secondary" onclick="changeDesign('design-table')">2</button>
-            <button type="button" class="btn btn-secondary" onclick="changeDesign('design-card-vert')">3</button>
+            <button type="button" class="btn btn-secondary" onclick="changeDesign('design-card-vert')">2</button>
+            <button type="button" class="btn btn-secondary" onclick="changeDesign('design-table')">3</button>
         </div>
     </div>
+</div>
+
+<!--Create button-->
+<div class="row pb-2">
     <div class="col-md-4">
-        <form asp-action="Create" method="get">
-            <button type="submit" class="btn btn-primary">Create New Critter</button>
-        </form>
+        <a asp-action="Create" class="btn btn-primary">
+            Create New Critter
+        </a>
     </div>
 </div>
 
@@ -67,8 +71,8 @@
                     <h5 class="card-title">@item.Name</h5>
                     <h6 class="card-subtitle text-muted">
                         @(item.Gender == "M" ? "Male"
-                                             : item.Gender == "F" ? "Female"
-                                                                  : item.Gender)
+                                                     : item.Gender == "F" ? "Female"
+                                                                          : item.Gender)
                         @item.CritterType.Name - @item.Breed.Description
                     </h6>
 
@@ -87,19 +91,19 @@
     @foreach (var item in Model)
     {
         <div class="row pb-2">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <img class="card-img" src="/CritterEx/Image?critterId=@item.CritterId&cacheVersion=@item.VersionNumber" height="150" />
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
+            <div class="col">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="pr-2 shadow border-top border-bottom">
+                                <img class="vert-card-img-responsive" style="height:150px; width:130px;" src="/CritterEx/Image?critterId=@item.CritterId&cacheVersion=@item.VersionNumber" />
+                            </td>
+                            <td class="border-top border-right border-bottom w-100">
                                 <h5 class="card-title">@item.Name</h5>
                                 <h6 class="card-subtitle text-muted">
                                     @(item.Gender == "M" ? "Male"
-                                                            : item.Gender == "F" ? "Female"
-                                                            : item.Gender)
+                                                         : item.Gender == "F" ? "Female"
+                                                                              : item.Gender)
                                     @item.CritterType.Name - @item.Breed.Description
                                 </h6>
 
@@ -107,10 +111,10 @@
 
                                 <a class="card-link" asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(item.CritterId)">Edit</a>
                                 <a class="card-link" asp-controller="CritterEx" asp-action="Delete" asp-route-id="@(item.CritterId)">Delete</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     }
