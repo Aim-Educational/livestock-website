@@ -28,7 +28,7 @@ namespace Website.Controllers
 
         #region CritterImage
         [ResponseCache(Duration = 60 * 60 * 24 * 7)]
-        public async Task<IActionResult> Image(int critterId, int cacheVersion) // cacheVerison is unused, but needs to be there for routing.
+        public async Task<IActionResult> Image(int critterId, int cacheVersion) // cacheVersion is unused, but needs to be there for routing.
         {
             var critter = await this._livestock.Critter.Include(c => c.CritterImage).FirstAsync(c => c.CritterId == critterId);
             
