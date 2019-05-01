@@ -210,11 +210,11 @@
     </environment>
 
     <script>
+        handleBreedDropdown(document.getElementById("selectCritterType"), document.getElementById("selectBreed"));
+
         setupEditors({
             @(Html.Raw(Model.Javascript?.Select(i => $"\"{i.Name}\": \"{i.DataType}\"").Aggregate((one, two) => $"{one},{two}") ?? ""))
         });
-
-        handleBreedDropdown(document.getElementById("selectCritterType"), document.getElementById("selectBreed"));
 
         function previewFile(event) {
             var output = document.getElementById('image');

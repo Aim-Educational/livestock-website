@@ -2,10 +2,8 @@
 @{
     ViewData["Title"] = "Create";
 }
-
 <h1>Create new critter</h1>
 <hr />
-
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
@@ -20,11 +18,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="Critter.CritterTypeId" class="control-label"></label>
-                <select asp-for="Critter.CritterTypeId" class="form-control" asp-items="ViewBag.CritterTypeId"></select>
+                <select id="selectCritterType" asp-for="Critter.CritterTypeId" class="form-control" asp-items="ViewBag.CritterTypeId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Critter.BreedId" class="control-label"></label>
-                <select asp-for="Critter.BreedId" class="form-control" asp-items="ViewBag.BreedId"></select>
+                <select id="selectBreed" asp-for="Critter.BreedId" class="form-control" asp-items="ViewBag.BreedId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Critter.Gender" class="control-label"></label>
@@ -61,23 +59,30 @@
             <input type="hidden" asp-for="Critter.CritterId" value="@(Model?.Critter.CritterId ?? 0)" />
             <input type="hidden" asp-for="Critter.Timestamp" value="AAAAAAAAH0U=" />
             <input type="hidden" asp-for="Critter.VersionNumber" value="@(Model?.Critter.VersionNumber ?? 1)" />
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-success" />
             </div>
-
             <div asp-validation-summary="All" class="text-danger"></div>
         </form>
     </div>
 </div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <environment exclude="Development">
+        <script src="~/js/breed_dropdown_ajax.min.js" asp-append-version="true"></script>
+    </environment>
+    <environment include="Development">
+        <script src="~/js/breed_dropdown_ajax.js"></script>
+    </environment>
 
     <script>
+        handleBreedDropdown(document.getElementById("selectCritterType"), document.getElementById("selectBreed"));
+
         function previewFile(event) {
             var output = document.getElementById('image');
             output.src = URL.createObjectURL(event.target.files[0]);
         }
     </script>
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
