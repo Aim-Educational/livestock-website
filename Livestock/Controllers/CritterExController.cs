@@ -38,7 +38,7 @@ namespace Website.Controllers
                 return File(image, "image/png");
             }
             else
-                return Redirect("https://via.placeholder.com/200");
+                return Redirect("/images/icons/default.png");
         }
 
         [HttpPost]
