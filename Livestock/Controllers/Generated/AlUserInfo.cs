@@ -148,7 +148,6 @@ namespace Website.Controllers
 		private void FixNullFields(AlUserInfo val)
 		{
 			if(String.IsNullOrWhiteSpace(val.Comment)) val.Comment = "N/A";
-if(String.IsNullOrWhiteSpace(val.EmailAddress)) val.EmailAddress = "N/A";
 if(String.IsNullOrWhiteSpace(val.FirstName)) val.FirstName = "N/A";
 if(String.IsNullOrWhiteSpace(val.LastName)) val.LastName = "N/A";
 		}

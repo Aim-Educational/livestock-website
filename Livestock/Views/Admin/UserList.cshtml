@@ -23,7 +23,7 @@
                 <td>@Html.DisplayFor(u => user.info.FirstName)</td>
                 <td>@Html.DisplayFor(u => user.info.LastName)</td>
                 <td>@Html.DisplayFor(u => user.role.Description)</td>
-                <td>@Html.DisplayFor(u => user.info.EmailAddress)</td>
+                <td>@Html.DisplayFor(u => user.email.Email)</td>
                 <td>@Html.DisplayFor(u => user.info.Comment)</td>
                 <td>
                     <a asp-controller="Admin" asp-action="UserEdit" asp-route-id="@(user.user.UserId)">Edit</a>

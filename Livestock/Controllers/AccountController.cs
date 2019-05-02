@@ -95,7 +95,7 @@ namespace Website.Controllers
                     User user = null;
                     try
                     {
-                        user = await this.aimloginUsers.CreateNewUser(model.Username, model.Password);
+                        user = await this.aimloginUsers.CreateNewUser(model.Username, model.Password, model.EmailAddress);
                         if (user == null)
                             throw new Exception($"Could not create new user.");
                     }
@@ -112,7 +112,6 @@ namespace Website.Controllers
                         {
                             FirstName = model.FirstName,
                             LastName = model.LastName,
-                            EmailAddress = model.EmailAddress,
                             PrivacyConsent = model.PrivacyConsent,
                             TosConsent = model.ToSConsent,
                             Comment = "N/A"

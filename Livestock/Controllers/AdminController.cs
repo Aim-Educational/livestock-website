@@ -43,7 +43,8 @@ namespace Website.Controllers
                 {
                     user = user,
                     info = await this.data.SingleValue<AlUserInfo>().GetOrDefaultAsync(user),
-                    role = await this.data.SingleReference<Role>().GetOrDefaultAsync(user)
+                    role = await this.data.SingleReference<Role>().GetOrDefaultAsync(user),
+                    email = await this.data.SingleValue<UserEmail>().GetOrDefaultAsync(user)
                 });
             }
             return View(info);
@@ -56,7 +57,8 @@ namespace Website.Controllers
             {
                 UserId = id,
                 Info = await this.data.SingleValue<AlUserInfo>().GetOrDefaultAsync(user),
-                Role = await this.data.SingleReference<Role>().GetOrDefaultAsync(user)
+                Role = await this.data.SingleReference<Role>().GetOrDefaultAsync(user),
+                Email = await this.data.SingleValue<UserEmail>().GetOrDefaultAsync(user)
             };
 
             ViewData["Roles"] = this.livestockDb.Role.ToList();
@@ -65,33 +67,33 @@ namespace Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserEdit()
+        public async Task<IActionResult> UserEdit([Bind("UserId,Info,Role,Email")] UserEditViewModel model)
         {
             try
             {
-                // Bind the model ourselves since ASP seems to suck for this specific case.
-                var model = new UserEditViewModel();
-                model.UserId = Convert.ToInt32(Request.Form["UserId"]);
+                // Get the db versions of the information.
+                var user  = this.loginDb.Users.Include(u => u.UserDataMaps).First(u => u.UserId == model.UserId);
+                var info  = await this.data.SingleValue<AlUserInfo>().GetOrDefaultAsync(user);
+                var email = await this.data.SingleValue<UserEmail>().GetOrDefaultAsync(user, new Lazy<UserEmail>(new UserEmail()));
+                var role  = this.livestockDb.Role.Find(model.Role.RoleId);
 
-                var user = this.loginDb.Users.Include(u => u.UserDataMaps).First(u => u.UserId == model.UserId);
-                model.Info = await this.data.SingleValue<AlUserInfo>().GetOrDefaultAsync(user);
-                model.Role = await this.data.SingleReference<Role>().GetOrDefaultAsync(user);
-
-                // Modify things
-                model.Info.FirstName    = Request.Form["Info.FirstName"];
-                model.Info.LastName     = Request.Form["Info.LastName"];
-                model.Info.EmailAddress = Request.Form["Info.EmailAddress"];
-                model.Role              = this.livestockDb.Role.Find(Convert.ToInt32(Request.Form["Role.RoleId"]));
+                // Update the db information with the model information.
+                info.FirstName    = model.Info.FirstName;
+                info.LastName     = model.Info.LastName;
+                email.Email       = model.Email.Email;
        
-                await this.data.SingleValue<AlUserInfo>().SetAsync(user, model.Info);
-                await this.data.SingleReference<Role>().SetAsync(user, model.Role);
+                // Update the mappings.
+                await this.data.SingleValue<AlUserInfo>().SetAsync(user, info);
+                await this.data.SingleReference<Role>().SetAsync(user, role);
+                await this.data.SingleValue<UserEmail>().SetAsync(user, email);
 
                 return RedirectToActionPermanent("UserList", "Admin");
             }
             catch(Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
-                return View();
+                ViewData["Roles"] = this.livestockDb.Role.ToList();
+                return View(model);
             }
         }
     }

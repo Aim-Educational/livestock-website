@@ -12,5 +12,6 @@ namespace Website.Models
         public User user;
         public Role role;
         public AlUserInfo info;
+        public UserEmail email;
     }
 }

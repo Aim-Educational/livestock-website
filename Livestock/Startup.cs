@@ -84,10 +84,11 @@ namespace Livestock
                     // Get a profile pic from Gravatar
                     using (var md5 = MD5.Create())
                     {
-                        var emailFormatted = info.EmailAddress.Trim().ToLower();
-                        var emailBytes = md5.ComputeHash(Encoding.UTF8.GetBytes(emailFormatted));
-                        var emailHex = emailBytes.Select(b => b.ToString("x2"));
-                        var emailHexString = emailHex.Aggregate((s1, s2) => $"{s1}{s2}");
+                        var email           = args.dataMap.SingleValue<UserEmail>().GetOrDefaultAsync(args.userDb).Result;
+                        var emailFormatted  = email.Email.Trim().ToLower();
+                        var emailBytes      = md5.ComputeHash(Encoding.UTF8.GetBytes(emailFormatted));
+                        var emailHex        = emailBytes.Select(b => b.ToString("x2"));
+                        var emailHexString  = emailHex.Aggregate((s1, s2) => $"{s1}{s2}");
                         claims.Add(new Claim(LivestockClaims.ProfileImage,
                             $"https://s.gravatar.com/avatar/{emailHexString}"
                         ));
