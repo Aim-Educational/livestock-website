@@ -6,11 +6,27 @@ DeployConfig {
     requiredVars {
         var {
             name "ConnectionStrings:AimLogin"
-            description "N/A"
+            description "The connection string to the AimLogin database."
         }
         var {
             name "ConnectionStrings:Livestock"
-            description "N/A"
+            description "The connection string to the Livestock database."
         }
+		var {
+			name "Smtp:Host"
+			description "The SMTP host (e.g. gmail)."
+		}		
+		var {
+			name "Smtp:Port"
+			description "The SMTP host's port."
+		}		
+		var {
+			name "Smtp:Username"
+			description "The username of the SMTP account."
+		}		
+		var {
+			name "Smtp:Password"
+			description "The password of the SMTP account."
+		}
     }
 }

@@ -52,6 +52,11 @@ namespace Website.Controllers
                 return View(null);
         }
 
+        public IActionResult VerifyEmail()
+        {
+            return View();
+        }
+
         public IActionResult Error(string message)
         {
             return View(new ErrorViewModel{ RequestId = HttpContext.TraceIdentifier, AdditionalInfo = message });

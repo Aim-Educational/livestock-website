@@ -10,6 +10,7 @@ using Database.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Website.Models;
 using Website.Other;
 
@@ -72,6 +73,10 @@ namespace Website.Controllers
                 if (user == null)
                     throw new Exception("Internal error: User object is null, yet GetUserByLogin passed.");
             }
+            catch (EmailNotVerifiedException)
+            {
+                return RedirectToAction("VerifyEmail", "Home");
+            }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
@@ -130,7 +135,7 @@ namespace Website.Controllers
                     liveTransact.Commit();
                     aimTransact.Commit();
                 }
-                return RedirectToActionPermanent("Index", "Home");
+                return RedirectToAction("VerifyEmail", "Home");
             }
 
             return View(model);
@@ -145,6 +150,26 @@ namespace Website.Controllers
 
             await HttpContext.SignOutAsync();
             return RedirectToActionPermanent("Index", "Home");
+        }
+
+        public async Task<IActionResult> VerifyEmail(string token)
+        {
+            var email = await this.aimloginDb.UserEmail.FirstOrDefaultAsync(e => e.VerifyToken == token);
+            if(email == null)
+                throw new Exception($"No email exists for verification token {token}.");
+
+            var userId   = await this.aimLoginData.SingleValue<UserEmail>().ReverseLookupUserId(email);
+            var user     = await this.aimloginDb.Users.FindAsync(userId);
+            var userInfo = await this.aimLoginData.SingleValue<UserLoginInfo>().GetOrDefaultAsync(user);
+            
+            if(userInfo.HasEmailBeenVerified)
+                return RedirectToAction("Index", "Home");
+
+            userInfo.HasEmailBeenVerified = true;
+            await this.aimLoginData.SingleValue<UserLoginInfo>().SetAsync(user, userInfo);
+            await HttpContext.AimSignInAsync(user, this.aimloginUsers);
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

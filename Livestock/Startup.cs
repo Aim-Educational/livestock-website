@@ -97,9 +97,28 @@ namespace Livestock
                     args.userPrincipal.AddIdentity(new ClaimsIdentity(claims));
                 };
             });
+
+            services.Configure<IAimSmtpClientConfig>(c =>
+            {
+                c.Host = Configuration.GetValue<string>("Smtp:Host");
+                c.Port = Configuration.GetValue<int>("Smtp:Port");
+                c.Credentials = new System.Net.NetworkCredential
+                {
+                    UserName = Configuration.GetValue<string>("Smtp:Username"),
+                    Password = Configuration.GetValue<string>("Smtp:Password")
+                };
+            });
+
+            services.Configure<IAimSmtpDomainConfig>(c =>
+            {
+                // This will have to be hard coded for now.
+                c.VerifyEmailDomain = "https://livestock.chatha.dev/Account/VerifyEmail?token=";
+            });
+
             services.AddDbContext<AimLoginContext>(o => o.UseSqlServer(Configuration.GetConnectionString("AimLogin")));
             services.AddAimLogin();
 
+            // Setup the data mapper
             new DataMapBuilder<AimLoginContext, LivestockContext, UserDataMap, LivestockEntityTypes>(services)
                 .UseSingleReference<User, Role>()
                 .UseSingleValue<User, AlUserInfo>();
