@@ -129,9 +129,6 @@ namespace Website.Controllers
                     else
                         await this.aimLoginData.SetRoleFor(user, RoleEnum.Temp, this.livestockDb);
 
-                    // Sign them in.
-                    await HttpContext.AimSignInAsync(user, this.aimloginUsers);
-
                     liveTransact.Commit();
                     aimTransact.Commit();
                 }
