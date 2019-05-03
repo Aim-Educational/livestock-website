@@ -16,7 +16,7 @@ using Website.Other;
 
 namespace Website.Controllers
 {
-    [Authorize(Roles = "admin,staff")]
+    [Authorize(Roles = "admin,staff,student")]
     public class CritterExController : Controller
     {
         readonly LivestockContext _livestock;
@@ -40,7 +40,8 @@ namespace Website.Controllers
             else
                 return Redirect("/images/icons/default.png");
         }
-
+        
+        [Authorize(Roles = "admin,staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Image(IFormFile file, [Bind("critterId")] int critterId)
@@ -140,6 +141,7 @@ namespace Website.Controllers
             });
         }
 
+        [Authorize(Roles = "admin,staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Critter")]CritterExEditViewModel model)
@@ -174,6 +176,7 @@ namespace Website.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin,staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Critter,File")] CritterExCreateViewModel model)
@@ -231,6 +234,7 @@ namespace Website.Controllers
         }
 
         #region DateTime
+        [Authorize(Roles = "admin,staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewDateTime(int? id, [Bind("DateTime,EventTypeName,EventDescription")]CritterExEditViewModel model)
@@ -273,7 +277,8 @@ namespace Website.Controllers
                 }
             );
         }
-        
+
+        [Authorize(Roles = "admin,staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDateTime([Bind("DateTime,Common")]LifeEventEditDateTime model)
@@ -288,7 +293,8 @@ namespace Website.Controllers
 
             return RedirectToAction(nameof(Edit), routeValues: new { id = model.Common.Id });
         }
-        
+
+        [Authorize(Roles = "admin,staff")]
         public async Task<IActionResult> DeleteDateTime(int id)
         {
             // TODO: Make a function like "DateTimeFromId"
@@ -308,6 +314,7 @@ namespace Website.Controllers
             );
         }
 
+        [Authorize(Roles = "admin,staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteDateTimePost()
