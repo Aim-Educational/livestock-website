@@ -31,6 +31,7 @@ namespace Website.Models
         // Only needed for the GET web page, POST version of the page doesn't need this.
         public IList<CritterLifeEventJavascriptInfo> Javascript;
         public IList<CritterLifeEventTableInfo> LifeEventTableInfo;
+        public bool ConcurrencyError; // Whether to display the "someone edited this before you" box.
 
         // Common fields for each POST
         public string EventTypeName { get; set; }

@@ -97,7 +97,7 @@ namespace Website.Controllers
             );
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, bool? concurrencyError)
         {
             if (id == null)
             {
@@ -115,26 +115,26 @@ namespace Website.Controllers
             return View(new CritterExEditViewModel
             {
                 Critter = val,
+                ConcurrencyError = concurrencyError ?? false,
                 Javascript = await this._livestock.EnumCritterLifeEventType
                                                   .Where(e => e.DataType != "None")
                                                   .OrderBy(e => e.Description)
                                                   .Select(e => new CritterLifeEventJavascriptInfo{ Name = e.Description, DataType = e.DataType.ToLower() })
                                                   .ToListAsync(),
                 LifeEventTableInfo = val.CritterLifeEvent
-                                        .Select(e => new CritterLifeEventTableInfo
+                                        .Select(e =>
                                         {
-                                             DateTime = e.DateTime,
-                                             Description = e.Description,
-                                             Type = this._livestock.EnumCritterLifeEventType
-                                                                   .FirstAsync(t => t.EnumCritterLifeEventTypeId == e.EnumCritterLifeEventTypeId)
-                                                                   .Result
-                                                                   .Description,
-                                             Id = e.CritterLifeEventId,
-                                             DataType = this._livestock.EnumCritterLifeEventType
-                                                                       .FirstAsync(t => t.EnumCritterLifeEventTypeId == e.EnumCritterLifeEventTypeId)
-                                                                       .Result
-                                                                       .DataType
-
+                                            var type = this._livestock.EnumCritterLifeEventType
+                                                                      .FirstAsync(t => t.EnumCritterLifeEventTypeId == e.EnumCritterLifeEventTypeId)
+                                                                      .Result;
+                                            return new CritterLifeEventTableInfo
+                                            {
+                                                 DateTime = e.DateTime,
+                                                 Description = e.Description,
+                                                 Type = type.Description,
+                                                 Id = e.CritterLifeEventId,
+                                                 DataType = type.DataType
+                                            };
                                         })
                                         .ToList() // For some reason, this can't be async.
             });
@@ -159,7 +159,7 @@ namespace Website.Controllers
                     if (!this._livestock.Critter.Any(c => c.CritterId == model.Critter.CritterId))
                         return NotFound();
                     else
-                        throw;
+                        return RedirectToAction("Edit", "CritterEx", new { id, concurrencyError = true });
                 }
                 return RedirectToAction(nameof(Index));
             }
