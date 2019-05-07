@@ -30,8 +30,8 @@
     <div class="col-md-4">
         <div class="form-inline">
             <label class="form-text pr-2">Race:</label>
-            <select id="type-dropdown" class="form-control">
-                <option value="-1">All</option>
+            <select id="type-dropdown" class="form-control" data-no-update-value="All">
+                <option value="-999">All</option>
                 @foreach (var type in Model.Select(c => c.CritterType).OrderBy(b => b.Name).Distinct())
                 {
                     <option value="@type.CritterTypeId">@type.Name</option>
@@ -44,9 +44,7 @@
     <div class="col-md-4">
         <div class="form-inline">
             <label class="form-text pr-2">Breed:</label>
-            <select id="breed-dropdown" class="form-control">
-                <option value="-1">All</option>
-            </select>
+            <select id="breed-dropdown" class="form-control"></select>
         </div>
     </div>
 </div>
@@ -71,15 +69,12 @@
     
     <environment include="Development">
         <script type="text/javascript" src="~/js/critter_filter_ajax.js"></script>
-        <script type="text/javascript" src="~/js/breed_dropdown_ajax.js"></script>
     </environment>
     <environment exclude="Development">
         <script type="text/javascript" src="~/js/critter_filter_ajax.min.js" asp-append-version="true"></script>
-        <script type="text/javascript" src="~/js/breed_dropdown_ajax.min.js" asp-append-version="true"></script>
     </environment>
 
     <script>
-        handleBreedDropdown(document.getElementById("type-dropdown"), document.getElementById("breed-dropdown"), 0);
         handleCritterFilter(document.getElementById("type-dropdown"), document.getElementById("breed-dropdown"));
     </script>
 }

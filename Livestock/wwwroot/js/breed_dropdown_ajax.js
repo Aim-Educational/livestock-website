@@ -24,6 +24,8 @@ function handleBreedDropdown(critterTypeSelect, breedSelect, defaultBreedId) {
             breedSelect.options.remove(0);
         }
         var selectedType = critterTypeSelect.selectedOptions[0].value;
+        if (critterTypeSelect.dataset.ignore == selectedType)
+            return;
         if (selectedType in cache) {
             setDropdownValues(cache[selectedType], breedSelect, defaultBreedId);
             return;

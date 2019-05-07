@@ -41,6 +41,10 @@ function handleBreedDropdown(critterTypeSelect: HTMLSelectElement, breedSelect: 
 
         let selectedType: string = critterTypeSelect.selectedOptions[0].value;
 
+        // See if it's a value we need to ignore an update for
+        if (critterTypeSelect.dataset.ignore == selectedType)
+            return;
+
         // Use the response from the cache if we have one.
         if (selectedType in cache) {
             setDropdownValues(cache[selectedType], breedSelect, defaultBreedId);

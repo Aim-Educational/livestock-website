@@ -227,9 +227,9 @@ namespace Website.Controllers
                                  .Include(v => v.DadCritter)
                                  .Include(v => v.MumCritter)
                                  .Include(v => v.OwnerContact)
-                                 .Where(c => ajax.BreedId == -1
+                                 .Where(c => ajax.BreedId == -999
                                           || c.BreedId == ajax.BreedId)
-                                 .Where(c => ajax.CritterTypeId == -1
+                                 .Where(c => ajax.CritterTypeId == -999
                                           || c.CritterTypeId == ajax.CritterTypeId)
                                  .ToListAsync();
 
