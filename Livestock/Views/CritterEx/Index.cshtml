@@ -30,7 +30,7 @@
     <div class="col-md-4">
         <div class="form-inline">
             <label class="form-text pr-2">Race:</label>
-            <select id="type-dropdown" class="form-control" data-no-update-value="All">
+            <select id="type-dropdown" class="form-control">
                 <option value="-999">All</option>
                 @foreach (var type in Model.Select(c => c.CritterType).OrderBy(b => b.Name).Distinct())
                 {
