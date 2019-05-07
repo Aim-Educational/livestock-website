@@ -25,5 +25,12 @@
     "inputFiles": [
       "wwwroot/js/breed_dropdown_ajax.js"
     ]
+  },
+
+  {
+    "outputFileName": "wwwroot/js/critter_filter_ajax.min.js",
+    "inputFiles": [
+      "wwwroot/js/critter_filter_ajax.js"
+    ]
   }
 ]

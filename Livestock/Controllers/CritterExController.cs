@@ -217,6 +217,33 @@ namespace Website.Controllers
         }
         #endregion
 
+        #region Criter Render Partial
+        [HttpPost]
+        public async Task<IActionResult> GetCrittersFiltered([FromBody] CritterExGetCrittersFilteredAjax ajax)
+        {
+            var list = await this._livestock.Critter
+                                 .Include(v => v.Breed)
+                                 .Include(v => v.CritterType)
+                                 .Include(v => v.DadCritter)
+                                 .Include(v => v.MumCritter)
+                                 .Include(v => v.OwnerContact)
+                                 .Where(c => ajax.BreedId == -1
+                                          || c.BreedId == ajax.BreedId)
+                                 .Where(c => ajax.CritterTypeId == -1
+                                          || c.CritterTypeId == ajax.CritterTypeId)
+                                 .ToListAsync();
+
+            if(ajax.Design == "card-horiz")
+                return PartialView("_CardHoriz", list);
+            else if(ajax.Design == "card-vert")
+                return PartialView("_CardVert", list);
+            else if(ajax.Design == "table")
+                return PartialView("_Table", list);
+
+            return NotFound();
+        }
+        #endregion
+
         private async Task AddNewEvent(int critterId, int dataId, string eventTypeName, string description)
         {
             var @event = new CritterLifeEvent
@@ -344,5 +371,12 @@ namespace Website.Controllers
     public class CritterExGetBreedListAjax
     {
         public int CritterTypeId { get; set; }
+    }
+
+    public class CritterExGetCrittersFilteredAjax
+    {
+        public int? BreedId { get; set; }
+        public int? CritterTypeId { get; set; }
+        public string Design { get; set; }
     }
 }

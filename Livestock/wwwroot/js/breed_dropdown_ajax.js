@@ -7,6 +7,7 @@ function setDropdownValues(values, select, defaultBreedId) {
         if (defaultBreedId === parseInt(opt.value))
             select.selectedIndex = select.options.length - 1;
     });
+    select.dispatchEvent(new Event("change"));
 }
 function handleBreedDropdown(critterTypeSelect, breedSelect, defaultBreedId) {
     if (critterTypeSelect == null) {

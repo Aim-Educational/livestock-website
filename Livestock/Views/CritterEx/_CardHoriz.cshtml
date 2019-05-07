@@ -1,0 +1,24 @@
+﻿@model IList<Database.Models.Critter>
+
+@foreach (var item in Model)
+{
+<div class="col-md-4 pb-2">
+    <div class="card">
+        <img class="card-img-top" src="/CritterEx/Image?critterId=@item.CritterId&cacheVersion=@item.VersionNumber" />
+        <div class="card-body">
+            <h5 class="card-title">@item.Name</h5>
+            <h6 class="card-subtitle text-muted">
+                @(item.Gender == "M" ? "Male"
+                                     : item.Gender == "F" ? "Female"
+                                                          : item.Gender)
+                @item.CritterType.Name - @item.Breed.Description
+            </h6>
+
+            <hr />
+
+            <a class="card-link" asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(item.CritterId)">Edit</a>
+            <a class="card-link" asp-controller="CritterEx" asp-action="Delete" asp-route-id="@(item.CritterId)">Delete</a>
+        </div>
+    </div>
+</div>
+}

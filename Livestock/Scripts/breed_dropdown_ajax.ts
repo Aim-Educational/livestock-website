@@ -1,6 +1,6 @@
 ﻿// Breeds need to be filtered by what the chosen CritterType is, this is what this file provides functionality for.
 
-declare var $: { ajax: (arg0: { type: string; url: string; contentType: string; dataType: string; data: string; }) => { done: (arg0: (response: { value: string; description: string; }[]) => void) => void; }; };
+declare var $: any;
 type CritterInfo = { value: string, description: string };
 
 function setDropdownValues(values: CritterInfo[], select: HTMLSelectElement, defaultBreedId: number) {
@@ -13,6 +13,8 @@ function setDropdownValues(values: CritterInfo[], select: HTMLSelectElement, def
         if (defaultBreedId === parseInt(opt.value))
             select.selectedIndex = select.options.length - 1;
     });
+
+    select.dispatchEvent(new Event("change"));
 }
 
 function handleBreedDropdown(critterTypeSelect: HTMLSelectElement, breedSelect: HTMLSelectElement, defaultBreedId: number) {
