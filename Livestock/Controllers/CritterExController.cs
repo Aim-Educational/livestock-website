@@ -218,6 +218,8 @@ namespace Website.Controllers
                                           || c.BreedId == ajax.BreedId)
                                  .Where(c => ajax.CritterTypeId == -999
                                           || c.CritterTypeId == ajax.CritterTypeId)
+                                 .Where(c => ajax.Gender == null
+                                          || c.Gender == ajax.Gender)
                                  .ToListAsync();
 
             if(ajax.Design == "card-horiz")
@@ -382,5 +384,6 @@ namespace Website.Controllers
         public int? BreedId { get; set; }
         public int? CritterTypeId { get; set; }
         public string Design { get; set; }
+        public string Gender { get; set; }
     }
 }

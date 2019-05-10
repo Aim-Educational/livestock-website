@@ -4,26 +4,41 @@ type BreedInfo = { value: number, description: string };
 // Updates the given design using the select type-breed pair.
 //
 // Params:
-//  breedDropdown = The dropdown for which breed to use.
-//  typeDropdown  = The dropdown for which critter type to use.
-//  cache         = A cache of responses, so we don't overload the server if we already have a response cached.
-//  div           = The div to place the updated design inside of.
-//  designType    = The design to use. Valid values are 'card-horiz', 'card-vert', and 'table'.
+//  breedDropdown      = The dropdown for which breed to use.
+//  typeDropdown       = The dropdown for which critter type to use.
+//  genderRadioButtons = The radio buttons for the gender filter. The currently checked one will be determined and used.
+//  cache              = A cache of responses, so we don't overload the server if we already have a response cached.
+//  div                = The div to place the updated design inside of.
+//  designType         = The design to use. Valid values are 'card-horiz', 'card-vert', and 'table'.
 function updateDesignLayout(
     breedDropdown: HTMLSelectElement,
     typeDropdown: HTMLSelectElement,
+    genderRadioButtons: HTMLInputElement[],
     cache: { [divPlusBreed: string]: string },
     div: HTMLElement,
     designType: string
 ) {
     // Get all of the values we want.
-    let typeName   = typeDropdown.selectedOptions[0].innerHTML;
-    let typeValue  = parseInt(typeDropdown.selectedOptions[0].value);
-    let breedName  = breedDropdown.selectedOptions[0].innerHTML;
-    let breedValue = parseInt(breedDropdown.selectedOptions[0].value);
+    let typeName    = typeDropdown.selectedOptions[0].innerHTML;
+    let typeValue   = parseInt(typeDropdown.selectedOptions[0].value);
+    let breedName   = breedDropdown.selectedOptions[0].innerHTML;
+    let breedValue  = parseInt(breedDropdown.selectedOptions[0].value);
+    let genderValue = "BUG";
+
+    genderRadioButtons.forEach(b => {
+        if (b.checked) {
+            genderValue = b.value;
+            return;
+        }
+    });
+    if (genderValue === "ALL") genderValue = null;
+
+    // Error checking
+    if (genderValue === "BUG")
+        alert("Dev error: genderValue still has the 'BUG' value.");
 
     // Use the cached response if we have one already.
-    let key = designType + "-" + breedName + "-" + typeName;
+    let key = designType + "-" + breedName + "-" + typeName + "-" + genderValue;
     if (key in cache) {
         div.innerHTML = cache[key];
         return;
@@ -40,7 +55,8 @@ function updateDesignLayout(
             data: JSON.stringify({
                 BreedId: breedValue,
                 CritterTypeId: typeValue,
-                Design: designType
+                Design: designType,
+                Gender: genderValue
             })
         }
     ).done(function (response: string) {
@@ -65,7 +81,7 @@ function setBreedValues(breedDropdown: HTMLSelectElement, breeds: BreedInfo[]) {
     breedDropdown.dispatchEvent(new Event("change"));
 }
 
-function handleCritterFilter(typeDropdown: HTMLSelectElement, breedDropdown: HTMLSelectElement) {
+function handleCritterFilter(typeDropdown: HTMLSelectElement, breedDropdown: HTMLSelectElement, genderRadioButtons: HTMLInputElement[]) {
     let divCardHoriz = <HTMLDivElement>document.getElementById("design-card-horiz");
     let divCardVert = <HTMLDivElement>document.getElementById("design-card-vert");
     let divTable = <HTMLTableElement>document.getElementById("design-table");
@@ -74,9 +90,9 @@ function handleCritterFilter(typeDropdown: HTMLSelectElement, breedDropdown: HTM
     let typeCache: { [typeId: number]: BreedInfo[] } = {};
 
     breedDropdown.addEventListener("change", function () {
-        updateDesignLayout(breedDropdown, typeDropdown, breedCache, divCardHoriz, "card-horiz");
-        updateDesignLayout(breedDropdown, typeDropdown, breedCache, divCardVert, "card-vert");
-        updateDesignLayout(breedDropdown, typeDropdown, breedCache, divTable, "table");
+        updateDesignLayout(breedDropdown, typeDropdown, genderRadioButtons, breedCache, divCardHoriz, "card-horiz");
+        updateDesignLayout(breedDropdown, typeDropdown, genderRadioButtons, breedCache, divCardVert, "card-vert");
+        updateDesignLayout(breedDropdown, typeDropdown, genderRadioButtons, breedCache, divTable, "table");
     });
 
     typeDropdown.addEventListener("change", function () {
@@ -110,5 +126,11 @@ function handleCritterFilter(typeDropdown: HTMLSelectElement, breedDropdown: HTM
             setBreedValues(breedDropdown, response);
             typeCache[typeId] = response;
         });
+    });
+
+    genderRadioButtons.forEach(b => {
+        b.addEventListener("change", function () {
+            breedDropdown.dispatchEvent(new Event("change")); // Breeddropdown already has the logic we need, so we just reuse that.
+        })
     });
 }

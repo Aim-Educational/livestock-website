@@ -25,7 +25,7 @@
     </div>
 </div>
 
-<!--Filter bars (1st is Critter type, 2nd is Breed)-->
+<!--Critter type filter-->
 <div class="row pb-2">
     <div class="col-md-4">
         <div class="form-inline">
@@ -40,11 +40,36 @@
         </div>
     </div>
 </div>
+
+<!--Breed filter-->
 <div class="row pb-2">
     <div class="col-md-4">
         <div class="form-inline">
             <label class="form-text pr-2">Breed:</label>
-            <select id="breed-dropdown" class="form-control"></select>
+            <select id="breed-dropdown" class="form-control">
+                <option value="-999"></option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!--Gender filter-->
+<div class="row pb-2">
+    <div class="col-md-4">
+        <div class="form-inline">
+            <label class="form-text pr-2">Gender:</label>
+            <div class="form-check form-check-inline pt-2">
+                <input id="radioGenderMale" class="form-check-input" type="radio" value="M" name="genderFilter" />
+                <label class="form-check-label">Male</label>
+            </div>
+            <div class="form-check form-check-inline pt-2">
+                <input id="radioGenderFemale" class="form-check-input" type="radio" value="F" name="genderFilter" />
+                <label class="form-check-label">Female</label>
+            </div>
+            <div class="form-check form-check-inline pt-2">
+                <input id="radioGenderBoth" class="form-check-input" type="radio" value="ALL" name="genderFilter" checked="checked" />
+                <label class="form-check-label">Both</label>
+            </div>
         </div>
     </div>
 </div>
@@ -75,6 +100,14 @@
     </environment>
 
     <script>
-        handleCritterFilter(document.getElementById("type-dropdown"), document.getElementById("breed-dropdown"));
+        handleCritterFilter(
+            document.getElementById("type-dropdown"),
+            document.getElementById("breed-dropdown"),
+            [
+                document.getElementById("radioGenderMale"),
+                document.getElementById("radioGenderFemale"),
+                document.getElementById("radioGenderBoth")
+            ]
+        );
     </script>
 }
