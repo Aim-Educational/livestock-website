@@ -1,6 +1,14 @@
 ﻿// TODO: Reduce the code duplication between this file and breed_dropdown_ajax.ts
 type BreedInfo = { value: number, description: string };
 
+// Updates the given design using the select type-breed pair.
+//
+// Params:
+//  breedDropdown = The dropdown for which breed to use.
+//  typeDropdown  = The dropdown for which critter type to use.
+//  cache         = A cache of responses, so we don't overload the server if we already have a response cached.
+//  div           = The div to place the updated design inside of.
+//  designType    = The design to use. Valid values are 'card-horiz', 'card-vert', and 'table'.
 function updateDesignLayout(
     breedDropdown: HTMLSelectElement,
     typeDropdown: HTMLSelectElement,
@@ -8,17 +16,21 @@ function updateDesignLayout(
     div: HTMLElement,
     designType: string
 ) {
+    // Get all of the values we want.
     let typeName   = typeDropdown.selectedOptions[0].innerHTML;
     let typeValue  = parseInt(typeDropdown.selectedOptions[0].value);
     let breedName  = breedDropdown.selectedOptions[0].innerHTML;
     let breedValue = parseInt(breedDropdown.selectedOptions[0].value);
 
-    let key = designType + breedName + "-" + typeName;
+    // Use the cached response if we have one already.
+    let key = designType + "-" + breedName + "-" + typeName;
     if (key in cache) {
         div.innerHTML = cache[key];
         return;
     }
 
+    // GetCrittersFiltered will render a partial view, and return it's HTML.
+    // So get the response, and set the innerHTML of the given 'div' to the response, and cache that response.
     $.ajax(
         {
             type: "POST",
@@ -37,6 +49,7 @@ function updateDesignLayout(
     });
 }
 
+// Sets the values of the breed dropdown. An option named 'All' will always be at the start.
 function setBreedValues(breedDropdown: HTMLSelectElement, breeds: BreedInfo[]) {
     breeds.unshift({ value: -999, description: "All" });
     breeds.forEach(b => {
@@ -67,6 +80,7 @@ function handleCritterFilter(typeDropdown: HTMLSelectElement, breedDropdown: HTM
         let typeId = parseInt(typeDropdown.selectedOptions[0].value);
         breedDropdown.innerHTML = "";
 
+        // If the user selects 'All', add in an invisible option that will fetch every critter.
         if (typeDropdown.selectedOptions[0].innerHTML == "All") {
             let option = document.createElement("option");
             option.value = "-999";
@@ -75,6 +89,7 @@ function handleCritterFilter(typeDropdown: HTMLSelectElement, breedDropdown: HTM
             return;
         }
 
+        // Use a cached response if we have one.
         if (typeId.toString() in typeCache) {
             setBreedValues(breedDropdown, typeCache[typeId]);
             return;

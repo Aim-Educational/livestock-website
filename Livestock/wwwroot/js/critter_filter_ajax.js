@@ -3,7 +3,7 @@ function updateDesignLayout(breedDropdown, typeDropdown, cache, div, designType)
     var typeValue = parseInt(typeDropdown.selectedOptions[0].value);
     var breedName = breedDropdown.selectedOptions[0].innerHTML;
     var breedValue = parseInt(breedDropdown.selectedOptions[0].value);
-    var key = designType + breedName + "-" + typeName;
+    var key = designType + "-" + breedName + "-" + typeName;
     if (key in cache) {
         div.innerHTML = cache[key];
         return;
