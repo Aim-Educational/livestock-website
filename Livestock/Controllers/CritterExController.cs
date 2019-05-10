@@ -245,23 +245,7 @@ namespace Website.Controllers
             return Json(breeds);
         }
         #endregion
-
-        private async Task AddNewEvent(int critterId, int dataId, string eventTypeName, string description)
-        {
-            var @event = new CritterLifeEvent
-            {
-                CritterId = critterId,
-                Comment = "N/A",
-                DateTime = DateTime.Now,
-                Description = description,
-                EnumCritterLifeEventDataId = dataId,
-                EnumCritterLifeEventType = await this._livestock.EnumCritterLifeEventType.FirstAsync(e => e.Description == eventTypeName),
-                VersionNumber = 1
-            };
-            await this._livestock.AddAsync(@event);
-            await this._livestock.SaveChangesAsync();
-        }
-
+        
         #region DateTime
         [Authorize(Roles = "admin,staff")]
         [HttpPost]
@@ -360,6 +344,7 @@ namespace Website.Controllers
         }
         #endregion
 
+        #region Utility
         private void FixNullFields(Critter val)
         {
             if (String.IsNullOrWhiteSpace(val.Comment)) val.Comment = "N/A";
@@ -368,6 +353,23 @@ namespace Website.Controllers
             if (String.IsNullOrWhiteSpace(val.MumFurther)) val.MumFurther = "N/A";
             if (String.IsNullOrWhiteSpace(val.Name)) val.Name = "N/A";
         }
+
+        private async Task AddNewEvent(int critterId, int dataId, string eventTypeName, string description)
+        {
+            var @event = new CritterLifeEvent
+            {
+                CritterId = critterId,
+                Comment = "N/A",
+                DateTime = DateTime.Now,
+                Description = description,
+                EnumCritterLifeEventDataId = dataId,
+                EnumCritterLifeEventType = await this._livestock.EnumCritterLifeEventType.FirstAsync(e => e.Description == eventTypeName),
+                VersionNumber = 1
+            };
+            await this._livestock.AddAsync(@event);
+            await this._livestock.SaveChangesAsync();
+        }
+        #endregion
     }
 
     public class CritterExGetBreedListAjax
