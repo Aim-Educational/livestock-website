@@ -237,8 +237,9 @@ namespace Website.Controllers
                 return Json(null);
 
             var breeds = await this._livestock.Breed
+                                              .Include(b => b.Critter)
                                               .Where(b => b.CritterTypeId == ajax.CritterTypeId || b.Description == "Unknown")
-                                              .Select(b => new { description = b.Description, value = b.BreedId })
+                                              .Select(b => new { description = $"{b.Description} ({b.Critter.Count})", value = b.BreedId })
                                               .OrderBy(b => b.description)
                                               .ToListAsync();
             return Json(breeds);
