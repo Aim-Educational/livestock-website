@@ -38,7 +38,7 @@ function updateDesignLayout(
 }
 
 function setBreedValues(breedDropdown: HTMLSelectElement, breeds: BreedInfo[]) {
-    breeds.push({ value: -999, description: "All" });
+    breeds.unshift({ value: -999, description: "All" });
     breeds.forEach(b => {
         let option = document.createElement("option");
         option.innerHTML = b.description;
@@ -46,10 +46,6 @@ function setBreedValues(breedDropdown: HTMLSelectElement, breeds: BreedInfo[]) {
         breedDropdown.options.add(option);
     });
 
-    let temp = breedDropdown.options[0];
-    breedDropdown.options[0] = breedDropdown.options[breedDropdown.length - 1];
-    breedDropdown.options[breedDropdown.length - 1] = temp;
-    breedDropdown.selectedIndex = 0;
     breedDropdown.dispatchEvent(new Event("change"));
 }
 
