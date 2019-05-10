@@ -91,6 +91,7 @@ namespace Website.Controllers
                 this._livestock.Critter
                                .Include(v => v.Breed)
                                .Include(v => v.CritterType)
+                                .ThenInclude(t => t.Critter)
                                .Include(v => v.DadCritter)
                                .Include(v => v.MumCritter)
                                .Include(v => v.OwnerContact)

@@ -34,7 +34,7 @@
                 <option value="-999">All</option>
                 @foreach (var type in Model.Select(c => c.CritterType).OrderBy(b => b.Name).Distinct())
                 {
-                    <option value="@type.CritterTypeId">@type.Name</option>
+                    <option value="@type.CritterTypeId">@type.Name (@type.Critter.Count)</option>
                 }
             </select>
         </div>
