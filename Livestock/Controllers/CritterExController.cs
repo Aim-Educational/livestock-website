@@ -194,20 +194,6 @@ namespace Website.Controllers
             return View(model);
         }
 
-        [HttpPost] // This is a POST since it's an AJAX request.
-        public async Task<IActionResult> GetBreedList([FromBody] CritterExGetBreedListAjax ajax)
-        {
-            if(ajax == null)
-                return Json(null);
-
-            var breeds = await this._livestock.Breed
-                                              .Where(b => b.CritterTypeId == ajax.CritterTypeId || b.Description == "Unknown")
-                                              .Select(b => new { description = b.Description, value = b.BreedId })
-                                              .OrderBy(b => b.description)
-                                              .ToListAsync();
-            return Json(breeds);
-        }
-
         private void SetupCritterViewData(Critter val)
         {
             ViewData["CritterTypeId"]  = new SelectList(this._livestock.CritterType.OrderBy(c => c.Name),                         "CritterTypeId", "Name", val?.CritterTypeId);
@@ -217,8 +203,8 @@ namespace Website.Controllers
         }
         #endregion
 
-        #region Criter Render Partial
-        [HttpPost]
+        #region Critter AJAX
+        [HttpPost] // This is a POST since it's an AJAX request.
         public async Task<IActionResult> GetCrittersFiltered([FromBody] CritterExGetCrittersFilteredAjax ajax)
         {
             var list = await this._livestock.Critter
@@ -241,6 +227,20 @@ namespace Website.Controllers
                 return PartialView("_Table", list);
 
             return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetBreedList([FromBody] CritterExGetBreedListAjax ajax)
+        {
+            if (ajax == null)
+                return Json(null);
+
+            var breeds = await this._livestock.Breed
+                                              .Where(b => b.CritterTypeId == ajax.CritterTypeId || b.Description == "Unknown")
+                                              .Select(b => new { description = b.Description, value = b.BreedId })
+                                              .OrderBy(b => b.description)
+                                              .ToListAsync();
+            return Json(breeds);
         }
         #endregion
 
