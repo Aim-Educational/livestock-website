@@ -19,6 +19,8 @@ function updateDesignLayout(breedDropdown, typeDropdown, cache, div, designType)
             Design: designType
         })
     }).done(function (response) {
+        if (response === null || response === "\n")
+            response = '<div class="alert alert-info">No results found.</div>';
         div.innerHTML = response;
         cache[key] = response;
     });

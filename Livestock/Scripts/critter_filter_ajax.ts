@@ -44,6 +44,9 @@ function updateDesignLayout(
             })
         }
     ).done(function (response: string) {
+        if (response === null || response === "\n") // No clue why it sometimes only contains \n
+            response = '<div class="alert alert-info">No results found.</div>';
+
         div.innerHTML = response;
         cache[key] = response;
     });
