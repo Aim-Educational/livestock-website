@@ -153,10 +153,7 @@ namespace Website.Controllers
             if (ModelState.IsValid)
             {
                 // Update reproduce flags
-                if(model.YesReproduceUser)
-                    model.Critter.ReproduceFlags |= (int)ReproduceFlags.YesReproduceUser;
-                else
-                    model.Critter.ReproduceFlags &= ~(int)ReproduceFlags.YesReproduceUser;
+                model.Critter.UpdateReproduceFlag(ReproduceFlags.YesReproduceUser, model.YesReproduceUser);
 
                 // Update Database model
                 try

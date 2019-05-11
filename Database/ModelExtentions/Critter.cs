@@ -36,4 +36,15 @@ namespace Database.Models
         /// </summary>
         NoReproduceTooOld = 1 << 2
     }
+
+    public partial class Critter
+    {
+        public void UpdateReproduceFlag(ReproduceFlags flag, bool setOrUnset)
+        {
+            if(setOrUnset)
+                this.ReproduceFlags |= (int)flag;
+            else
+                this.ReproduceFlags &= ~(int)flag;
+        }
+    }
 }
