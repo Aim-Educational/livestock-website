@@ -36,6 +36,7 @@ namespace Website.Models
         // Common fields for each POST
         public string EventTypeName { get; set; }
         public string EventDescription { get; set; }
+        public int ReproduceFlagsWebInput { get; set; }
 
         // The rest of these are specific to the seperate POST functions for the various event data types.
         public CritterLifeEventDatetime DateTime { get; set; }

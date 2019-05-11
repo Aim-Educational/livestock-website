@@ -145,13 +145,20 @@ namespace Website.Controllers
         [Authorize(Roles = "admin,staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Critter")]CritterExEditViewModel model)
+        public async Task<IActionResult> Edit(int id, [Bind("Critter,ReproduceFlagsWebInput")]CritterExEditViewModel model)
         {
             if (model.Critter.CritterId != id)
                 return NotFound();
 
             if (ModelState.IsValid)
             {
+                // Update reproduce flags
+                if((model.ReproduceFlagsWebInput & (int)ReproduceFlags.YesReproduceUser) > 0)
+                    model.Critter.ReproduceFlags |= (int)ReproduceFlags.YesReproduceUser;
+                else
+                    model.Critter.ReproduceFlags &= ~(int)ReproduceFlags.YesReproduceUser;
+
+                // Update Database model
                 try
                 {
                     this._livestock.Update(model.Critter);
