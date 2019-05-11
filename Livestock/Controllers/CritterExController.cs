@@ -145,7 +145,7 @@ namespace Website.Controllers
         [Authorize(Roles = "admin,staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Critter,ReproduceFlags")]CritterExEditViewModel model)
+        public async Task<IActionResult> Edit(int id, [Bind("Critter,YesReproduceUser")]CritterExEditViewModel model)
         {
             if (model.Critter.CritterId != id)
                 return NotFound();
@@ -168,6 +168,11 @@ namespace Website.Controllers
                     else
                         return RedirectToAction("Edit", "CritterEx", new { id, concurrencyError = true });
                 }
+                catch
+                {
+                    throw;
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             this.SetupCritterViewData(model.Critter);
@@ -224,6 +229,8 @@ namespace Website.Controllers
                                           || c.CritterTypeId == ajax.CritterTypeId)
                                  .Where(c => ajax.Gender == null
                                           || c.Gender == ajax.Gender)
+                                 .Where(c => ajax.CanReproduce == null
+                                          || c.CanReproduce == ajax.CanReproduce)
                                  .ToListAsync();
 
             if(ajax.Design == "card-horiz")
@@ -389,5 +396,6 @@ namespace Website.Controllers
         public int? CritterTypeId { get; set; }
         public string Design { get; set; }
         public string Gender { get; set; }
+        public bool? CanReproduce { get; set; }
     }
 }

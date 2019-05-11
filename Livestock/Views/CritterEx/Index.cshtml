@@ -67,7 +67,28 @@
                 <label class="form-check-label">Female</label>
             </div>
             <div class="form-check form-check-inline pt-2">
-                <input id="radioGenderBoth" class="form-check-input" type="radio" value="ALL" name="genderFilter" checked="checked" />
+                <input id="radioGenderBoth" class="form-check-input" type="radio" value="ALL" name="genderFilter" checked/>
+                <label class="form-check-label">Both</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Can Reproduce filters-->
+<div class="row pb-2">
+    <div class="col-md-4">
+        <div class="form-inline">
+            <label class="form-text pr-2">Can Reproduce:</label>
+            <div class="form-check form-check-inline pt-2">
+                <input id="radioReproduceYes" class="form-check-input" type="radio" value="true" name="canReproduceFilter" />
+                <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline pt-2">
+                <input id="radioReproduceNo" class="form-check-input" type="radio" value="false" name="canReproduceFilter" />
+                <label class="form-check-label">No</label>
+            </div>
+            <div class="form-check form-check-inline pt-2">
+                <input id="radioReproduceBoth" class="form-check-input" type="radio" value="ALL" name="canReproduceFilter" checked />
                 <label class="form-check-label">Both</label>
             </div>
         </div>
@@ -107,6 +128,11 @@
                 document.getElementById("radioGenderMale"),
                 document.getElementById("radioGenderFemale"),
                 document.getElementById("radioGenderBoth")
+            ],
+            [
+                document.getElementById("radioReproduceYes"),
+                document.getElementById("radioReproduceNo"),
+                document.getElementById("radioReproduceBoth")
             ]
         );
     </script>

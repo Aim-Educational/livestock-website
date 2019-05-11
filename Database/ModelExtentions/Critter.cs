@@ -46,5 +46,10 @@ namespace Database.Models
             else
                 this.ReproduceFlags &= ~(int)flag;
         }
+
+        public bool CanReproduce =>
+            (this.ReproduceFlags & (int)Models.ReproduceFlags.NoReproduceCastrate) == 0
+         && (this.ReproduceFlags & (int)Models.ReproduceFlags.NoReproduceTooOld) == 0
+         && (this.ReproduceFlags & (int)Models.ReproduceFlags.YesReproduceUser) > 0;
     }
 }

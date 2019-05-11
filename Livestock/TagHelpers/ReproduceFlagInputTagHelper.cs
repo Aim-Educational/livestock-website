@@ -10,7 +10,7 @@ namespace Website.TagHelpers
     /// <summary>
     /// For checkboxes. Pre-checks the checkbox if the given `ReproduceInput` contains the specified flag `ReproduceType`.
     /// </summary>
-    [HtmlTargetElement("input", Attributes = "[type=checkbox]")]
+    [HtmlTargetElement("input", Attributes = "[reproduce-type]")]
     public class ReproduceFlagInputTagHelper : TagHelper
     {
         public ReproduceFlags ReproduceType { get; set; }
