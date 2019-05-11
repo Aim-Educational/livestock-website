@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Aim.DataMapper;
 using AimLogin.DbModel;
@@ -8,6 +9,7 @@ using AimLogin.Misc;
 using AimLogin.Services;
 using Database.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +24,7 @@ namespace Website.Controllers
         readonly AimLoginContext aimloginDb;
         readonly IAimUserManager aimloginUsers;
         readonly DataMapService<User> aimLoginData;
+        readonly IAimHasher aimHasher;
 
         private CookieOptions DEFAULT_COOKIE_OPTIONS => new CookieOptions
         {
@@ -31,12 +34,13 @@ namespace Website.Controllers
             Secure = true
         };
 
-        public AccountController(LivestockContext livestockDb, AimLoginContext aimloginDb, IAimUserManager aimloginUsers, DataMapService<User> aimLoginData)
+        public AccountController(LivestockContext livestockDb, AimLoginContext aimloginDb, IAimUserManager aimloginUsers, DataMapService<User> aimLoginData, IAimHasher aimHasher)
         {
             this.livestockDb = livestockDb;
             this.aimLoginData = aimLoginData;
             this.aimloginDb = aimloginDb;
             this.aimloginUsers = aimloginUsers;
+            this.aimHasher = aimHasher;
         }
 
         public IActionResult Index()
@@ -49,9 +53,21 @@ namespace Website.Controllers
             return View();
         }
 
+        [Authorize(Roles = "student,staff,admin")]
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
         public IActionResult Login([FromQuery] string ReturnUrl)
         {
             ViewData["ReturnUrl"] = ReturnUrl;
+            return View();
+        }
+
+        [Authorize(Roles = "student,staff,admin")]
+        public IActionResult ChangePassword()
+        {
             return View();
         }
 
@@ -132,7 +148,7 @@ namespace Website.Controllers
                     liveTransact.Commit();
                     aimTransact.Commit();
                 }
-                return RedirectToAction("VerifyEmail", "Home");
+                return RedirectToAction("Verify", "Home", new { type = "account" });
             }
 
             return View(model);
@@ -149,6 +165,33 @@ namespace Website.Controllers
             return RedirectToActionPermanent("Index", "Home");
         }
 
+        [Authorize(Roles = "student,staff,admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(AccountChangePasswordViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var userId = Convert.ToInt32(HttpContext.User.FindFirstValue(AimLoginClaims.UserId));
+                var user = await this.aimloginDb.Users.FindAsync(userId);
+                var loginInfo = await this.aimLoginData.SingleValue<UserLoginInfo>().GetOrDefaultAsync(user);
+                
+                var passHash = await this.aimHasher.HashWithSalt(model.OldPassword, loginInfo.Salt);
+                if(!passHash.SequenceEqual(loginInfo.PassHash))
+                {
+                    ModelState.AddModelError(nameof(model.OldPassword), "The current password is incorrect.");
+                    return View(model);
+                }
+
+                await this.aimloginUsers.ChangeUserPassword(user, model.Password);
+
+                return RedirectToAction("Verify", "Home", new { type = "changepass" });
+            }
+
+            return View(model);
+        }
+
+        #region Callbacks
         public async Task<IActionResult> VerifyEmail(string token)
         {
             var email = await this.aimloginDb.UserEmail.FirstOrDefaultAsync(e => e.VerifyToken == token);
@@ -168,5 +211,12 @@ namespace Website.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        public async Task<IActionResult> ChangePasswordVerify(string token)
+        {
+            await this.aimloginUsers.FinishChangeUserPassword(token);
+            return RedirectToAction("Index", "Home");
+        }
+        #endregion
     }
 }

@@ -113,6 +113,7 @@ namespace Livestock
             {
                 // This will have to be hard coded for now.
                 c.VerifyEmailDomain = "https://livestock.chatha.dev/Account/VerifyEmail?token=";
+                c.VerifyPasswordChangeDomain = "https://livestock.chatha.dev/Account/ChangePasswordVerify?token=";
             });
 
             services.AddDbContext<AimLoginContext>(o => o.UseSqlServer(Configuration.GetConnectionString("AimLogin")));

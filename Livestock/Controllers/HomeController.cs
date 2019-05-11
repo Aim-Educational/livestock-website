@@ -52,9 +52,10 @@ namespace Website.Controllers
                 return View(null);
         }
 
-        public IActionResult VerifyEmail()
+        public IActionResult Verify(string type)
         {
-            return View();
+            // 'type' is a string, so it was using the wrong overload.
+            return View("Verify", type);
         }
 
         public IActionResult Error(string message)

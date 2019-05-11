@@ -1,0 +1,35 @@
+﻿@model string
+@{
+    ViewData["Title"] = "VerifyEmail";
+}
+
+@if (Model == "account")
+{
+    <h2>Please verify your account</h2>
+    <br />
+    <div class="alert alert-warning">
+        A verification email has been sent, please click on the link inside it.
+        <br />
+        It's likely to have gone into your spam folder.
+        <br />
+        <br />
+        If you need another verification email sent, try logging in again to trigger one to send.
+    </div>
+}
+else if (Model == "changepass")
+{
+    <h2>Please accept the password change in your email</h2>
+    <br />
+    <div class="alert alert-warning">
+        A verification email has been sent, please click on the link to confirm the password change.
+        <br />
+        <br />
+        Your old password can still be used until the link is clicked.
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">
+        DEV ERROR: NO VERIFY TYPE FOR '@Model'
+    </div>
+}
