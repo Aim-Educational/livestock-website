@@ -8,10 +8,9 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace Website.TagHelpers
 {
     /// <summary>
-    /// For checkboxes. Sets the checkbox's value to the given `ReproduceType`, and ensures the checkbox is pre-checked
-    /// if the `ReproduceInput` has the correct flag set for the given type.
+    /// For checkboxes. Pre-checks the checkbox if the given `ReproduceInput` contains the specified flag `ReproduceType`.
     /// </summary>
-    [HtmlTargetElement("input")]
+    [HtmlTargetElement("input", Attributes = "[type=checkbox]")]
     public class ReproduceFlagInputTagHelper : TagHelper
     {
         public ReproduceFlags ReproduceType { get; set; }

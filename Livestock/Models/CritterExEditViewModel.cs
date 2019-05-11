@@ -33,10 +33,12 @@ namespace Website.Models
         public IList<CritterLifeEventTableInfo> LifeEventTableInfo;
         public bool ConcurrencyError; // Whether to display the "someone edited this before you" box.
 
-        // Common fields for each POST
+        // Common fields for each general info POST
+        public bool YesReproduceUser { get; set; }
+
+        // Common fields for each event POST
         public string EventTypeName { get; set; }
         public string EventDescription { get; set; }
-        public int ReproduceFlagsWebInput { get; set; }
 
         // The rest of these are specific to the seperate POST functions for the various event data types.
         public CritterLifeEventDatetime DateTime { get; set; }

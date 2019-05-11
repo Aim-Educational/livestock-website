@@ -108,16 +108,15 @@
                 <span asp-validation-for="Critter.MumFurther" class="text-danger"></span>
             </div>
             <div class="form-check">
-                <input name="ReproduceFlagsWebInput" class="form-check-input" type="checkbox" 
-                       reproduce-type="@ReproduceFlags.YesReproduceUser" reproduce-input="@Model.Critter.ReproduceFlags"/>
-                <label asp-for="ReproduceFlagsWebInput" class="form-check-label">Can Reproduce</label>
-                <span asp-validation-for="ReproduceFlagsWebInput" class="text-danger"></span>
+                <input asp-for="YesReproduceUser" class="form-check-input" type="checkbox"
+                       reproduce-type="@ReproduceFlags.YesReproduceUser" reproduce-input="@Model.Critter.ReproduceFlags" />
+                <label asp-for="YesReproduceUser" class="form-check-label">Can Reproduce</label>
+                <span asp-validation-for="YesReproduceUser" class="text-danger"></span>
             </div>
             @Html.HiddenFor(model => model.Critter.CritterImageId)
             @Html.HiddenFor(model => model.Critter.CritterId)
             @Html.HiddenFor(model => model.Critter.Timestamp)
             @Html.HiddenFor(model => model.Critter.VersionNumber)
-            @Html.HiddenFor(model => model.Critter.ReproduceFlags)
             <div class="form-group">
                 <input type="submit" value="Edit" class="btn btn-success" />
             </div>
