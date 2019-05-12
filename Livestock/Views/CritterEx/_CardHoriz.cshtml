@@ -6,7 +6,33 @@
     <div class="card">
         <img class="card-img-top" src="/CritterEx/Image?critterId=@item.CritterId&cacheVersion=@item.VersionNumber" />
         <div class="card-body">
-            <h5 class="card-title">@item.Name</h5>
+            <div class="clearfix">
+                <!--Special icons-->
+                @if (item.Gender == "M")
+                {
+                    <img class="float-right" src="~/images/icons/male.png" width="26" height="26" title="Male" />
+                }
+                else if (item.Gender == "F")
+                {
+                    <img class="float-right" src="~/images/icons/female.png" width="26" height="26" title="Female" />
+                }
+                else
+                {
+                    <img class="float-right" src="~/images/icons/default.png" width="26" height="26" title="Unknown Gender" />
+                }
+
+                @if (item.CanReproduce)
+                {
+                    <img class="float-right" src="~/images/icons/heart.jpg" width="26" height="26" title="Can reproduce" />
+                }
+                else
+                {
+                    <img class="float-right" src="~/images/icons/heart_broke.png" width="26" height="26" title="Can't reproduce" />
+                }
+
+                <h5 class="card-title">@item.Name</h5>
+            </div>
+
             <h6 class="card-subtitle text-muted">
                 @(item.Gender == "M" ? "Male"
                                      : item.Gender == "F" ? "Female"
