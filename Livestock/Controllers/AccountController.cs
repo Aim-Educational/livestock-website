@@ -188,7 +188,15 @@ namespace Website.Controllers
                     return View(model);
                 }
 
-                await this.aimloginUsers.ChangeUserPassword(user, model.Password);
+                try
+                {
+                    await this.aimloginUsers.ChangeUserPassword(user, model.Password);
+                }
+                catch(PasswordValidationException ex)
+                {
+                    ModelState.AddModelError(nameof(model.Password), ex.Message);
+                    return View(model);
+                }
 
                 return RedirectToAction("Verify", "Home", new { type = "changepass" });
             }
