@@ -120,6 +120,11 @@ namespace Website.Controllers
                         if (user == null)
                             throw new Exception($"Could not create new user.");
                     }
+                    catch(PasswordValidationException ex)
+                    {
+                        ModelState.AddModelError(nameof(model.Password), ex.Message);
+                        return View(model);
+                    }
                     catch (Exception ex)
                     {
                         ModelState.AddModelError(nameof(model.Username), ex.Message);

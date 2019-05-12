@@ -116,6 +116,11 @@ namespace Livestock
                 c.VerifyPasswordChangeDomain = "https://livestock.chatha.dev/Account/ChangePasswordVerify?token=";
             });
 
+            services.Configure<IAimPasswordSchemeConfig>(c => 
+            {
+                c.ValidateFuncs.Add(pass => (pass.Length > 6) ? null : "Passwords must be at least 6 characters long");
+            });
+
             services.AddDbContext<AimLoginContext>(o => o.UseSqlServer(Configuration.GetConnectionString("AimLogin")));
             services.AddAimLogin();
 
