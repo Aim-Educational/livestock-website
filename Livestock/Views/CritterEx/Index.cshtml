@@ -17,13 +17,15 @@
 </div>
 
 <!--Create button-->
-<div class="row pb-2">
-    <div class="col-md-4">
-        <a asp-action="Create" class="btn btn-primary">
-            Create New Critter
-        </a>
+<for-roles action="Hide" roles="@RoleEnum.Student">
+    <div class="row pb-2">
+        <div class="col-md-4">
+            <a asp-action="Create" class="btn btn-primary">
+                Create New Critter
+            </a>
+        </div>
     </div>
-</div>
+</for-roles>
 
 <!--Filters-->
 <div class="border">

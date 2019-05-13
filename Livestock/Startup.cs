@@ -132,6 +132,7 @@ namespace Livestock
             // Setup Misc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<LivestockContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Livestock")));
+            services.AddHttpContextAccessor();
 
             // Setup Auth
             services.AddAuthentication(options => 

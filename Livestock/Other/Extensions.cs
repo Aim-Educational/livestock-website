@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Aim.DataMapper;
 using AimLogin.DbModel;
@@ -42,6 +43,11 @@ namespace Website.Other
             }
 
             await data.SingleReference<Role>().SetAsync(user, dbRole);
+        }
+
+        public static bool IsStudent(this ClaimsPrincipal user)
+        {
+            return user.IsInRole(Convert.ToString(RoleEnum.Student).ToLower());
         }
     }
 }

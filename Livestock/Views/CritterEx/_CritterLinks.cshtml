@@ -1,0 +1,14 @@
+﻿@model Database.Models.Critter
+
+<a class="card-link" asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(Model.CritterId)">
+    <for-roles action="Hide" roles="@RoleEnum.Student">
+        Edit
+    </for-roles>
+    <for-roles action="Show" roles="@RoleEnum.Student">
+        View
+    </for-roles>
+</a>
+
+<for-roles action="Hide" roles="@RoleEnum.Student">
+    <a class="card-link" asp-controller="CritterEx" asp-action="Delete" asp-route-id="@(Model.CritterId)">Delete</a>
+</for-roles>

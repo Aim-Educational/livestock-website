@@ -1,6 +1,5 @@
 @model Website.Models.CritterExEditViewModel
 @using Database.Models;
-
 @{
     ViewData["Title"] = "Edit Critter";
 }
@@ -15,21 +14,21 @@
 </div>
 <br />
 
-@if(Model.ConcurrencyError)
+@if (Model.ConcurrencyError)
 {
-<div class="row">
-    <div class="col-md-12">
-        <div class="alert alert-danger">
-            Someone modified this Critter before you submitted your changes.
-            <br />
-            <br />
-            You'll have to re-enter all of the changes, sorry!
-            <br />
-            <br />
-            (No matter how much you shout at Andy, he can't fix this without significant headache)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                Someone modified this Critter before you submitted your changes.
+                <br />
+                <br />
+                You'll have to re-enter all of the changes, sorry!
+                <br />
+                <br />
+                (No matter how much you shout at Andy, he can't fix this without significant headache)
+            </div>
         </div>
     </div>
-</div>
 }
 <h4>Image</h4>
 <hr />
@@ -38,17 +37,20 @@
 <div class="row">
     <div class="col-md-4">
         <img id="image" src="/CritterEx/Image?critterId=@Model.Critter.CritterId&cacheVersion=@Model.Critter.VersionNumber" width="348" height="464" />
-        <form asp-action="Image" method="post" enctype="multipart/form-data">
-            <div class="pt-2 form-group">
-                <input class="form-control-file" name="file" type="file" accept="image/*" onchange="previewFile(event)" />
-            </div>
-            <div class="form-group">
-                <input class="btn btn-success" type="submit" value="Upload" />
-            </div>
 
-            <input type="hidden" value="@Model.Critter.CritterId" name="critterId" />
-            <div asp-validation-summary="All" class="text-danger"></div>
-        </form>
+        <for-roles action="Hide" roles="@RoleEnum.Student">
+            <form asp-action="Image" method="post" enctype="multipart/form-data">
+                <div class="pt-2 form-group">
+                    <input class="form-control-file" name="file" type="file" accept="image/*" onchange="previewFile(event)" />
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-success" type="submit" value="Upload" />
+                </div>
+
+                <input type="hidden" value="@Model.Critter.CritterId" name="critterId" />
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </form>
+        </for-roles>
     </div>
 </div>
 
@@ -118,9 +120,12 @@
             @Html.HiddenFor(model => model.Critter.Timestamp)
             @Html.HiddenFor(model => model.Critter.VersionNumber)
             @Html.HiddenFor(model => model.Critter.ReproduceFlags)
-            <div class="form-group">
-                <input type="submit" value="Edit" class="btn btn-success" />
-            </div>
+
+            <for-roles action="Hide" roles="@RoleEnum.Student">
+                <div class="form-group">
+                    <input type="submit" value="Edit" class="btn btn-success" />
+                </div>
+            </for-roles>
 
             <div asp-validation-summary="All" class="text-danger"></div>
         </form>
@@ -128,54 +133,57 @@
 </div>
 
 <br />
-<h4>New Life Event</h4>
-<hr />
-<!--Event selector-->
-<div class="row">
-    <div class="col-md-4">
-        <!--Select box-->
-        <div class="form-group">
-            <label class="form-text">Event</label>
-            <select id="editorSelect" class="form-control"></select>
+<for-roles action="Hide" roles="@RoleEnum.Student">
+    <h4>New Life Event</h4>
+    <hr />
+    <!--Event selector-->
+    <div class="row">
+        <div class="col-md-4">
+            <!--Select box-->
+            <div class="form-group">
+                <label class="form-text">Event</label>
+                <select id="editorSelect" class="form-control"></select>
+            </div>
+
+            <small class="form-text text-muted">What type of event took place?</small>
         </div>
-
-        <small class="form-text text-muted">What type of event took place?</small>
     </div>
-</div>
 
-<hr />
-<!--Event editors-->
-<div class="row">
-    <div class="col-md-4">
-        <!--'datetime' EDITOR-->
-        <div id="editor-datetime" class="d-none">
-            <form asp-controller="LifeEvent" asp-action="NewDateTime" asp-route-id="@Model.Critter.CritterId">
-                <!--Date input-->
-                <label asp-for="DateTime.DateTime" class="control-label"></label>
-                <div class="form-inline">
-                    <div class="input-group">
-                        <input id="datetimeDateTime" type="text" asp-for="DateTime.DateTime" class="form-control datetimepicker-input" data-target="#datetimeDateTime" />
-                        <div class="input-group-append" data-target="#datetimeDateTime" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+    <hr />
+    <!--Event editors-->
+    <div class="row">
+        <div class="col-md-4">
+            <!--'datetime' EDITOR-->
+            <div id="editor-datetime" class="d-none">
+                <form asp-controller="LifeEvent" asp-action="NewDateTime" asp-route-id="@Model.Critter.CritterId">
+                    <!--Date input-->
+                    <label asp-for="DateTime.DateTime" class="control-label"></label>
+                    <div class="form-inline">
+                        <div class="input-group">
+                            <input id="datetimeDateTime" type="text" asp-for="DateTime.DateTime" class="form-control datetimepicker-input" data-target="#datetimeDateTime" />
+                            <div class="input-group-append" data-target="#datetimeDateTime" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
                         </div>
+                        <small class="form-text text-muted">When did this event occur?</small>
+
+                        <span asp-validation-for="DateTime.DateTime" class="text-danger"></span>
                     </div>
-                    <small class="form-text text-muted">When did this event occur?</small>
 
-                    <span asp-validation-for="DateTime.DateTime" class="text-danger"></span>
-                </div>
+                    <partial name="_EditorCommon" />
+                    <br />
 
-                <partial name="_EditorCommon" />
-                <br />
+                    <!--Submit button-->
+                    <div class="form-group">
+                        <input type="submit" value="Create New Event" class="btn btn-success" />
+                    </div>
 
-                <!--Submit button-->
-                <div class="form-group">
-                    <input type="submit" value="Create New Event" class="btn btn-success" />
-                </div>
-                <div asp-validation-summary="All" class="text-danger"></div>
-            </form>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+</for-roles>
 
 <!--Life event list-->
 <br />
@@ -195,16 +203,24 @@
 
             <hr />
 
-            <a asp-controller="LifeEvent" asp-action="Edit@(item.DataType)" asp-route-id="@(item.Id)" class="card-link">Edit</a>
-            <a asp-controller="LifeEvent" asp-action="Delete@(item.DataType)" asp-route-id="@(item.Id)" class="card-link">Delete</a>
+            <a asp-controller="LifeEvent" asp-action="Edit@(item.DataType)" asp-route-id="@(item.Id)" class="card-link">
+                <for-roles action="Hide" roles="@RoleEnum.Student">
+                    Edit
+                </for-roles>
+                <for-roles action="Show" roles="@RoleEnum.Student">
+                    View
+                </for-roles>
+            </a>
+
+            <for-roles action="Hide" roles="@RoleEnum.Student">
+                <a asp-controller="LifeEvent" asp-action="Delete@(item.DataType)" asp-route-id="@(item.Id)" class="card-link">Delete</a>
+            </for-roles>
         </div>
     </div>
     <br />
 }
 
 @section Scripts {
-    <script src="~/js/life_event.min.js" asp-append-version="true"></script>
-
     <environment exclude="Development">
         <script src="~/js/breed_dropdown_ajax.min.js" asp-append-version="true"></script>
     </environment>
@@ -215,15 +231,27 @@
     <script>
         handleBreedDropdown(document.getElementById("selectCritterType"), document.getElementById("selectBreed"), @Model.Critter.BreedId);
 
-        setupEditors({
-            @(Html.Raw(Model.Javascript?.Select(i => $"\"{i.Name}\": \"{i.DataType}\"").Aggregate((one, two) => $"{one},{two}") ?? ""))
-        });
-
         function previewFile(event) {
             var output = document.getElementById('image');
             output.src = URL.createObjectURL(event.target.files[0]);
         }
     </script>
+
+    <!--Students don't need the event editors, so disable the JS to stop errors.-->
+    <for-roles action="Hide" roles="@RoleEnum.Student">
+        <script src="~/js/life_event.min.js" asp-append-version="true"></script>
+        <script>
+            setupEditors({
+                @(Html.Raw(Model.Javascript?.Select(i => $"\"{i.Name}\": \"{i.DataType}\"").Aggregate((one, two) => $"{one},{two}") ?? ""))
+            });
+        </script>
+    </for-roles>
+
+    <!--Disable all controls for students.-->
+    @if (User.IsStudent())
+    {
+        <partial name="_DisableControlsJs" />
+    }
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

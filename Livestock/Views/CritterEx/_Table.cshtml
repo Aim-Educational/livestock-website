@@ -24,9 +24,7 @@
             <td> @Html.DisplayFor(modelItem => item.MumCritter.Name) </td>
             <td> @Html.DisplayFor(modelItem => item.OwnerContact.Name) </td>
             <td>
-                <a asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(item.CritterId)">Edit</a>
-                |
-                <a asp-controller="CritterEx" asp-action="Delete" asp-route-id="@(item.CritterId)">Delete</a>
+                <partial name="_CritterLinks" model="item"/>
             </td>
         </tr>
     }
