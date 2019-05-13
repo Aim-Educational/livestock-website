@@ -149,7 +149,7 @@
     <div class="col-md-4">
         <!--'datetime' EDITOR-->
         <div id="editor-datetime" class="d-none">
-            <form asp-action="NewDateTime" asp-route-id="@Model.Critter.CritterId">
+            <form asp-controller="LifeEvent" asp-action="NewDateTime" asp-route-id="@Model.Critter.CritterId">
                 <!--Date input-->
                 <label asp-for="DateTime.DateTime" class="control-label"></label>
                 <div class="form-inline">
@@ -182,32 +182,6 @@
 <h4>All Life Events</h4>
 <hr />
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Type</th>
-            <th scope="col">Description</th>
-            <th scope="col">Date </th>
-            <th scope="col">[Actions]</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.LifeEventTableInfo)
-        {
-            <tr>
-                <td> @Html.DisplayFor(modelItem => item.Type) </td>
-                <td> @Html.DisplayFor(modelItem => item.Description) </td>
-                <td> @Html.DisplayFor(modelItem => item.DateTime) </td>
-                <td>
-                    <a href="#">Edit</a>
-                    |
-                    <a href="#">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
 @foreach (var item in Model.LifeEventTableInfo)
 {
     <div class="card">
@@ -221,8 +195,8 @@
 
             <hr />
 
-            <a asp-action="Edit@(item.DataType)" asp-route-id="@(item.Id)" class="card-link">Edit</a>
-            <a asp-action="Delete@(item.DataType)" asp-route-id="@(item.Id)" class="card-link">Delete</a>
+            <a asp-controller="LifeEvent" asp-action="Edit@(item.DataType)" asp-route-id="@(item.Id)" class="card-link">Edit</a>
+            <a asp-controller="LifeEvent" asp-action="Delete@(item.DataType)" asp-route-id="@(item.Id)" class="card-link">Delete</a>
         </div>
     </div>
     <br />
