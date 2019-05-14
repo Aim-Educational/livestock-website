@@ -95,6 +95,7 @@ namespace Website.Controllers
                                .Include(v => v.DadCritter)
                                .Include(v => v.MumCritter)
                                .Include(v => v.OwnerContact)
+                               .OrderBy(v => v.Name)
                                .ToListAsync()
             );
         }
@@ -231,6 +232,7 @@ namespace Website.Controllers
                                           || c.Gender == ajax.Gender)
                                  .Where(c => ajax.CanReproduce == null
                                           || c.CanReproduce == ajax.CanReproduce)
+                                 .OrderBy(c => c.Name)
                                  .ToListAsync();
 
             if(ajax.Design == "card-horiz")
