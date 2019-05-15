@@ -195,6 +195,7 @@ namespace Website.Controllers
             if(ModelState.IsValid)
             {
                 this.FixNullFields(model.Critter);
+                model.Critter.UpdateReproduceFlag(ReproduceFlags.YesReproduceUser, model.YesReproduceUser);
 
                 await this._livestock.AddAsync(model.Critter);
                 await this._livestock.SaveChangesAsync();

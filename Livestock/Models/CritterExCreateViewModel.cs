@@ -11,5 +11,6 @@ namespace Website.Models
     {
         public Critter Critter { get; set; }
         public IFormFile File { get; set; }
+        public bool YesReproduceUser { get; set; }
     }
 }
