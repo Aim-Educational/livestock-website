@@ -70,21 +70,21 @@ namespace Livestock
             services.Configure<AimLoginMiddlewareConfig>(c =>
             {
                 // When the user is logged in, set their Name and Role claims.
-                c.OnAddUserClaims += (_, args) =>
+                c.OnAddUserClaims.Add(async args =>
                 {
                     var claims = new List<Claim>();
 
-                    var info = args.dataMap.SingleValue<AlUserInfo>().GetOrDefaultAsync(args.userDb).Result;
+                    var info = await args.dataMap.SingleValue<AlUserInfo>().GetOrDefaultAsync(args.userDb);
                     claims.Add(new Claim(ClaimTypes.Name, $"{info.FirstName} {info.LastName}"));
 
-                    var role = args.dataMap.SingleReference<Role>().GetOrDefaultAsync(args.userDb).Result;
+                    var role = await args.dataMap.SingleReference<Role>().GetOrDefaultAsync(args.userDb);
                     if(role != null)
                         claims.Add(new Claim(ClaimTypes.Role, role.Description));
 
                     // Get a profile pic from Gravatar
                     using (var md5 = MD5.Create())
                     {
-                        var email           = args.dataMap.SingleValue<UserEmail>().GetOrDefaultAsync(args.userDb).Result;
+                        var email           = await args.dataMap.SingleValue<UserEmail>().GetOrDefaultAsync(args.userDb);
                         var emailFormatted  = email.Email.Trim().ToLower();
                         var emailBytes      = md5.ComputeHash(Encoding.UTF8.GetBytes(emailFormatted));
                         var emailHex        = emailBytes.Select(b => b.ToString("x2"));
@@ -95,7 +95,7 @@ namespace Livestock
                     }
 
                     args.userPrincipal.AddIdentity(new ClaimsIdentity(claims));
-                };
+                });
             });
 
             services.Configure<IAimSmtpClientConfig>(c =>
