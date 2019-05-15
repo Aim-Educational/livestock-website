@@ -3,6 +3,7 @@
 <thead>
     <tr>
         <th scope="col">Name</th>
+        <th scope="col">Tag</th>
         <th scope="col">Type</th>
         <th scope="col">Breed</th>
         <th scope="col">Gender</th>
@@ -15,17 +16,18 @@
 <tbody>
     @foreach (var item in Model)
     {
-        <tr>
-            <td> @Html.DisplayFor(modelItem => item.Name) </td>
-            <td> @Html.DisplayFor(modelItem => item.CritterType.Name) </td>
-            <td> @Html.DisplayFor(modelItem => item.Breed.Description) </td>
-            <td> @Html.DisplayFor(modelItem => item.Gender) </td>
-            <td> @Html.DisplayFor(modelItem => item.DadCritter.Name) </td>
-            <td> @Html.DisplayFor(modelItem => item.MumCritter.Name) </td>
-            <td> @Html.DisplayFor(modelItem => item.OwnerContact.Name) </td>
-            <td>
-                <partial name="_CritterLinks" model="item"/>
-            </td>
-        </tr>
+    <tr>
+        <td> @Html.DisplayFor(modelItem => item.Name) </td>
+        <td> @Html.DisplayFor(modelItem => item.TagNumber) </td>
+        <td> @Html.DisplayFor(modelItem => item.CritterType.Name) </td>
+        <td> @Html.DisplayFor(modelItem => item.Breed.Description) </td>
+        <td> @Html.DisplayFor(modelItem => item.Gender) </td>
+        <td> @Html.DisplayFor(modelItem => item.DadCritter.Name) </td>
+        <td> @Html.DisplayFor(modelItem => item.MumCritter.Name) </td>
+        <td> @Html.DisplayFor(modelItem => item.OwnerContact.Name) </td>
+        <td>
+            <partial name="_CritterLinks" model="item" />
+        </td>
+    </tr>
     }
 </tbody>
