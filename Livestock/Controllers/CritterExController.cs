@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Website.Models;
 using Website.Other;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace Website.Controllers
 {
@@ -28,14 +31,58 @@ namespace Website.Controllers
 
         #region CritterImage
         [ResponseCache(Duration = 60 * 60 * 24 * 365)]
-        public async Task<IActionResult> Image(int critterId, int cacheVersion) // cacheVersion is unused, but needs to be there for routing.
+        public async Task<IActionResult> Image(int critterId, int cacheVersion, int? width, int? height) // cacheVersion is unused, but needs to be there for routing.
         {
             var critter = await this._livestock.Critter.Include(c => c.CritterImage).FirstAsync(c => c.CritterId == critterId);
             
+            // If the critter has an image, retrieve it.
             if(critter.CritterImageId != null)
             {
-                var image = critter.CritterImage.Data;
-                return File(image, "image/png");
+                var image = critter.CritterImage;
+
+                // If we need a specific size, either retrieve or create it.
+                if(width != null && height != null)
+                {
+                    var variant = await this._livestock.CritterImageVariant
+                                                       .Include(c => c.CritterImageModified)
+                                                       .FirstOrDefaultAsync(v => v.CritterImageOriginalId == critter.CritterImageId);
+
+                    if(variant != null)
+                    {
+                        image = variant.CritterImageModified;
+                    }
+                    else
+                    {
+                        variant = new CritterImageVariant();
+                        variant.CritterImageOriginalId = critter.CritterImageId.Value;
+                        variant.Width = width.Value;
+                        variant.Height = height.Value;
+                        
+                        // Resize the image, and gets it's data.
+                        using (var toEdit = SixLabors.ImageSharp.Image.Load(image.Data))
+                        {
+                            toEdit.Mutate(i => i.Resize(width.Value, height.Value));
+
+                            using (var memory = new MemoryStream())
+                            {
+                                toEdit.SaveAsJpeg(memory);
+                                memory.Position = 0;
+
+                                image = new CritterImage();
+                                image.Data = new byte[memory.Length];
+                                await memory.ReadAsync(image.Data);
+                            }
+                        }
+
+                        variant.CritterImageModified = image;
+
+                        await this._livestock.CritterImage.AddAsync(image);
+                        await this._livestock.CritterImageVariant.AddAsync(variant);
+                        await this._livestock.SaveChangesAsync();
+                    }
+                }
+
+                return File(image.Data, "image/png");
             }
             else
                 return Redirect("/images/icons/default.png");
