@@ -16,12 +16,15 @@ using Website.Other;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using System.Buffers;
+using System.Runtime;
 
 namespace Website.Controllers
 {
     [Authorize(Roles = "admin,staff,student")]
     public class CritterExController : Controller
     {
+        static readonly ArrayPool<byte> _imageBufferPool = ArrayPool<byte>.Create(1 * 1024 * 1024, 20);
         readonly LivestockContext _livestock;
 
         public CritterExController(LivestockContext livestock)
@@ -65,7 +68,7 @@ namespace Website.Controllers
                         image = critter.CritterImage;
 
                         // Resize it, then upload it so it's cached.
-                        var resized = await this.ResizeImageAsync(image.Data, width.Value, height.Value);
+                        var resized = await this.ResizeImageAsyncPOOLED(image.Data, width.Value, height.Value);
                         image = new CritterImage
                         {
                             Data = resized
@@ -76,9 +79,12 @@ namespace Website.Controllers
                         await this._livestock.CritterImage.AddAsync(image);
                         await this._livestock.CritterImageVariant.AddAsync(variant);
                         await this._livestock.SaveChangesAsync();
+
+                        this._livestock.Entry(image).State = EntityState.Detached;
+                        _imageBufferPool.Return(resized);
                     }
                 }
-
+                
                 return File(image.Data, "image/png");
             }
             else
@@ -328,9 +334,10 @@ namespace Website.Controllers
             if (String.IsNullOrWhiteSpace(val.Name)) val.Name = "N/A";
         }
 
-        private Task<byte[]> ResizeImageAsync(byte[] data, int width, int height)
+        private Task<byte[]> ResizeImageAsyncPOOLED(byte[] data, int width, int height)
         {
             // Ran in another thread since this is a very expensive operation on our underpowered droplet.
+            // Especially so, since my iphone takes images in 4k...
             return Task.Run<byte[]>(() => 
             {
                 using (var toEdit = SixLabors.ImageSharp.Image.Load(data))
@@ -342,7 +349,7 @@ namespace Website.Controllers
                         toEdit.SaveAsJpeg(memory);
                         memory.Position = 0;
                     
-                        var toReturn = new byte[memory.Length];
+                        var toReturn = _imageBufferPool.Rent((int)memory.Length);
                         memory.ReadAsync(toReturn);
 
                         return toReturn;
