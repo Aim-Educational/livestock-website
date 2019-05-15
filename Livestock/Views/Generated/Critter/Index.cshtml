@@ -24,6 +24,7 @@
 							<th> @Html.DisplayNameFor(model => model.DadFurther) </th>
 							<th> @Html.DisplayNameFor(model => model.Gender) </th>
 							<th> @Html.DisplayNameFor(model => model.MumFurther) </th>
+							<th> @Html.DisplayNameFor(model => model.ReproduceFlags) </th>
 			            <th></th>
         </tr>
     </thead>
@@ -41,6 +42,7 @@
 				            									<td> @Html.DisplayFor(modelItem => item.DadFurther) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.Gender) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.MumFurther) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.ReproduceFlags) </td>
 				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.CritterId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.CritterId">Details</a> |

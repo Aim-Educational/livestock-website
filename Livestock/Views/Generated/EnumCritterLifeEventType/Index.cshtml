@@ -15,6 +15,7 @@
         <tr>
 							<th> @Html.DisplayNameFor(model => model.Description) </th>
 							<th> @Html.DisplayNameFor(model => model.Comment) </th>
+							<th> @Html.DisplayNameFor(model => model.DataType) </th>
 							<th> @Html.DisplayNameFor(model => model.EnumCritterLifeEventCategoryId) </th>
 			            <th></th>
         </tr>
@@ -24,6 +25,7 @@
         <tr>
 												<td> @Html.DisplayFor(modelItem => item.Description) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.DataType) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.EnumCritterLifeEventCategoryId) </td>
 				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.EnumCritterLifeEventTypeId">Edit</a> |

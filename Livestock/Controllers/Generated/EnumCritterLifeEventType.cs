@@ -53,7 +53,7 @@ namespace Website.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Create([Bind("EnumCritterLifeEventTypeId,Comment,Description,EnumCritterLifeEventCategoryId,Timestamp,VersionNumber")]EnumCritterLifeEventType val)
+        public async Task<IActionResult> Create([Bind("EnumCritterLifeEventTypeId,Comment,DataType,Description,EnumCritterLifeEventCategoryId,Timestamp,VersionNumber")]EnumCritterLifeEventType val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -86,7 +86,7 @@ namespace Website.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("EnumCritterLifeEventTypeId,Comment,Description,EnumCritterLifeEventCategoryId,Timestamp,VersionNumber")]EnumCritterLifeEventType val)
+        public async Task<IActionResult> Edit(int id, [Bind("EnumCritterLifeEventTypeId,Comment,DataType,Description,EnumCritterLifeEventCategoryId,Timestamp,VersionNumber")]EnumCritterLifeEventType val)
         {
 			if(val.EnumCritterLifeEventTypeId != id)
 				return NotFound();
@@ -148,6 +148,7 @@ namespace Website.Controllers
 		private void FixNullFields(EnumCritterLifeEventType val)
 		{
 			if(String.IsNullOrWhiteSpace(val.Comment)) val.Comment = "N/A";
+if(String.IsNullOrWhiteSpace(val.DataType)) val.DataType = "N/A";
 if(String.IsNullOrWhiteSpace(val.Description)) val.Description = "N/A";
 		}
 

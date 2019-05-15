@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	[Authorize(Roles = "admin,student,")]
+	[Authorize(Roles = "[Forbidden to all]")]
 	public class CritterLifeEventController : Controller
     {
         private readonly LivestockContext _context;
@@ -46,7 +46,7 @@ namespace Website.Controllers
 		[Authorize]
         public IActionResult Create()
         {
-            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "Name");
+            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId");
 ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLifeEventType, "EnumCritterLifeEventTypeId", "Description");
             return View();
         }
@@ -54,7 +54,7 @@ ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLife
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Create([Bind("CritterLifeEventId,Comment,CritterId,DateTime,Description,EnumCritterLifeEventTypeId,Timestamp,VersionNumber")]CritterLifeEvent val)
+        public async Task<IActionResult> Create([Bind("CritterLifeEventId,Comment,CritterId,DateTime,Description,EnumCritterLifeEventDataId,EnumCritterLifeEventTypeId,Timestamp,VersionNumber")]CritterLifeEvent val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -63,7 +63,7 @@ ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLife
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.CritterId);
+            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId", val.CritterId);
 ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLifeEventType, "EnumCritterLifeEventTypeId", "Description", val.EnumCritterLifeEventTypeId);
             return View(val);
         }
@@ -81,7 +81,7 @@ ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLife
             {
                 return NotFound();
             }
-            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.CritterId);
+            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId", val.CritterId);
 ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLifeEventType, "EnumCritterLifeEventTypeId", "Description", val.EnumCritterLifeEventTypeId);
             return View(val);
         }
@@ -89,7 +89,7 @@ ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLife
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("CritterLifeEventId,Comment,CritterId,DateTime,Description,EnumCritterLifeEventTypeId,Timestamp,VersionNumber")]CritterLifeEvent val)
+        public async Task<IActionResult> Edit(int id, [Bind("CritterLifeEventId,Comment,CritterId,DateTime,Description,EnumCritterLifeEventDataId,EnumCritterLifeEventTypeId,Timestamp,VersionNumber")]CritterLifeEvent val)
         {
 			if(val.CritterLifeEventId != id)
 				return NotFound();
@@ -116,7 +116,7 @@ ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLife
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "Name", val.CritterId);
+            ViewData["CritterId"] = new SelectList(_context.Critter, "CritterId", "CritterImageId", val.CritterId);
 ViewData["EnumCritterLifeEventTypeId"] = new SelectList(_context.EnumCritterLifeEventType, "EnumCritterLifeEventTypeId", "Description", val.EnumCritterLifeEventTypeId);
             return View(val);
         }

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	[Authorize(Roles = "admin,")]
+	[Authorize(Roles = "[Forbidden to all]")]
 	public class RoleController : Controller
     {
         private readonly LivestockContext _context;

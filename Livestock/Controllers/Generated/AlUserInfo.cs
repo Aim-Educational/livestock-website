@@ -53,7 +53,7 @@ namespace Website.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Create([Bind("AlUserInfoId,Comment,EmailAddress,FirstName,LastName,PrivacyConsent,Timestamp,TosConsent")]AlUserInfo val)
+        public async Task<IActionResult> Create([Bind("AlUserInfoId,Comment,FirstName,LastName,PrivacyConsent,Timestamp,TosConsent")]AlUserInfo val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -86,7 +86,7 @@ namespace Website.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("AlUserInfoId,Comment,EmailAddress,FirstName,LastName,PrivacyConsent,Timestamp,TosConsent")]AlUserInfo val)
+        public async Task<IActionResult> Edit(int id, [Bind("AlUserInfoId,Comment,FirstName,LastName,PrivacyConsent,Timestamp,TosConsent")]AlUserInfo val)
         {
 			if(val.AlUserInfoId != id)
 				return NotFound();

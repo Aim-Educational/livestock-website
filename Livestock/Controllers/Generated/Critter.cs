@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
-	[Authorize(Roles = "admin,")]
+	[Authorize(Roles = "[Forbidden to all]")]
 	public class CritterController : Controller
     {
         private readonly LivestockContext _context;
@@ -58,7 +58,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Create([Bind("CritterId,BreedId,Comment,CritterImageId,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
+        public async Task<IActionResult> Create([Bind("CritterId,BreedId,Comment,CritterImageId,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,ReproduceFlags,Timestamp,VersionNumber")]Critter val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -101,7 +101,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("CritterId,BreedId,Comment,CritterImageId,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,Timestamp,VersionNumber")]Critter val)
+        public async Task<IActionResult> Edit(int id, [Bind("CritterId,BreedId,Comment,CritterImageId,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,ReproduceFlags,Timestamp,VersionNumber")]Critter val)
         {
 			if(val.CritterId != id)
 				return NotFound();

@@ -70,7 +70,8 @@ namespace CustomScaffold
                 || evilProp.Name == "RegistrationNumber"
                 || evilProp.Name == "VehicleTrailerMapId"
                 || evilProp.Name == "Title"
-                || evilProp.Name == "Postcode")
+                || evilProp.Name == "Postcode"
+                || evilProp.Name == "CritterImageId")
                 {
                     prop = evilProp;
                     break;
@@ -159,11 +160,18 @@ namespace CustomScaffold
             // HACK: Special support for Gender, since it has a max length of 1
             // if(String.IsNullOrWhitespace(val.Comment))
             //     val.Comment = "N/A";
-            template.FixNullFieldsCode
-                = entity.GetProperties()
-                        .Where(p => p.ClrType.UnderlyingSystemType == typeof(string))
-                        .Select(p => $"if(String.IsNullOrWhiteSpace(val.{p.Name})) val.{p.Name} = \"{(p.Name == "Gender" ? "?" : "N/A")}\";")
-                        .Aggregate((one, two) => one + "\n" + two);
+            try
+            {
+                template.FixNullFieldsCode
+                    = entity.GetProperties()
+                            .Where(p => p.ClrType.UnderlyingSystemType == typeof(string))
+                            .Select(p => $"if(String.IsNullOrWhiteSpace(val.{p.Name})) val.{p.Name} = \"{(p.Name == "Gender" ? "?" : "N/A")}\";")
+                            .Aggregate((one, two) => one + "\n" + two);
+            }
+            catch
+            {
+                template.FixNullFieldsCode = "";
+            }
 
             // Create the authorise attribute
             // [Authorize(RolesOR = "admin,staff")]

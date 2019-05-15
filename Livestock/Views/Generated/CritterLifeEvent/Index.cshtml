@@ -18,6 +18,7 @@
 							<th> @Html.DisplayNameFor(model => model.EnumCritterLifeEventTypeId) </th>
 							<th> @Html.DisplayNameFor(model => model.Comment) </th>
 							<th> @Html.DisplayNameFor(model => model.DateTime) </th>
+							<th> @Html.DisplayNameFor(model => model.EnumCritterLifeEventDataId) </th>
 			            <th></th>
         </tr>
     </thead>
@@ -25,10 +26,11 @@
 @foreach (var item in Model) {
         <tr>
 												<td> @Html.DisplayFor(modelItem => item.Description) </td>
-				            									<td> @Html.DisplayFor(modelItem => item.Critter.Name) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.Critter.CritterImageId) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.EnumCritterLifeEventType.Description) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.DateTime) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.EnumCritterLifeEventDataId) </td>
 				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.CritterLifeEventId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.CritterLifeEventId">Details</a> |
