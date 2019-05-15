@@ -14,13 +14,15 @@ namespace Website.TagHelpers
     public class ReproduceFlagInputTagHelper : TagHelper
     {
         public ReproduceFlags ReproduceType { get; set; }
-        public int ReproduceInput { get; set; } // This is from the Critter model, so it'll be an int.
+        public int? ReproduceInput { get; set; } // This is from the Critter model, so it'll be an int.
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.Attributes.Add("value", (int)this.ReproduceType);
 
-            if((this.ReproduceInput & (int)this.ReproduceType) > 0)
+            if(this.ReproduceInput != null 
+            && (this.ReproduceInput & (int)this.ReproduceType) > 0
+            )
                 output.Attributes.Add("checked", null);
         }
     }

@@ -190,7 +190,7 @@ namespace Website.Controllers
         [Authorize(Roles = "admin,staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Critter,File")] CritterExCreateViewModel model)
+        public async Task<IActionResult> Create([Bind("Critter,File,YesReproduceUser")] CritterExCreateViewModel model)
         {
             if(ModelState.IsValid)
             {
@@ -199,8 +199,9 @@ namespace Website.Controllers
 
                 await this._livestock.AddAsync(model.Critter);
                 await this._livestock.SaveChangesAsync();
-
-                return await this.Image(model.File, model.Critter.CritterId);
+                
+                return (model.File == null) ? RedirectToAction("Index")
+                                            : await this.Image(model.File, model.Critter.CritterId);
             }
 
             return View(model);
