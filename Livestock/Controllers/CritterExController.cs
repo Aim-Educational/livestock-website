@@ -314,23 +314,27 @@ namespace Website.Controllers
             if (String.IsNullOrWhiteSpace(val.Name)) val.Name = "N/A";
         }
 
-        private async Task<byte[]> ResizeImageAsync(byte[] data, int width, int height)
+        private Task<byte[]> ResizeImageAsync(byte[] data, int width, int height)
         {
-            using (var toEdit = SixLabors.ImageSharp.Image.Load(data))
+            // Ran in another thread since this is a very expensive operation on our underpowered droplet.
+            return Task.Run<byte[]>(() => 
             {
-                toEdit.Mutate(i => i.Resize(width, height));
-
-                using (var memory = new MemoryStream())
+                using (var toEdit = SixLabors.ImageSharp.Image.Load(data))
                 {
-                    toEdit.SaveAsJpeg(memory);
-                    memory.Position = 0;
-                    
-                    var toReturn = new byte[memory.Length];
-                    await memory.ReadAsync(toReturn);
+                    toEdit.Mutate(i => i.Resize(width, height));
 
-                    return toReturn;
+                    using (var memory = new MemoryStream())
+                    {
+                        toEdit.SaveAsJpeg(memory);
+                        memory.Position = 0;
+                    
+                        var toReturn = new byte[memory.Length];
+                        memory.ReadAsync(toReturn);
+
+                        return toReturn;
+                    }
                 }
-            }
+            });
         }
         #endregion
     }
