@@ -53,26 +53,18 @@ namespace Website.Controllers
                     }
                     else
                     {
-                        variant = new CritterImageVariant();
-                        variant.CritterImageOriginalId = critter.CritterImageId.Value;
-                        variant.Width = width.Value;
-                        variant.Height = height.Value;
-                        
-                        // Resize the image, and gets it's data.
-                        using (var toEdit = SixLabors.ImageSharp.Image.Load(image.Data))
+                        variant = new CritterImageVariant
                         {
-                            toEdit.Mutate(i => i.Resize(width.Value, height.Value));
+                            CritterImageOriginalId = critter.CritterImageId.Value,
+                            Width = width.Value,
+                            Height = height.Value
+                        };
 
-                            using (var memory = new MemoryStream())
-                            {
-                                toEdit.SaveAsJpeg(memory);
-                                memory.Position = 0;
-
-                                image = new CritterImage();
-                                image.Data = new byte[memory.Length];
-                                await memory.ReadAsync(image.Data);
-                            }
-                        }
+                        var resized = await this.ResizeImageAsync(image.Data, width.Value, height.Value);
+                        image = new CritterImage
+                        {
+                            Data = resized
+                        };
 
                         variant.CritterImageModified = image;
 
@@ -320,6 +312,25 @@ namespace Website.Controllers
             if (String.IsNullOrWhiteSpace(val.Gender)) val.Gender = "?";
             if (String.IsNullOrWhiteSpace(val.MumFurther)) val.MumFurther = "N/A";
             if (String.IsNullOrWhiteSpace(val.Name)) val.Name = "N/A";
+        }
+
+        private async Task<byte[]> ResizeImageAsync(byte[] data, int width, int height)
+        {
+            using (var toEdit = SixLabors.ImageSharp.Image.Load(data))
+            {
+                toEdit.Mutate(i => i.Resize(width, height));
+
+                using (var memory = new MemoryStream())
+                {
+                    toEdit.SaveAsJpeg(memory);
+                    memory.Position = 0;
+                    
+                    var toReturn = new byte[memory.Length];
+                    await memory.ReadAsync(toReturn);
+
+                    return toReturn;
+                }
+            }
         }
         #endregion
     }
