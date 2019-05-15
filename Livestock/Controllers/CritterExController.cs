@@ -120,6 +120,15 @@ namespace Website.Controllers
                 // and cache the version 2 image of the critter.
                 // This allows us to cache, while still being able to update the images in a timely manner.
                 critter.VersionNumber++;
+
+                // Remove all variants of this image from the database.
+                var variants = critter.CritterImage.CritterImageVariantCritterImageOriginal.ToList();
+                foreach(var variant in variants)
+                {
+                    this._livestock.CritterImage.Remove(await this._livestock.CritterImage.FindAsync(variant.CritterImageModifiedId));
+                    this._livestock.Remove(variant);
+                }
+
                 await this._livestock.SaveChangesAsync();
             }
 
