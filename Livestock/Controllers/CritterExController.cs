@@ -256,7 +256,9 @@ namespace Website.Controllers
             var breeds = await this._livestock.Breed
                                               .Include(b => b.Critter)
                                               .Where(b => b.CritterTypeId == ajax.CritterTypeId || b.Description == "Unknown")
-                                              .Select(b => new { description = $"{b.Description} ({b.Critter.Count})", value = b.BreedId })
+                                              // Line below: "[Type Description] ([Count of critter for type])"
+                                              // Large mess of code = If type is unknown, only count the critters of the wanted type, instead of every type.
+                                              .Select(b => new { description = $"{b.Description} ({((b.Description == "Unknown") ? b.Critter.Where(c => c.CritterTypeId == ajax.CritterTypeId).Count() : b.Critter.Count)})", value = b.BreedId })
                                               .OrderBy(b => b.description)
                                               .ToListAsync();
             return Json(breeds);
