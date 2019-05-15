@@ -76,12 +76,17 @@ namespace Website.Controllers
 
                         variant.CritterImageModified = image;
 
-                        await this._livestock.CritterImage.AddAsync(image);
-                        await this._livestock.CritterImageVariant.AddAsync(variant);
-                        await this._livestock.SaveChangesAsync();
-
-                        this._livestock.Entry(image).State = EntityState.Detached;
-                        _imageBufferPool.Return(resized);
+                        try
+                        {
+                            await this._livestock.CritterImage.AddAsync(image);
+                            await this._livestock.CritterImageVariant.AddAsync(variant);
+                            await this._livestock.SaveChangesAsync();
+                        }
+                        finally // I can count on one hand the amount of times I've used 'finally'.
+                        {
+                            this._livestock.Entry(image).State = EntityState.Detached;
+                            _imageBufferPool.Return(resized);
+                        }
                     }
                 }
                 
@@ -334,6 +339,7 @@ namespace Website.Controllers
             if (String.IsNullOrWhiteSpace(val.Name)) val.Name = "N/A";
         }
 
+        // "POOLED" is to make it very clear that the memory returned is from the image pool.
         private Task<byte[]> ResizeImageAsyncPOOLED(byte[] data, int width, int height)
         {
             // Ran in another thread since this is a very expensive operation on our underpowered droplet.
