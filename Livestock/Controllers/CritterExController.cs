@@ -33,12 +33,12 @@ namespace Website.Controllers
         [ResponseCache(Duration = 60 * 60 * 24 * 365)]
         public async Task<IActionResult> Image(int critterId, int cacheVersion, int? width, int? height) // cacheVersion is unused, but needs to be there for routing.
         {
-            var critter = await this._livestock.Critter.Include(c => c.CritterImage).FirstAsync(c => c.CritterId == critterId);
+            var critter = await this._livestock.Critter.FirstAsync(c => c.CritterId == critterId);
             
             // If the critter has an image, retrieve it.
             if(critter.CritterImageId != null)
             {
-                var image = critter.CritterImage;
+                CritterImage image = null;
 
                 // If we need a specific size, either retrieve or create it.
                 if(width != null && height != null)
@@ -60,6 +60,11 @@ namespace Website.Controllers
                             Height = height.Value
                         };
 
+                        // Load the original.
+                        await this._livestock.Entry(critter).Reference(c => c.CritterImage).LoadAsync();
+                        image = critter.CritterImage;
+
+                        // Resize it, then upload it so it's cached.
                         var resized = await this.ResizeImageAsync(image.Data, width.Value, height.Value);
                         image = new CritterImage
                         {
