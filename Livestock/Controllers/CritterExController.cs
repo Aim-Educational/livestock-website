@@ -209,10 +209,10 @@ namespace Website.Controllers
 
         private void SetupCritterViewData(Critter val)
         {
-            ViewData["CritterTypeId"]  = new SelectList(this._livestock.CritterType.OrderBy(c => c.Name),                         "CritterTypeId", "Name", val?.CritterTypeId);
+            ViewData["CritterTypeId"]  = new SelectList(this._livestock.CritterType.OrderBy(c => c.Name),                                                "CritterTypeId", "Name", val?.CritterTypeId);
             ViewData["DadCritterId"]   = new SelectList(this._livestock.Critter.Where(c => c.Gender == "M" || c.Name == "Unknown").OrderBy(c => c.Name), "CritterId",     "Name", val?.DadCritterId);
             ViewData["MumCritterId"]   = new SelectList(this._livestock.Critter.Where(c => c.Gender == "F" || c.Name == "Unknown").OrderBy(c => c.Name), "CritterId",     "Name", val?.MumCritterId);
-            ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact.OrderBy(c => c.Name),                             "ContactId",     "Name", val?.OwnerContactId);
+            ViewData["OwnerContactId"] = new SelectList(this._livestock.Contact.OrderBy(c => c.Name),                                                    "ContactId",     "Name", val?.OwnerContactId);
         }
         #endregion
 
