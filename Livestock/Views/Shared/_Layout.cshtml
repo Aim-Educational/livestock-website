@@ -41,6 +41,21 @@
             crossorigin="anonymous">
     </script>
 
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script>
+        $(function () {
+            $('.lazy').Lazy({
+                scrollDirection: 'vertical',
+                effect: 'fadeIn',
+                effectTime: 500,
+                visibleOnly: true,
+                onError: function (element) {
+                    console.log('error loading ' + element.data('src'));
+                }
+            });
+        });
+    </script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
