@@ -93,6 +93,9 @@ namespace Website.Controllers
                     }
                 }
                 
+                // Hopefully force the GC to clean up the LOH
+                GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+
                 return File(image.Data, "image/png");
             }
             else
