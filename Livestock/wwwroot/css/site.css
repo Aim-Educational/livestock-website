@@ -8,3 +8,8 @@ img.vert-card-img-responsive {
     width: 180px !important;
     height: 200px !important;
 }
+
+/* This is used by the lazy loading library to identify what to lazy load. */
+/* This is just here so it shows up in intelisense */
+.lazy {
+}
