@@ -68,7 +68,7 @@ namespace Website.Controllers
                         image = critter.CritterImage;
 
                         // Resize it, then upload it so it's cached.
-                        var resized = await this.ResizeImageAsyncPOOLED(image.Data, width.Value, height.Value, "png");
+                        var resized = await this.ResizeImageAsyncPOOLED(image.Data, width.Value, height.Value);
                         image = new CritterImage
                         {
                             Data = resized
@@ -145,7 +145,7 @@ namespace Website.Controllers
 
                 // Then resize the image to a standard resolution we need.
                 // Keep in mind that my iphone takes them in 4k. We're never gonna need them in 4k for anything.
-                var resized = await this.ResizeImageAsyncPOOLED(critter.CritterImage.Data, 1920, 1080);
+                var resized = await this.ResizeImageAsyncPOOLED(critter.CritterImage.Data, 1920, 1080, "png");
 
                 try
                 {
@@ -314,6 +314,10 @@ namespace Website.Controllers
                                           || c.Gender == ajax.Gender)
                                  .Where(c => ajax.CanReproduce == null
                                           || c.CanReproduce == ajax.CanReproduce)
+                                 .Where(c => String.IsNullOrWhiteSpace(ajax.Name)
+                                          || c.Name.StartsWith(ajax.Name)) // Naive check for now, until we have a proper comparison algorithm
+                                 .Where(c => String.IsNullOrWhiteSpace(ajax.Tag)
+                                          || c.TagNumber.StartsWith(ajax.Tag))
                                  .OrderBy(c => c.Name)
                                  .ToListAsync();
 
@@ -399,5 +403,7 @@ namespace Website.Controllers
         public string Design { get; set; }
         public string Gender { get; set; }
         public bool? CanReproduce { get; set; }
+        public string Name { get; set; }
+        public string Tag { get; set; }
     }
 }

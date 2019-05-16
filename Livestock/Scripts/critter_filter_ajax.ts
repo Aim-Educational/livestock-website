@@ -17,7 +17,7 @@ function getRadioGroupValue(group: HTMLInputElement[]) {
     return value;
 }
 
-// Updates the given design using the select type-breed pair.
+// Updates the given design using the given filters.
 //
 // Params:
 //  breedDropdown        = The dropdown for which breed to use.
@@ -28,13 +28,15 @@ function getRadioGroupValue(group: HTMLInputElement[]) {
 //  div                  = The div to place the updated design inside of.
 //  designType           = The design to use. Valid values are 'card-horiz', 'card-vert', and 'table'.
 function updateDesignLayout(
-    breedDropdown: HTMLSelectElement,
-    typeDropdown: HTMLSelectElement,
-    genderRadioButtons: HTMLInputElement[],
-    canReproduceButtons: HTMLInputElement[],
-    cache: { [divPlusBreed: string]: string },
-    div: HTMLElement,
-    designType: string
+    nameTagTextbox:         HTMLInputElement,
+    nameTagRadioButtons:    HTMLInputElement[],
+    breedDropdown:          HTMLSelectElement,
+    typeDropdown:           HTMLSelectElement,
+    genderRadioButtons:     HTMLInputElement[],
+    canReproduceButtons:    HTMLInputElement[],
+    cache:                  { [divPlusBreed: string]: string },
+    div:                    HTMLElement,
+    designType:             string
 ) {
     // Get all of the values we want.
     let typeName            = typeDropdown.selectedOptions[0].innerHTML;
@@ -42,13 +44,15 @@ function updateDesignLayout(
     let breedName           = breedDropdown.selectedOptions[0].innerHTML;
     let breedValue          = parseInt(breedDropdown.selectedOptions[0].value);
     let genderValue         = getRadioGroupValue(genderRadioButtons);
-    let reproduceValue:any  = getRadioGroupValue(canReproduceButtons);
+    let reproduceValue: any = getRadioGroupValue(canReproduceButtons);
+    let nameTagValue        = nameTagTextbox.value;
+    let isNameFilter: any   = getRadioGroupValue(nameTagRadioButtons) == "Name"; // True = Name, False = Tag
 
     if (reproduceValue !== null)
         reproduceValue = (reproduceValue === "true");
 
     // Use the cached response if we have one already.
-    let key = designType + "-" + breedName + "-" + typeName + "-" + genderValue + "-" + reproduceValue;
+    let key = designType + "-" + breedName + "-" + typeName + "-" + genderValue + "-" + reproduceValue + "-" + nameTagValue + "-" + isNameFilter;
     if (key in cache) {
         div.innerHTML = cache[key];
         return;
@@ -67,7 +71,9 @@ function updateDesignLayout(
                 CritterTypeId: typeValue,
                 Design: designType,
                 Gender: genderValue,
-                CanReproduce: reproduceValue
+                CanReproduce: reproduceValue,
+                Name: (isNameFilter) ? nameTagValue : null,
+                Tag: (!isNameFilter) ? nameTagValue : null
             })
         }
     ).done(function (response: string) {
@@ -93,6 +99,8 @@ function setBreedValues(breedDropdown: HTMLSelectElement, breeds: BreedInfo[]) {
 }
 
 function handleCritterFilter(
+    nameTagTextbox: HTMLInputElement,
+    nameTagRadioButtons: HTMLInputElement[],
     typeDropdown: HTMLSelectElement,
     breedDropdown: HTMLSelectElement,
     genderRadioButtons: HTMLInputElement[],
@@ -106,9 +114,10 @@ function handleCritterFilter(
     let typeCache: { [typeId: number]: BreedInfo[] } = {};
 
     breedDropdown.addEventListener("change", function () {
-        updateDesignLayout(breedDropdown, typeDropdown, genderRadioButtons, canReproduceButtons, breedCache, divCardHoriz, "card-horiz");
-        updateDesignLayout(breedDropdown, typeDropdown, genderRadioButtons, canReproduceButtons, breedCache, divCardVert, "card-vert");
-        updateDesignLayout(breedDropdown, typeDropdown, genderRadioButtons, canReproduceButtons, breedCache, divTable, "table");
+        // Lord forgive me.
+        updateDesignLayout(nameTagTextbox, nameTagRadioButtons, breedDropdown, typeDropdown, genderRadioButtons, canReproduceButtons, breedCache, divCardHoriz, "card-horiz");
+        updateDesignLayout(nameTagTextbox, nameTagRadioButtons, breedDropdown, typeDropdown, genderRadioButtons, canReproduceButtons, breedCache, divCardVert, "card-vert");
+        updateDesignLayout(nameTagTextbox, nameTagRadioButtons, breedDropdown, typeDropdown, genderRadioButtons, canReproduceButtons, breedCache, divTable, "table");
     });
 
     typeDropdown.addEventListener("change", function () {
@@ -144,6 +153,7 @@ function handleCritterFilter(
         });
     });
 
+    // I hate my life 
     genderRadioButtons.forEach(b => {
         b.addEventListener("change", function () {
             breedDropdown.dispatchEvent(new Event("change")); // Breeddropdown already has the logic we need, so we just reuse that.
@@ -155,4 +165,14 @@ function handleCritterFilter(
             breedDropdown.dispatchEvent(new Event("change")); // Breeddropdown already has the logic we need, so we just reuse that.
         })
     });
+
+    nameTagRadioButtons.forEach(b => {
+        b.addEventListener("change", function () {
+            breedDropdown.dispatchEvent(new Event("change")); // Breeddropdown already has the logic we need, so we just reuse that.
+        })
+    });
+
+    nameTagTextbox.addEventListener("change", function () {
+        breedDropdown.dispatchEvent(new Event("change")); // Breeddropdown already has the logic we need, so we just reuse that.
+    })
 }
