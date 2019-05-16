@@ -68,7 +68,7 @@ namespace Website.Controllers
                         image = critter.CritterImage;
 
                         // Resize it, then upload it so it's cached.
-                        var resized = await this.ResizeImageAsyncPOOLED(image.Data, width.Value, height.Value);
+                        var resized = await this.ResizeImageAsyncPOOLED(image.Data, width.Value, height.Value, "png");
                         image = new CritterImage
                         {
                             Data = resized
@@ -84,6 +84,9 @@ namespace Website.Controllers
                         }
                         finally // I can count on one hand the amount of times I've used 'finally'.
                         {
+                            // We detach the entity, since the image data shouldn't be reference anymore once it's returned.
+                            // And if we set it to 'null', then we can accidentally remove the image data if we save at some point.
+                            // So it's safer to just detach it, and take the performance hit of downloading a new version of it when needed.
                             this._livestock.Entry(image).State = EntityState.Detached;
                             _imageBufferPool.Return(resized);
                         }
@@ -140,7 +143,20 @@ namespace Website.Controllers
                     this._livestock.Remove(variant);
                 }
 
-                await this._livestock.SaveChangesAsync();
+                // Then resize the image to a standard resolution we need.
+                // Keep in mind that my iphone takes them in 4k. We're never gonna need them in 4k for anything.
+                var resized = await this.ResizeImageAsyncPOOLED(critter.CritterImage.Data, 1920, 1080);
+
+                try
+                {
+                    critter.CritterImage.Data = resized;
+                    await this._livestock.SaveChangesAsync();
+                }
+                finally
+                {
+                    this._livestock.Entry(critter).State = EntityState.Detached;
+                    _imageBufferPool.Return(resized);
+                }
             }
 
             return RedirectToAction("Edit", new { id = critterId });
@@ -340,7 +356,7 @@ namespace Website.Controllers
         }
 
         // "POOLED" is to make it very clear that the memory returned is from the image pool.
-        private Task<byte[]> ResizeImageAsyncPOOLED(byte[] data, int width, int height)
+        private Task<byte[]> ResizeImageAsyncPOOLED(byte[] data, int width, int height, string format = "jpg")
         {
             // Ran in another thread since this is a very expensive operation on our underpowered droplet.
             // Especially so, since my iphone takes images in 4k...
@@ -352,9 +368,14 @@ namespace Website.Controllers
 
                     using (var memory = new MemoryStream())
                     {
-                        toEdit.SaveAsJpeg(memory);
-                        memory.Position = 0;
-                    
+                        if(format == "jpg")
+                            toEdit.SaveAsJpeg(memory);
+                        else if(format == "png")
+                            toEdit.SaveAsPng(memory, new SixLabors.ImageSharp.Formats.Png.PngEncoder{ CompressionLevel = 9 });
+                        else
+                            throw new InvalidOperationException($"No format for '{format}'");
+
+                        memory.Position = 0;                    
                         var toReturn = _imageBufferPool.Rent((int)memory.Length);
                         memory.ReadAsync(toReturn);
 
