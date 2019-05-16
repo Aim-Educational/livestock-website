@@ -4,13 +4,13 @@
 {
 <div class="col-md-4 pb-2">
     <div class="card">
-        <img id="image" src="/CritterEx/Image?critterId=@item.CritterId&cacheVersion=@item.VersionNumber&width=348&height=464" />
+        <img class="card-img-top" src="/CritterEx/Image?critterId=@item.CritterId&cacheVersion=@item.VersionNumber&width=348&height=464" />
         <div class="card-body">
             <div class="clearfix">
                 <div class="float-right">
                     <partial name="_CritterIcons" model="item" />
                 </div>
-                <h5 class="card-title">[@item.TagNumber] @item.Name</h5>
+                <h5 class="card-title"><span class="badge badge-secondary">[@item.TagNumber]</span> @item.Name</h5>
             </div>
 
             <h6 class="card-subtitle text-muted">
