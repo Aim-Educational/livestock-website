@@ -26,6 +26,7 @@ function updateDesignLayout(nameTagTextbox, nameTagRadioButtons, breedDropdown, 
     var key = designType + "-" + breedName + "-" + typeName + "-" + genderValue + "-" + reproduceValue + "-" + nameTagValue + "-" + isNameFilter;
     if (key in cache) {
         div.innerHTML = cache[key];
+        doLazyLoading();
         return;
     }
     $.ajax({

@@ -43,7 +43,7 @@
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
     <script>
-        $(function () {
+        function doLazyLoading() {
             $('.lazy').Lazy({
                 scrollDirection: 'vertical',
                 effect: 'fadeIn',
@@ -53,6 +53,16 @@
                     console.log('error loading ' + element.data('src'));
                 }
             });
+        }
+
+        // When the document loads, run the lazy load library.
+        $(function () {
+            doLazyLoading();
+        });
+
+        // Anytime we finish an ajax request, re-run the lazy load library.
+        $(document).ajaxStop(function () {
+            doLazyLoading();
         });
     </script>
 

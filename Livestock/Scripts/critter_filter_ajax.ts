@@ -1,5 +1,6 @@
 ﻿// TODO: Reduce the code duplication between this file and breed_dropdown_ajax.ts
 type BreedInfo = { value: number, description: string };
+declare function doLazyLoading() : any;
 
 function getRadioGroupValue(group: HTMLInputElement[]) {
     let value = "BUG";
@@ -55,6 +56,7 @@ function updateDesignLayout(
     let key = designType + "-" + breedName + "-" + typeName + "-" + genderValue + "-" + reproduceValue + "-" + nameTagValue + "-" + isNameFilter;
     if (key in cache) {
         div.innerHTML = cache[key];
+        doLazyLoading();
         return;
     }
 
