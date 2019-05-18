@@ -85,7 +85,7 @@ function updateDesignLayout(
 }
 
 // Sets the values of the breed dropdown. An option named 'All' will always be at the start.
-function setBreedValues(breedDropdown: HTMLSelectElement, breeds: ValueAndDescription[]) {
+function setBreedValues(breedDropdown: HTMLSelectElement, breeds: ValueAndDescription<number>[]) {
     breeds.unshift({ value: -999, description: "All" });
     breeds.forEach(b => {
         let option = document.createElement("option");
@@ -110,7 +110,7 @@ function handleCritterFilter(
     let divTable = <HTMLTableElement>document.getElementById("design-table");
 
     let breedCache: { [divPlusBreed: string]: string } = {};
-    let typeCache: { [typeId: number]: ValueAndDescription[] } = {};
+    let typeCache: { [typeId: number]: ValueAndDescription<number>[] } = {};
 
     breedDropdown.addEventListener("change", function () {
         // Lord forgive me.
@@ -146,7 +146,7 @@ function handleCritterFilter(
                 dataType: "json",
                 data: JSON.stringify({ CritterTypeId: typeId })
             }
-        ).done(function (response: ValueAndDescription[]) {
+        ).done(function (response: ValueAndDescription<number>[]) {
             setBreedValues(breedDropdown, response);
             typeCache[typeId] = response;
         });

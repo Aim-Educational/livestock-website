@@ -33,6 +33,7 @@
 
     <partial name="_CookieConsentPartial" />
 
+    <!--START Extern scripts-->
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"
             integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
             crossorigin="anonymous">
@@ -44,9 +45,12 @@
             crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <!--END Extern Scripts-->
+    <!--START Custom scripts-->
     <script src="~/js/types_and_extern.js"></script>
 
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
     <script>
         function doLazyLoading() {
             $('.lazy').Lazy({
@@ -70,6 +74,7 @@
             doLazyLoading();
         });
     </script>
+    <!--END Custom scripts-->
 
     @RenderSection("Scripts", required: false)
 </body>
