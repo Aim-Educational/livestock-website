@@ -1,9 +1,5 @@
 ﻿// Breeds need to be filtered by what the chosen CritterType is, this is what this file provides functionality for.
-
-declare var $: any;
-type CritterInfo = { value: string, description: string };
-
-function setDropdownValues(values: CritterInfo[], select: HTMLSelectElement, defaultBreedId: number) {
+function setDropdownValues(values: ValueAndDescription[], select: HTMLSelectElement, defaultBreedId: number) {
     values.forEach(obj => {
         let opt = document.createElement("option");
         opt.value = obj.value;
@@ -29,7 +25,7 @@ function handleBreedDropdown(critterTypeSelect: HTMLSelectElement, breedSelect: 
         return;
     }
 
-    let cache: { [critterType: string]: CritterInfo[]} = {};
+    let cache: { [critterType: string]: ValueAndDescription[]} = {};
 
     // Set the onchange event for the dropdowns.
     critterTypeSelect.addEventListener('change', function ()
@@ -60,7 +56,7 @@ function handleBreedDropdown(critterTypeSelect: HTMLSelectElement, breedSelect: 
                 dataType: "json",
                 data: JSON.stringify({ CritterTypeId: parseInt(selectedType) })
             }
-        ).done(function (response: CritterInfo[]) {
+        ).done(function (response: ValueAndDescription[]) {
             // Add options based on the results.
             setDropdownValues(response, breedSelect, defaultBreedId);
 

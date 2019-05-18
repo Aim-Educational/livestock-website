@@ -1,7 +1,4 @@
 ﻿// TODO: Reduce the code duplication between this file and breed_dropdown_ajax.ts
-type BreedInfo = { value: number, description: string };
-declare function doLazyLoading() : any;
-
 function getRadioGroupValue(group: HTMLInputElement[]) {
     let value = "BUG";
     group.forEach(b => {
@@ -88,7 +85,7 @@ function updateDesignLayout(
 }
 
 // Sets the values of the breed dropdown. An option named 'All' will always be at the start.
-function setBreedValues(breedDropdown: HTMLSelectElement, breeds: BreedInfo[]) {
+function setBreedValues(breedDropdown: HTMLSelectElement, breeds: ValueAndDescription[]) {
     breeds.unshift({ value: -999, description: "All" });
     breeds.forEach(b => {
         let option = document.createElement("option");
@@ -113,7 +110,7 @@ function handleCritterFilter(
     let divTable = <HTMLTableElement>document.getElementById("design-table");
 
     let breedCache: { [divPlusBreed: string]: string } = {};
-    let typeCache: { [typeId: number]: BreedInfo[] } = {};
+    let typeCache: { [typeId: number]: ValueAndDescription[] } = {};
 
     breedDropdown.addEventListener("change", function () {
         // Lord forgive me.
@@ -149,7 +146,7 @@ function handleCritterFilter(
                 dataType: "json",
                 data: JSON.stringify({ CritterTypeId: typeId })
             }
-        ).done(function (response: BreedInfo[]) {
+        ).done(function (response: ValueAndDescription[]) {
             setBreedValues(breedDropdown, response);
             typeCache[typeId] = response;
         });
