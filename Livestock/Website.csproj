@@ -47,12 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\life_event.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\TEMP_critters\" />
-    <Folder Include="wwwroot\js\" />
+    <TypeScriptCompile Include="Scripts\**\*" />
   </ItemGroup>
 
 </Project>

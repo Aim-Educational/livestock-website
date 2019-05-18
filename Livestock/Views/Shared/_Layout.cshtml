@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http.Features
+@{
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var canUseCookies = consentFeature.CanTrack;
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -73,6 +78,10 @@
         $(document).ajaxStop(function () {
             doLazyLoading();
         });
+
+        // Ensure all cookies we use are secured, and that we can even track them.
+        Cookies.defaults.secure = true;
+        CAN_USE_COOKIES = @(canUseCookies ? "true" : "false");
     </script>
     <!--END Custom scripts-->
 

@@ -1,4 +1,13 @@
-﻿function changeDesign(divName: string) {
+﻿$(function () {
+    if (CAN_USE_COOKIES) {
+        var design = Cookies.get("critterDesign");
+
+        if (design !== null && design !== undefined)
+            changeDesign(design);
+    }
+});
+
+function changeDesign(divName: string) {
     let div = <HTMLDivElement>document.getElementById(divName);
 
     if (div === null) {
@@ -12,4 +21,7 @@
 
     // Unhide the one we want
     div.classList.remove("d-none");
+
+    if(CAN_USE_COOKIES)
+        Cookies.set("critterDesign", divName);
 }
