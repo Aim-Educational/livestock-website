@@ -2,14 +2,32 @@
 @using Database.Models;
 @{
     ViewData["Title"] = "Edit Critter";
+
+    string cantDeleteReason;
+    var canDeleteSafely = Model.Critter.CanSafelyDelete(out cantDeleteReason);
 }
 
 <h2>Edit</h2>
 
-<!--Back button-->
+<!--Back & Delete buttons-->
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <a class="btn btn-success" asp-action="Index">Back to List</a>
+
+        <for-roles action="Hide" roles="@RoleEnum.Student">
+            @if(canDeleteSafely)
+            {
+            <a class="btn btn-danger" href="#" onclick="if (confirm('Are you sure you want to delete this Critter?')) window.location.href = '/CritterEx/Delete/@(Model.Critter.CritterId)'">
+                Delete
+            </a>
+            }
+            else
+            {
+                <a class="btn btn-danger" href="#" onclick="alert('This critter cannot be deleted because: @cantDeleteReason')">
+                    Delete
+                </a>
+            }
+        </for-roles>
     </div>
 </div>
 <br />

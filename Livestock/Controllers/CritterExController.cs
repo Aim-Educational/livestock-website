@@ -183,6 +183,29 @@ namespace Website.Controllers
             );
         }
 
+        public async Task<IActionResult> Delete(int id)
+        {
+            var val = await this._livestock.Critter
+                                .Include(c => c.CritterLifeEvent)
+                                .Include(c => c.InverseDadCritter)
+                                .Include(c => c.InverseMumCritter)
+                                .FirstAsync(c => c.CritterId == id);
+
+            if(val == null)
+                return NotFound();
+
+            string cantDeleteReason;
+            var canDelete = val.CanSafelyDelete(out cantDeleteReason);
+
+            if(!canDelete)
+                return RedirectToAction("Error", "Home", new { message = cantDeleteReason });
+
+            this._livestock.Critter.Remove(val);
+            await this._livestock.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> Edit(int? id, bool? concurrencyError)
         {
             if (id == null)
@@ -192,6 +215,8 @@ namespace Website.Controllers
 
             var val = await this._livestock.Critter
                                            .Include(c => c.CritterLifeEvent)
+                                           .Include(c => c.InverseDadCritter)
+                                           .Include(c => c.InverseMumCritter)
                                            .FirstAsync(c => c.CritterId == id);
             if (val == null)
             {
