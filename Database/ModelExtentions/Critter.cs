@@ -51,10 +51,12 @@ namespace Database.Models
                 this.Flags &= ~(int)flag;
         }
 
+        public bool HasFlag(CritterFlags flag) => (this.Flags & (int)flag) > 0;
+
         public bool CanReproduce =>
-            (this.Flags & (int)Models.CritterFlags.ReproduceNoLifeEvent) == 0
-         && (this.Flags & (int)Models.CritterFlags.ReproduceNoTooOld) == 0
-         && (this.Flags & (int)Models.CritterFlags.ReproduceYesUser) > 0;
+            (this.Flags & (int)CritterFlags.ReproduceNoLifeEvent) > 0
+         && (this.Flags & (int)CritterFlags.ReproduceNoTooOld) > 0
+         && (this.Flags & (int)CritterFlags.ReproduceYesUser) > 0;
 
         public bool CanSafelyDelete(out string reasonIfFalse)
         {
