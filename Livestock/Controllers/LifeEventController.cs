@@ -19,21 +19,32 @@ namespace Website.Controllers
             this._livestock = livestock;
         }
 
-        private async Task AddNewEvent(int critterId, int dataId, string eventTypeName, string description)
+        #region Common operations
+        private async Task AddNewEvent(int critterId, int eventId, string eventTypeName, string description)
         {
+            var eventType = await this._livestock.EnumCritterLifeEventType.FirstAsync(e => e.Description == eventTypeName);
             var @event = new CritterLifeEvent
             {
                 CritterId = critterId,
                 Comment = "N/A",
                 DateTime = DateTime.Now,
                 Description = description,
-                EnumCritterLifeEventDataId = dataId,
-                EnumCritterLifeEventType = await this._livestock.EnumCritterLifeEventType.FirstAsync(e => e.Description == eventTypeName),
+                EnumCritterLifeEventDataId = eventId,
+                EnumCritterLifeEventType = eventType,
                 VersionNumber = 1
             };
             await this._livestock.AddAsync(@event);
+
+            // TODO: Handle other flags.
+            if(eventType.FlagCantReproduce)
+            {
+                var critter = await this._livestock.Critter.FindAsync(critterId);
+                critter.UpdateFlag(CritterFlags.ReproduceNoLifeEvent, true);
+            }
+
             await this._livestock.SaveChangesAsync();
         }
+        #endregion
 
         #region DateTime
         [Authorize(Roles = "admin,staff")]
@@ -99,7 +110,6 @@ namespace Website.Controllers
         [Authorize(Roles = "admin,staff")]
         public async Task<IActionResult> DeleteDateTime(int id)
         {
-            // TODO: Make a function like "DateTimeFromId"
             var @event = await this._livestock.CritterLifeEvent.FindAsync(id);
             var value = await this._livestock.CritterLifeEventDatetime.FindAsync(@event.EnumCritterLifeEventDataId);
             return View(

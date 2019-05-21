@@ -13,7 +13,7 @@ namespace Website.TagHelpers
     [HtmlTargetElement("input", Attributes = "[reproduce-type]")]
     public class ReproduceFlagInputTagHelper : TagHelper
     {
-        public ReproduceFlags ReproduceType { get; set; }
+        public CritterFlags ReproduceType { get; set; }
         public int? ReproduceInput { get; set; } // This is from the Critter model, so it'll be an int.
 
         public override void Process(TagHelperContext context, TagHelperOutput output)

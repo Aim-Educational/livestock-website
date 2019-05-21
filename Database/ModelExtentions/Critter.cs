@@ -7,10 +7,10 @@ using System.Text;
 namespace Database.Models
 {
     /// <summary>
-    /// Bit flags that are used to determine the reproduction capabilities of a critter.
+    /// Bit flags for a critter.
     /// </summary>
     [Flags]
-    public enum ReproduceFlags
+    public enum CritterFlags
     {
         /// <summary>
         /// Default value.
@@ -18,40 +18,43 @@ namespace Database.Models
         None = 0,
 
         /// <summary>
+        /// [Reproduction]
         /// The flag that is set if a *user* determines that the critter can reproduce.
         /// 
         /// 0 = User says they can't.
         /// 1 = User says they can.
         /// </summary>
-        YesReproduceUser = 1 << 0,
+        ReproduceYesUser = 1 << 0,
 
         /// <summary>
-        /// The flag that is set if the critter has been castrated.
+        /// [Reproduction]
+        /// The flag that is set if the critter can no longer reproduce due to a life event (e.g. castration).
         /// 
-        /// If this flag is true, no other flags can be used, since bioglogically they simply can't reproduce.
+        /// If this flag is true, no other [Reproduction] flags can be used, since (in most cases) bioglogically they simply can't reproduce.
         /// </summary>
-        NoReproduceCastrate = 1 << 1,
+        ReproduceNoLifeEvent = 1 << 1,
 
         /// <summary>
+        /// [Reproduction]
         /// The flag that is set if the critter is too old to reproduce.
         /// </summary>
-        NoReproduceTooOld = 1 << 2
+        ReproduceNoTooOld = 1 << 2
     }
 
     public partial class Critter
     {
-        public void UpdateReproduceFlag(ReproduceFlags flag, bool setOrUnset)
+        public void UpdateFlag(CritterFlags flag, bool setOrUnset)
         {
             if(setOrUnset)
-                this.ReproduceFlags |= (int)flag;
+                this.Flags |= (int)flag;
             else
-                this.ReproduceFlags &= ~(int)flag;
+                this.Flags &= ~(int)flag;
         }
 
         public bool CanReproduce =>
-            (this.ReproduceFlags & (int)Models.ReproduceFlags.NoReproduceCastrate) == 0
-         && (this.ReproduceFlags & (int)Models.ReproduceFlags.NoReproduceTooOld) == 0
-         && (this.ReproduceFlags & (int)Models.ReproduceFlags.YesReproduceUser) > 0;
+            (this.Flags & (int)Models.CritterFlags.ReproduceNoLifeEvent) == 0
+         && (this.Flags & (int)Models.CritterFlags.ReproduceNoTooOld) == 0
+         && (this.Flags & (int)Models.CritterFlags.ReproduceYesUser) > 0;
 
         public bool CanSafelyDelete(out string reasonIfFalse)
         {

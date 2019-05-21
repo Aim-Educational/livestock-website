@@ -262,7 +262,7 @@ namespace Website.Controllers
             if (ModelState.IsValid)
             {
                 // Update reproduce flags
-                model.Critter.UpdateReproduceFlag(ReproduceFlags.YesReproduceUser, model.YesReproduceUser);
+                model.Critter.UpdateFlag(CritterFlags.ReproduceYesUser, model.YesReproduceUser);
 
                 // Update Database model
                 try
@@ -303,7 +303,7 @@ namespace Website.Controllers
             if(ModelState.IsValid)
             {
                 this.FixNullFields(model.Critter);
-                model.Critter.UpdateReproduceFlag(ReproduceFlags.YesReproduceUser, model.YesReproduceUser);
+                model.Critter.UpdateFlag(CritterFlags.ReproduceYesUser, model.YesReproduceUser);
 
                 await this._livestock.AddAsync(model.Critter);
                 await this._livestock.SaveChangesAsync();
