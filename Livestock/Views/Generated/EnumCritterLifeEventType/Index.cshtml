@@ -17,6 +17,9 @@
 							<th> @Html.DisplayNameFor(model => model.Comment) </th>
 							<th> @Html.DisplayNameFor(model => model.DataType) </th>
 							<th> @Html.DisplayNameFor(model => model.EnumCritterLifeEventCategoryId) </th>
+							<th> @Html.DisplayNameFor(model => model.FlagCantReproduce) </th>
+							<th> @Html.DisplayNameFor(model => model.FlagEndOfSystem) </th>
+							<th> @Html.DisplayNameFor(model => model.FlagIllness) </th>
 			            <th></th>
         </tr>
     </thead>
@@ -27,6 +30,9 @@
 				            									<td> @Html.DisplayFor(modelItem => item.Comment) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.DataType) </td>
 				            									<td> @Html.DisplayFor(modelItem => item.EnumCritterLifeEventCategoryId) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.FlagCantReproduce) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.FlagEndOfSystem) </td>
+				            									<td> @Html.DisplayFor(modelItem => item.FlagIllness) </td>
 				                        <td>
                 <a asp-action="Edit" asp-route-id="@item.EnumCritterLifeEventTypeId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.EnumCritterLifeEventTypeId">Details</a> |

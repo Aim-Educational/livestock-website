@@ -1,0 +1,44 @@
+@model Database.Models.CritterImageVariant
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+
+<div>
+    <h4>CritterImageVariant</h4>
+    <hr />
+    <dl class="dl-horizontal">
+					<dt>
+				@Html.DisplayNameFor(model => model.CritterImageModifiedId)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.CritterImageModifiedId)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.CritterImageOriginalId)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.CritterImageOriginalId)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.Height)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Height)
+			</dd>
+					<dt>
+				@Html.DisplayNameFor(model => model.Width)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Width)
+			</dd>
+		    </dl>
+
+			<div>
+			<a asp-action="Edit" asp-route-id="@Model.CritterImageVariantId">Edit</a> |
+			<a asp-action="Index">Back to List</a>
+		</div>
+	</div>

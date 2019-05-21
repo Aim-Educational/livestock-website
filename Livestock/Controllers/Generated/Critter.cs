@@ -58,7 +58,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Create([Bind("CritterId,BreedId,Comment,CritterImageId,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,ReproduceFlags,Timestamp,VersionNumber")]Critter val)
+        public async Task<IActionResult> Create([Bind("CritterId,BreedId,Comment,CritterImageId,CritterTypeId,DadCritterId,DadFurther,Flags,Gender,MumCritterId,MumFurther,Name,OwnerContactId,TagNumber,Timestamp,VersionNumber")]Critter val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -101,7 +101,7 @@ ViewData["OwnerContactId"] = new SelectList(_context.Contact, "ContactId", "Name
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("CritterId,BreedId,Comment,CritterImageId,CritterTypeId,DadCritterId,DadFurther,Gender,MumCritterId,MumFurther,Name,OwnerContactId,ReproduceFlags,Timestamp,VersionNumber")]Critter val)
+        public async Task<IActionResult> Edit(int id, [Bind("CritterId,BreedId,Comment,CritterImageId,CritterTypeId,DadCritterId,DadFurther,Flags,Gender,MumCritterId,MumFurther,Name,OwnerContactId,TagNumber,Timestamp,VersionNumber")]Critter val)
         {
 			if(val.CritterId != id)
 				return NotFound();
@@ -172,6 +172,7 @@ if(String.IsNullOrWhiteSpace(val.DadFurther)) val.DadFurther = "N/A";
 if(String.IsNullOrWhiteSpace(val.Gender)) val.Gender = "?";
 if(String.IsNullOrWhiteSpace(val.MumFurther)) val.MumFurther = "N/A";
 if(String.IsNullOrWhiteSpace(val.Name)) val.Name = "N/A";
+if(String.IsNullOrWhiteSpace(val.TagNumber)) val.TagNumber = "N/A";
 		}
 
         private bool Exists(int id)

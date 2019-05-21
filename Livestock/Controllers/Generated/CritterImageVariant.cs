@@ -12,18 +12,18 @@ using Microsoft.AspNetCore.Authorization;
 namespace Website.Controllers
 {
 	[Authorize(Roles = "[Forbidden to all]")]
-	public class EnumCritterLifeEventTypeController : Controller
+	public class CritterImageVariantController : Controller
     {
         private readonly LivestockContext _context;
 
-        public EnumCritterLifeEventTypeController(LivestockContext context)
+        public CritterImageVariantController(LivestockContext context)
         {
             _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            var livestockContext = _context.EnumCritterLifeEventType;
+            var livestockContext = _context.CritterImageVariant.Include(v => v.CritterImageModified).Include(v => v.CritterImageOriginal);
             return View(await livestockContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.EnumCritterLifeEventType.FirstOrDefaultAsync(m => m.EnumCritterLifeEventTypeId == id);
+            var val = await _context.CritterImageVariant.Include(v => v.CritterImageModified).Include(v => v.CritterImageOriginal).FirstOrDefaultAsync(m => m.CritterImageVariantId == id);
             if (val == null)
             {
                 return NotFound();
@@ -46,14 +46,15 @@ namespace Website.Controllers
 		[Authorize]
         public IActionResult Create()
         {
-            
+            ViewData["CritterImageModifiedId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId");
+ViewData["CritterImageOriginalId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Create([Bind("EnumCritterLifeEventTypeId,Comment,DataType,Description,EnumCritterLifeEventCategoryId,FlagCantReproduce,FlagEndOfSystem,FlagIllness,Timestamp,VersionNumber")]EnumCritterLifeEventType val)
+        public async Task<IActionResult> Create([Bind("CritterImageVariantId,CritterImageModifiedId,CritterImageOriginalId,Height,Timestamp,Width")]CritterImageVariant val)
         {
 			this.FixNullFields(val);
             if (ModelState.IsValid)
@@ -62,7 +63,8 @@ namespace Website.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["CritterImageModifiedId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId", val.CritterImageModifiedId);
+ViewData["CritterImageOriginalId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId", val.CritterImageOriginalId);
             return View(val);
         }
 
@@ -74,21 +76,22 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.EnumCritterLifeEventType.FindAsync(id);
+            var val = await _context.CritterImageVariant.FindAsync(id);
             if (val == null)
             {
                 return NotFound();
             }
-            
+            ViewData["CritterImageModifiedId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId", val.CritterImageModifiedId);
+ViewData["CritterImageOriginalId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId", val.CritterImageOriginalId);
             return View(val);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 		[Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("EnumCritterLifeEventTypeId,Comment,DataType,Description,EnumCritterLifeEventCategoryId,FlagCantReproduce,FlagEndOfSystem,FlagIllness,Timestamp,VersionNumber")]EnumCritterLifeEventType val)
+        public async Task<IActionResult> Edit(int id, [Bind("CritterImageVariantId,CritterImageModifiedId,CritterImageOriginalId,Height,Timestamp,Width")]CritterImageVariant val)
         {
-			if(val.EnumCritterLifeEventTypeId != id)
+			if(val.CritterImageVariantId != id)
 				return NotFound();
 
 			this.FixNullFields(val);
@@ -102,7 +105,7 @@ namespace Website.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!Exists(val.EnumCritterLifeEventTypeId))
+                    if (!Exists(val.CritterImageVariantId))
                     {
                         return NotFound();
                     }
@@ -113,7 +116,8 @@ namespace Website.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["CritterImageModifiedId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId", val.CritterImageModifiedId);
+ViewData["CritterImageOriginalId"] = new SelectList(_context.CritterImage, "CritterImageId", "CritterImageId", val.CritterImageOriginalId);
             return View(val);
         }
 
@@ -125,7 +129,7 @@ namespace Website.Controllers
                 return NotFound();
             }
 
-            var val = await _context.EnumCritterLifeEventType.FirstOrDefaultAsync(m => m.EnumCritterLifeEventTypeId == id);
+            var val = await _context.CritterImageVariant.Include(v => v.CritterImageModified).Include(v => v.CritterImageOriginal).FirstOrDefaultAsync(m => m.CritterImageVariantId == id);
             if (val == null)
             {
                 return NotFound();
@@ -139,22 +143,20 @@ namespace Website.Controllers
 		[Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var val = await _context.EnumCritterLifeEventType.FindAsync(id);
-            _context.EnumCritterLifeEventType.Remove(val);
+            var val = await _context.CritterImageVariant.FindAsync(id);
+            _context.CritterImageVariant.Remove(val);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-		private void FixNullFields(EnumCritterLifeEventType val)
+		private void FixNullFields(CritterImageVariant val)
 		{
-			if(String.IsNullOrWhiteSpace(val.Comment)) val.Comment = "N/A";
-if(String.IsNullOrWhiteSpace(val.DataType)) val.DataType = "N/A";
-if(String.IsNullOrWhiteSpace(val.Description)) val.Description = "N/A";
+			
 		}
 
         private bool Exists(int id)
         {
-            return _context.EnumCritterLifeEventType.Any(e => e.EnumCritterLifeEventTypeId == id);
+            return _context.CritterImageVariant.Any(e => e.CritterImageVariantId == id);
         }
     }
 }

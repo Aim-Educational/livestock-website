@@ -32,6 +32,21 @@
 						<input asp-for="EnumCritterLifeEventCategoryId" class="form-control" />
 						<span asp-validation-for="EnumCritterLifeEventCategoryId" class="text-danger"></span>
 					</div>
+																<div class="form-group">
+						<label asp-for="FlagCantReproduce" class="control-label"></label>
+						<input asp-for="FlagCantReproduce" class="form-control" />
+						<span asp-validation-for="FlagCantReproduce" class="text-danger"></span>
+					</div>
+																<div class="form-group">
+						<label asp-for="FlagEndOfSystem" class="control-label"></label>
+						<input asp-for="FlagEndOfSystem" class="form-control" />
+						<span asp-validation-for="FlagEndOfSystem" class="text-danger"></span>
+					</div>
+																<div class="form-group">
+						<label asp-for="FlagIllness" class="control-label"></label>
+						<input asp-for="FlagIllness" class="form-control" />
+						<span asp-validation-for="FlagIllness" class="text-danger"></span>
+					</div>
 																@Html.HiddenFor(model => model.Timestamp)
 																@Html.HiddenFor(model => model.VersionNumber)
 							            <div class="form-group">
