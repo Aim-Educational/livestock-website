@@ -10,7 +10,7 @@ namespace Website.TagHelpers
     /// <summary>
     /// For checkboxes. Pre-checks the checkbox if the given `FlagInput` contains the specified flag `FlagToUser`.
     /// </summary>
-    [HtmlTargetElement("input", Attributes = "[reproduce-type]")]
+    [HtmlTargetElement("input", Attributes = "[flag-to-use]")]
     public class CritterFlagInputTagHelper : TagHelper
     {
         public CritterFlags FlagToUse { get; set; }
