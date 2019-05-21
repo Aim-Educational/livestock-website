@@ -46,7 +46,7 @@ namespace Website.Controllers
         }
         #endregion
 
-        #region DateTime
+        #region DateTime(POST)
         [Authorize(Roles = "admin,staff")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -73,6 +73,40 @@ namespace Website.Controllers
             return RedirectToAction(nameof(CritterExController.Edit), "CritterEx", new { id });
         }
 
+        [Authorize(Roles = "admin,staff")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditDateTime([Bind("DateTime,Common")]LifeEventEditDateTime model)
+        {
+            var @event = await this._livestock.CritterLifeEvent.FindAsync(model.Common.Id);
+            var value = await this._livestock.CritterLifeEventDatetime.FindAsync(@event.EnumCritterLifeEventDataId);
+
+            @event.Description = model.Common.Description;
+            value.DateTime = model.DateTime;
+
+            await this._livestock.SaveChangesAsync();
+
+            return RedirectToAction(nameof(CritterExController.Index), "CritterEx");
+        }
+
+        [Authorize(Roles = "admin,staff")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteDateTimePost()
+        {
+            var id = Convert.ToInt32(Request.Form["Common.Id"]);
+            var @event = await this._livestock.CritterLifeEvent.FindAsync(id);
+            var value = await this._livestock.CritterLifeEventDatetime.FindAsync(@event.EnumCritterLifeEventDataId);
+
+            this._livestock.CritterLifeEvent.Remove(@event);
+            this._livestock.CritterLifeEventDatetime.Remove(value);
+            await this._livestock.SaveChangesAsync();
+
+            return RedirectToAction(nameof(CritterExController.Index), "CritterEx");
+        }
+        #endregion
+
+        #region DateTime(GET)
         public async Task<IActionResult> EditDateTime(int id)
         {
             var @event = await this._livestock.CritterLifeEvent.FindAsync(id);
@@ -92,22 +126,6 @@ namespace Website.Controllers
         }
 
         [Authorize(Roles = "admin,staff")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDateTime([Bind("DateTime,Common")]LifeEventEditDateTime model)
-        {
-            var @event = await this._livestock.CritterLifeEvent.FindAsync(model.Common.Id);
-            var value = await this._livestock.CritterLifeEventDatetime.FindAsync(@event.EnumCritterLifeEventDataId);
-
-            @event.Description = model.Common.Description;
-            value.DateTime = model.DateTime;
-
-            await this._livestock.SaveChangesAsync();
-
-            return RedirectToAction(nameof(CritterExController.Index), "CritterEx");
-        }
-
-        [Authorize(Roles = "admin,staff")]
         public async Task<IActionResult> DeleteDateTime(int id)
         {
             var @event = await this._livestock.CritterLifeEvent.FindAsync(id);
@@ -124,22 +142,6 @@ namespace Website.Controllers
                     DateTime = value.DateTime
                 }
             );
-        }
-
-        [Authorize(Roles = "admin,staff")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteDateTimePost()
-        {
-            var id = Convert.ToInt32(Request.Form["Common.Id"]);
-            var @event = await this._livestock.CritterLifeEvent.FindAsync(id);
-            var value = await this._livestock.CritterLifeEventDatetime.FindAsync(@event.EnumCritterLifeEventDataId);
-
-            this._livestock.CritterLifeEvent.Remove(@event);
-            this._livestock.CritterLifeEventDatetime.Remove(value);
-            await this._livestock.SaveChangesAsync();
-
-            return RedirectToAction(nameof(CritterExController.Index), "CritterEx");
         }
         #endregion
     }

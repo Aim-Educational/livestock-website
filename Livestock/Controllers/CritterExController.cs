@@ -326,7 +326,12 @@ namespace Website.Controllers
         #endregion
 
         #region Critter AJAX
-        [HttpPost] // This is a POST since it's an AJAX request.
+        // The way this is supposed to work is:
+        //  - User messes with the filters in some way.
+        //  - Filter sets off an AJAX request.
+        //  - This handler will perform the filtering, then render the design the request wants.
+        //  - This is then returned, and the rendered HTML is directly embedded by the AJAX requesting code.
+        [HttpPost]
         public async Task<IActionResult> GetCrittersFiltered([FromBody] CritterExGetCrittersFilteredAjax ajax)
         {
             var list = await this._livestock.Critter
@@ -360,6 +365,9 @@ namespace Website.Controllers
             return NotFound();
         }
 
+        // Returns a JSON array containing a Description-Value pair.
+        // Description is what can be displayed to the user.
+        // Value is the ID of the breed being described.
         [HttpPost]
         public async Task<IActionResult> GetBreedList([FromBody] CritterExGetBreedListAjax ajax)
         {
