@@ -122,7 +122,10 @@ namespace Website.Controllers
                     }
                     catch(PasswordValidationException ex)
                     {
-                        ModelState.AddModelError(nameof(model.Password), ex.Message);
+                        var messages = ex.Message.Split('-', StringSplitOptions.RemoveEmptyEntries);
+                        foreach(var msg in messages)
+                            ModelState.AddModelError(nameof(model.Password), msg);
+
                         return View(model);
                     }
                     catch (Exception ex)

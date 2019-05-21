@@ -118,7 +118,12 @@ namespace Livestock
 
             services.Configure<IAimPasswordSchemeConfig>(c => 
             {
-                c.ValidateFuncs.Add(pass => (pass.Length > 6) ? null : "Passwords must be at least 6 characters long");
+                c.ValidateFuncs.Add(pass => (pass.Length > 8)                   ? null : "Passwords must be at least 8 characters long");
+                c.ValidateFuncs.Add(pass => pass.Any(p => char.IsLetter(p))     ? null : "Passwords must contain at least a single letter");
+                c.ValidateFuncs.Add(pass => pass.Any(p => char.IsDigit(p))      ? null : "Passwords must contain at least one number");
+                c.ValidateFuncs.Add(pass => pass.Any(p => char.IsSymbol(p))
+                                         || pass.Any(p => char.IsWhiteSpace(p)) ? null : "Passwords must contain at least one symbol ('_', '@', etc.) or space. Blame Andy"
+                );
             });
 
             services.AddDbContext<AimLoginContext>(o => o.UseSqlServer(Configuration.GetConnectionString("AimLogin")));
