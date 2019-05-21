@@ -18,6 +18,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System.Buffers;
 using System.Runtime;
+using System.Text.RegularExpressions;
 
 namespace Website.Controllers
 {
@@ -343,9 +344,9 @@ namespace Website.Controllers
                                  .Where(c => ajax.CanReproduce == null
                                           || c.CanReproduce == ajax.CanReproduce)
                                  .Where(c => String.IsNullOrWhiteSpace(ajax.Name)
-                                          || c.Name.StartsWith(ajax.Name)) // Naive check for now, until we have a proper comparison algorithm
+                                          || Regex.Match(c.Name.ToLower(), ajax.Name.ToLower()).Length > 0)
                                  .Where(c => String.IsNullOrWhiteSpace(ajax.Tag)
-                                          || c.TagNumber.StartsWith(ajax.Tag))
+                                          || Regex.Match(c.TagNumber.ToLower(), ajax.Tag.ToLower()).Length > 0)
                                  .OrderBy(c => c.Name)
                                  .ToListAsync();
 
