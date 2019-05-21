@@ -433,6 +433,8 @@ namespace Website.Controllers
         public int CritterTypeId { get; set; }
     }
 
+    // Any combination of filters is supported.
+    // Everything can be null.
     public class CritterExGetCrittersFilteredAjax
     {
         public int? BreedId { get; set; }
