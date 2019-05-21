@@ -23,6 +23,13 @@ namespace Website.Controllers
         private async Task AddNewEvent(int critterId, int eventId, string eventTypeName, string description)
         {
             var eventType = await this._livestock.EnumCritterLifeEventType.FirstAsync(e => e.Description == eventTypeName);
+            if(!eventType.AllowMultiple)
+            {
+                var critter = await this._livestock.Critter.Include(c => c.CritterLifeEvent).FirstAsync(c => c.CritterId == critterId);
+                if(critter.CritterLifeEvent.Any(e => e.EnumCritterLifeEventTypeId == eventType.EnumCritterLifeEventTypeId))
+                    throw new OnlyOneEventAllowedException($"Only one '{eventTypeName}' event is allowed per critter.");
+            }
+
             var @event = new CritterLifeEvent
             {
                 CritterId = critterId,
@@ -66,8 +73,15 @@ namespace Website.Controllers
                 await this._livestock.AddAsync(dateTime);
                 await this._livestock.SaveChangesAsync(); // We have to save here so dateTime gets an Id
 
-                await this.AddNewEvent(id.Value, dateTime.CritterLifeEventGiveBirthId, model.EventTypeName, model.EventDescription);
-                transact.Commit();
+                try
+                {
+                    await this.AddNewEvent(id.Value, dateTime.CritterLifeEventGiveBirthId, model.EventTypeName, model.EventDescription);
+                    transact.Commit();
+                }
+                catch(OnlyOneEventAllowedException)
+                {
+                    transact.Rollback();
+                }
             }
 
             return RedirectToAction(nameof(CritterExController.Edit), "CritterEx", new { id });
@@ -144,5 +158,17 @@ namespace Website.Controllers
             );
         }
         #endregion
+    }
+
+
+    [Serializable]
+    public class OnlyOneEventAllowedException : Exception
+    {
+        public OnlyOneEventAllowedException() { }
+        public OnlyOneEventAllowedException(string message) : base(message) { }
+        public OnlyOneEventAllowedException(string message, Exception inner) : base(message, inner) { }
+        protected OnlyOneEventAllowedException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }
