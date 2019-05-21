@@ -349,9 +349,9 @@ namespace Website.Controllers
                                  .Where(c => ajax.CanReproduce == null
                                           || c.CanReproduce == ajax.CanReproduce)
                                  .Where(c => String.IsNullOrWhiteSpace(ajax.Name)
-                                          || Regex.Match(c.Name.ToLower(), ajax.Name.ToLower()).Length > 0)
+                                          || Regex.IsMatch(c.Name.ToLower(), ajax.Name.ToLower()))
                                  .Where(c => String.IsNullOrWhiteSpace(ajax.Tag)
-                                          || Regex.Match(c.TagNumber.ToLower(), ajax.Tag.ToLower()).Length > 0)
+                                          || Regex.IsMatch(c.TagNumber.ToLower(), ajax.Tag.ToLower()))
                                  .OrderBy(c => c.Name)
                                  .ToListAsync();
 
