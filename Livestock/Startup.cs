@@ -127,12 +127,20 @@ namespace Livestock
             });
 
             services.AddDbContext<AimLoginContext>(o => o.UseSqlServer(Configuration.GetConnectionString("AimLogin")));
-            services.AddAimLogin();
+            services.AddAimLogin(); // Already sets up User as a User type, and AimLoginContext as a mapping database.
 
-            // Setup the data mapper
+            // Setup the data mappers
             new DataMapBuilder<AimLoginContext, LivestockContext, UserDataMap, LivestockEntityTypes>(services)
                 .UseSingleReference<User, Role>()
                 .UseSingleValue<User, AlUserInfo>();
+
+            new DataMapBuilder<LivestockContext, LivestockContext, AdmmGroupMap, AdmuGroupEntityTypes>(services)
+                .UseUserType<AdmuGroup>()
+                .UseMapDatabase()
+                .UseMultiReference<AdmuGroup, Critter>();
+
+            new DataMapBuilder<LivestockContext, AimLoginContext, AdmmGroupMap, AdmuGroupEntityTypes>(services)
+                .UseMultiReference<AdmuGroup, User>();
 
             // Setup Misc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
