@@ -5,7 +5,7 @@ function updateMultiSelect(box, data) {
     }
     data.forEach(function (d) {
         var option = document.createElement("option");
-        option.value = d.value;
+        option.value = d.value.toString();
         option.innerHTML = d.description;
         box.options.add(option);
     });

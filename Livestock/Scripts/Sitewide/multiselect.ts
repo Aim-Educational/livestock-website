@@ -1,13 +1,16 @@
-﻿let multiSelectCache: { [cacheKey: string] : ValueAndDescription<string>[] } = {}
+﻿let multiSelectCache: { [cacheKey: string]: ValueAndDescription<number>[] } = {}
 
-function updateMultiSelect(box: HTMLSelectElement, data: ValueAndDescription<string>[]) {
+function updateMultiSelect(
+    box: HTMLSelectElement,
+    data: ValueAndDescription<number>[]
+) {
     while (box.options.length > 0) {
         box.options.remove(0);
     }
 
     data.forEach(d => {
         let option = document.createElement("option");
-        option.value = d.value;
+        option.value = d.value.toString();
         option.innerHTML = d.description;
         box.options.add(option);
     });
@@ -34,7 +37,7 @@ function performMultiSelectAjax(
                     Name: inputFilter.value
                 })
             }
-        ).done(function (response: ValueAndDescription<string>[]) {
+        ).done(function (response: ValueAndDescription<number>[]) {
             multiSelectCache[cacheKey] = response;
             updateMultiSelect(addBox, response);
         });
