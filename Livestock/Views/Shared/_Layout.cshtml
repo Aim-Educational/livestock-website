@@ -55,7 +55,13 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
     <!--END Extern Scripts-->
     <!--START Custom scripts-->
-    <script src="~/js/sitewide.min.js" asp-append-version="true"></script>
+    <environment exclude="Development">
+        <script src="~/js/sitewide.min.js" asp-append-version="true"></script>
+    </environment>
+    <environment include="Development">
+        <script src="~/js/Sitewide/types_and_extern.js" asp-append-version="true"></script>
+        <script src="~/js/Sitewide/multiselect.js" asp-append-version="true"></script>
+    </environment>
 
     <script>
         function doLazyLoading() {

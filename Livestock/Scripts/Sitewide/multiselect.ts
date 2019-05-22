@@ -2,13 +2,15 @@
 
 function updateMultiSelect(
     box: HTMLSelectElement,
-    data: ValueAndDescription<number>[]
+    data: ValueAndDescription<number>[],
+    existingValues: number[] | null = null
 ) {
     while (box.options.length > 0) {
         box.options.remove(0);
     }
 
-    data.forEach(d => {
+    data.filter(d => existingValues == null || existingValues.indexOf(d.value) == -1)
+        .forEach(d => {
         let option = document.createElement("option");
         option.value = d.value.toString();
         option.innerHTML = d.description;
@@ -19,9 +21,14 @@ function updateMultiSelect(
 function performMultiSelectAjax(
     inputFilter: HTMLInputElement,
     addBox: HTMLSelectElement,
+    selectedBox: HTMLSelectElement,
     selectType: "critter" | "user"
 ) {
     let cacheKey = inputFilter.id + "-" + addBox.id + "-" + selectType + "-" + inputFilter.value;
+    let existingValues: number[] = [];
+    for (let i = 0; i < selectedBox.options.length; i++) {
+        existingValues.push(Number(selectedBox.options.item(i).value));
+    }
 
     if (cacheKey in multiSelectCache) {
         updateMultiSelect(addBox, multiSelectCache[cacheKey]);
@@ -39,7 +46,7 @@ function performMultiSelectAjax(
             }
         ).done(function (response: ValueAndDescription<number>[]) {
             multiSelectCache[cacheKey] = response;
-            updateMultiSelect(addBox, response);
+            updateMultiSelect(addBox, response, existingValues);
         });
     }
 }
@@ -51,8 +58,13 @@ function registerMultiSelect(
     selectType: "critter" | "user"
 ) {
     inputFilter.addEventListener('change', function () {
-        performMultiSelectAjax(inputFilter, addBox, selectType);
+        performMultiSelectAjax(inputFilter, addBox, selectedBox, selectType);
     });
 
     inputFilter.dispatchEvent(new Event('change'));
+
+    // In case this is put into a form, pressing 'Enter' would make the form submit.
+    // So we make 'onkeydown' stop doing anything, then 'onkeyup' fire off the change event.
+    inputFilter.onkeyup = function () { inputFilter.dispatchEvent(new Event('change')); }
+    inputFilter.onkeydown = function (event) { return event.keyCode != 13; }
 }
