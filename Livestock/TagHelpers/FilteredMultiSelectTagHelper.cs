@@ -89,6 +89,8 @@ namespace Website.TagHelpers
 
             output.TagMode = TagMode.StartTagAndEndTag;
             output.Content.SetHtmlContent(builder.ToString());
+
+            base.Process(context, output);
         }
     }
 }
