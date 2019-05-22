@@ -11,10 +11,10 @@ function updateMultiSelect(
 
     data.filter(d => existingValues == null || existingValues.indexOf(d.value) == -1)
         .forEach(d => {
-        let option = document.createElement("option");
-        option.value = d.value.toString();
-        option.innerHTML = d.description;
-        box.options.add(option);
+            let option = document.createElement("option");
+            option.value = d.value.toString();
+            option.innerHTML = d.description;
+            box.options.add(option);
     });
 }
 
