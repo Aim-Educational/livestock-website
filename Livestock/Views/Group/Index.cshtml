@@ -1,0 +1,30 @@
+﻿@model Website.Models.GroupIndexViewModel
+@{
+    ViewData["Title"] = "Index - Groups";
+}
+
+<h1>Index</h1>
+
+<div class="row">
+    @foreach (var info in Model.Groups)
+    {
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-title">@info.Group.Name</p>
+                    <p class="card-subtitle">@info.Group.Description</p>
+                    <p class="card-text text-muted">@info.GroupMemberCount members</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row temporary">
+    <div class="col-md-12">
+        <form asp-action="Test">
+            <aim-multi-select asp-for="TEMP" type="Critter" descriptions="ViewBag.TEMP_Names"></aim-multi-select>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>

@@ -326,34 +326,38 @@ namespace Website.Controllers
         #endregion
 
         #region Critter AJAX
+        private IQueryable<Critter> GetCrittersFilteredNoRender(CritterExGetCrittersFilteredAjax ajax)
+        {
+            return this._livestock.Critter
+                                  .Include(v => v.Breed)
+                                  .Include(v => v.CritterType)
+                                  .Include(v => v.DadCritter)
+                                  .Include(v => v.MumCritter)
+                                  .Include(v => v.OwnerContact)
+                                  .Where(c => (ajax.BreedId ?? -999) == -999
+                                           || c.BreedId == ajax.BreedId)
+                                  .Where(c => (ajax.CritterTypeId ?? -999) == -999
+                                           || c.CritterTypeId == ajax.CritterTypeId)
+                                  .Where(c => ajax.Gender == null
+                                           || c.Gender == ajax.Gender)
+                                  .Where(c => ajax.CanReproduce == null
+                                           || c.CanReproduce == ajax.CanReproduce)
+                                  .Where(c => String.IsNullOrWhiteSpace(ajax.Name)
+                                           || Regex.IsMatch(c.Name.ToLower(), ajax.Name.ToLower()))
+                                  .Where(c => String.IsNullOrWhiteSpace(ajax.Tag)
+                                           || Regex.IsMatch(c.TagNumber.ToLower(), ajax.Tag.ToLower()))
+                                  .OrderBy(c => c.Name);
+        }
+
         // The way this is supposed to work is:
         //  - User messes with the filters in some way.
         //  - Filter sets off an AJAX request.
         //  - This handler will perform the filtering, then render the design the request wants.
         //  - This is then returned, and the rendered HTML is directly embedded by the AJAX requesting code.
         [HttpPost]
-        public async Task<IActionResult> GetCrittersFiltered([FromBody] CritterExGetCrittersFilteredAjax ajax)
+        public async Task<IActionResult> GetCrittersFilteredAndRender([FromBody] CritterExGetCrittersFilteredAjax ajax)
         {
-            var list = await this._livestock.Critter
-                                 .Include(v => v.Breed)
-                                 .Include(v => v.CritterType)
-                                 .Include(v => v.DadCritter)
-                                 .Include(v => v.MumCritter)
-                                 .Include(v => v.OwnerContact)
-                                 .Where(c => ajax.BreedId == -999
-                                          || c.BreedId == ajax.BreedId)
-                                 .Where(c => ajax.CritterTypeId == -999
-                                          || c.CritterTypeId == ajax.CritterTypeId)
-                                 .Where(c => ajax.Gender == null
-                                          || c.Gender == ajax.Gender)
-                                 .Where(c => ajax.CanReproduce == null
-                                          || c.CanReproduce == ajax.CanReproduce)
-                                 .Where(c => String.IsNullOrWhiteSpace(ajax.Name)
-                                          || Regex.IsMatch(c.Name.ToLower(), ajax.Name.ToLower()))
-                                 .Where(c => String.IsNullOrWhiteSpace(ajax.Tag)
-                                          || Regex.IsMatch(c.TagNumber.ToLower(), ajax.Tag.ToLower()))
-                                 .OrderBy(c => c.Name)
-                                 .ToListAsync();
+            var list = await this.GetCrittersFilteredNoRender(ajax).ToListAsync();
 
             if(ajax.Design == "card-horiz")
                 return PartialView("_CardHoriz", list);
@@ -363,6 +367,15 @@ namespace Website.Controllers
                 return PartialView("_Table", list);
 
             return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetCrittersFilteredValueDescription([FromBody] CritterExGetCrittersFilteredAjax ajax)
+        {
+            return Json(await this.GetCrittersFilteredNoRender(ajax)
+                                  .Select(c => new { value = c.CritterId, description = c.Name })
+                                  .ToListAsync()
+            );
         }
 
         // Returns a JSON array containing a Description-Value pair.

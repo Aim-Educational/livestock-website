@@ -13,3 +13,16 @@ img.vert-card-img-responsive {
 /* This is just here so it shows up in intelisense */
 .lazy {
 }
+
+/* Resize-ability helpers */
+.resize-horiz {
+    resize: horizontal;
+}
+
+.resize-vert {
+    resize: vertical;
+}
+
+.resize-both {
+    resize: both;
+}

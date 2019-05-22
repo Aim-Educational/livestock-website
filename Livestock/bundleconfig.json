@@ -32,5 +32,12 @@
     "inputFiles": [
       "wwwroot/js/critter_filter_ajax.js"
     ]
+  },
+
+  {
+    "outputFileName": "wwwroot/js/sitewide.min.js",
+    "inputFiles": [
+      "wwwroot/js/Sitewide/*.js"
+    ]
   }
 ]

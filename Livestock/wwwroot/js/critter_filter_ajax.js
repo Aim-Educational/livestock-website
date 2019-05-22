@@ -31,7 +31,7 @@ function updateDesignLayout(nameTagTextbox, nameTagRadioButtons, breedDropdown, 
     }
     $.ajax({
         type: "POST",
-        url: "/CritterEx/GetCrittersFiltered",
+        url: "/CritterEx/GetCrittersFilteredAndRender",
         contentType: "application/json",
         dataType: "html",
         data: JSON.stringify({
