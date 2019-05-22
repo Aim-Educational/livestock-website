@@ -117,6 +117,7 @@ namespace Website.Controllers
                 }
 
                 var critter = await this._livestock.Critter.Include(c => c.CritterImage)
+                                                           .ThenInclude(i => i.CritterImageVariantCritterImageOriginal)
                                                            .FirstAsync(c => c.CritterId == critterId);
                 
                 if(critter.CritterImage == null)
