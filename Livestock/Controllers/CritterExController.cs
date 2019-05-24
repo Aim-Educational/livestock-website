@@ -48,11 +48,11 @@ namespace Website.Controllers
                 if(width != null && height != null)
                 {
                     var variant = await this._livestock.CritterImageVariant
-                                                       .Include(c => c.CritterImageModified)
                                                        .FirstOrDefaultAsync(v => v.CritterImageOriginalId == critter.CritterImageId);
 
                     if(variant != null)
                     {
+                        await this._livestock.Entry(variant).Reference(v => v.CritterImageModified).LoadAsync();
                         image = variant.CritterImageModified;
                     }
                     else
