@@ -37,17 +37,18 @@ function performMultiSelectAjax(inputFilter, addBox, selectedBox, selectType) {
     }
 }
 function moveBetweenSelectBoxes(sourceBox, destinationBox) {
-    for (var i = 0; i < sourceBox.selectedOptions.length; i++) {
+    clearSelection(destinationBox);
+    while (sourceBox.selectedOptions.length > 0) {
         var inserted = false;
         for (var sortingI = 0; sortingI < destinationBox.length; sortingI++) {
-            if (destinationBox.options.item(sortingI).text < sourceBox.selectedOptions.item(i).text)
+            if (destinationBox.options.item(sortingI).text < sourceBox.selectedOptions.item(0).text)
                 continue;
-            destinationBox.add(sourceBox.selectedOptions.item(i), sortingI);
+            destinationBox.add(sourceBox.selectedOptions.item(0), sortingI);
             inserted = true;
             break;
         }
         if (!inserted)
-            destinationBox.add(sourceBox.selectedOptions.item(i));
+            destinationBox.add(sourceBox.selectedOptions.item(0));
     }
 }
 function clearSelection(box) {

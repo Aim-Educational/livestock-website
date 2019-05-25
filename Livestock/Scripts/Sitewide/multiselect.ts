@@ -55,21 +55,26 @@ function moveBetweenSelectBoxes(
     sourceBox: HTMLSelectElement,
     destinationBox: HTMLSelectElement
 ) {
+    // Clear any selections made in the destination.
+    // This is because we only want the new items we move over to be selected (easy undo for the user).
+    clearSelection(destinationBox);
+
     // Sorted insert.
     // destinationBox must always be sorted for this to work.
-    for (let i = 0; i < sourceBox.selectedOptions.length; i++) {
+    while (sourceBox.selectedOptions.length > 0) {
         let inserted = false;
         for (let sortingI = 0; sortingI < destinationBox.length; sortingI++) {
-            if (destinationBox.options.item(sortingI).text < sourceBox.selectedOptions.item(i).text)
+            if (destinationBox.options.item(sortingI).text < sourceBox.selectedOptions.item(0).text)
                 continue;
 
-            destinationBox.add(sourceBox.selectedOptions.item(i), sortingI);
+            // SELF NOTE: Adding an option that already exists in another select box removes it from the original.
+            destinationBox.add(sourceBox.selectedOptions.item(0), sortingI);
             inserted = true;
             break;
         }
 
         if (!inserted)
-            destinationBox.add(sourceBox.selectedOptions.item(i));
+            destinationBox.add(sourceBox.selectedOptions.item(0));
     }
 }
 
