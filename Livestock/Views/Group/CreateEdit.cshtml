@@ -1,12 +1,14 @@
-﻿@model Website.Models.GroupCreateViewModel
+﻿@model Website.Models.GroupCreateEditViewModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = Model.CreateOrEdit == "create" ? "Create - Group" : "Edit - Group";
 }
 
-<h1>Create new @Model.GroupType group</h1>
+<h1>
+    @(Model.CreateOrEdit == "create" ? "Create new" : "Edit") @Model.GroupType group
+</h1>
 <hr />
 
-<form id="createForm" asp-action="Create" method="post">
+<form id="createForm" asp-action="@(Model.CreateOrEdit == "create" ? "Create" : "Edit")" method="post">
     <div class="form-group">
         <label class="control-label" asp-for="Group.Name"></label>
         <input class="form-control" asp-for="Group.Name" />
@@ -28,11 +30,22 @@
         <aim-multi-select asp-for="SelectedGroupIds" descriptions="@ViewBag.GroupDescriptions" form-id="createForm" type="User" label="Users"></aim-multi-select>
         <input asp-for="Group.GroupType" type="hidden" value="@AdmuGroupEntityTypes.User" />
     }
-    
-    <input asp-for="Group.Timestamp" type="hidden" value="AAAAAAAAH0U=" />
+
+    <input asp-for="CreateOrEdit" type="hidden" />
     <input asp-for="GroupType" type="hidden" />
+    <input asp-for="Group.AdmuGroupId" type="hidden" />
+
+    @if (Model.CreateOrEdit == "create")
+    {
+        <input asp-for="Group.Timestamp" type="hidden" value="AAAAAAAAH0U=" />
+    }
+    else
+    {
+        <input asp-for="Group.Timestamp" type="hidden" />
+    }
+
     <div class="form-group">
-        <button class="btn btn-primary" type="submit">Create @Model.GroupType</button>
+        <button class="btn btn-primary" type="submit">@(Model.CreateOrEdit == "create" ? "Create" : "Edit") @Model.GroupType</button>
     </div>
 
     <div asp-validation-summary="All" class="text-danger"></div>

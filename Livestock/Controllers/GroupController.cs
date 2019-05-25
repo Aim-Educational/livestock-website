@@ -37,9 +37,7 @@ namespace Website.Controllers
                     Groups = this.livestockDb.AdmuGroup.ToList().Select(g => new GroupIndexInfo
                     {
                         Group = g,
-                        GroupMemberCount = (g.GroupType == AdmuGroupEntityTypes.Critter)
-                                           ? this.data.MultiReference<Critter>().GetAllMappingInfoForSingle(g).Count()
-                                           : this.data.MultiReference<User>().GetAllMappingInfoForSingle(g).Count()
+                        GroupMemberCount = this.GetMappingInfo(g).Count()
                     })
                 }
             );
@@ -50,41 +48,112 @@ namespace Website.Controllers
             var info = this.GetGroupInfo(type);
             ViewData["GroupDescriptions"] = info.ToDictionary(i => i.Id, i => i.Description);
             return View(
-                new GroupCreateViewModel
+                "CreateEdit",
+                new GroupCreateEditViewModel
                 {
                     Group = null,
                     SelectedGroupIds = null,
-                    GroupType = type
+                    GroupType = type,
+                    CreateOrEdit = "create"
+                }
+            );
+        }
+
+        public IActionResult Edit([FromRoute] int id)
+        {
+            var group = this.livestockDb.AdmuGroup.Find(id);
+            var type = (group.GroupType == AdmuGroupEntityTypes.Critter) ? "critter" : "user";
+            var info = this.GetGroupInfo(type);
+
+            ViewData["GroupDescriptions"] = info.ToDictionary(i => i.Id, i => i.Description);
+            return View(
+                "CreateEdit",
+                new GroupCreateEditViewModel
+                {
+                    Group = group,
+                    SelectedGroupIds = this.GetMappingInfo(group).Select(i => i.DataId),
+                    GroupType = type,
+                    CreateOrEdit = "edit"
                 }
             );
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(GroupCreateViewModel model)
+        public async Task<IActionResult> Create(GroupCreateEditViewModel model)
         {
             if(!ModelState.IsValid)
             {
                 var info = this.GetGroupInfo(model.GroupType);
                 ViewData["GroupDescriptions"] = info.ToDictionary(i => i.Id, i => i.Description);
-                return View(model);
+                return View("CreateEdit", model);
             }
 
             this.livestockDb.AdmuGroup.Add(model.Group);
             await this.livestockDb.SaveChangesAsync();
-            
-            foreach(var id in model.SelectedGroupIds)
+            await this.AddToGroup(model.Group, model.SelectedGroupIds);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(GroupCreateEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var info = this.GetGroupInfo(model.GroupType);
+                ViewData["GroupDescriptions"] = info.ToDictionary(i => i.Id, i => i.Description);
+                return View("CreateEdit", model);
+            }
+
+            this.livestockDb.Update(model.Group);            
+
+            // First, remove any that no longer are needed.
+            var maps = this.GetMappingInfo(model.Group);
+            var ids = model.SelectedGroupIds.ToList(); // We need it as a list so we can use .Remove
+            foreach(var id in maps.Select(m => m.DataId).ToList()) // We're removing things, so we need to cache the data in a list first.
+            {
+                if(!ids.Contains(id))
+                {
+                    if(model.Group.GroupType == AdmuGroupEntityTypes.Critter)
+                        await this.data.MultiReference<Critter>().RemoveByIdAsync(model.Group, id);
+                    else if(model.Group.GroupType == AdmuGroupEntityTypes.User)
+                        await this.data.MultiReference<User>().RemoveByIdAsync(model.Group, id);
+                    else
+                        throw new InvalidOperationException();
+                }
+
+                // Remove the id from the list, since we either deleted it, or we're not changing it at all.
+                ids.Remove(id);
+            }
+
+            // Next, add in anything new.
+            await this.AddToGroup(model.Group, ids);
+            await this.livestockDb.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+        private async Task AddToGroup(AdmuGroup group, IEnumerable<int> items)
+        {
+            foreach (var id in items)
             {
                 // This is slow, but at our current and future scales, it won't really matter.
-                if(model.GroupType == "critter")
-                    await this.data.MultiReference<Critter>().AddAsync(model.Group, this.livestockDb.Critter.Find(id));
-                else if(model.GroupType == "user")
-                    await this.data.MultiReference<User>().AddAsync(model.Group, this.loginDb.Users.Find(id));
+                if (group.GroupType == AdmuGroupEntityTypes.Critter)
+                    await this.data.MultiReference<Critter>().AddAsync(group, this.livestockDb.Critter.Find(id));
+                else if (group.GroupType == AdmuGroupEntityTypes.User)
+                    await this.data.MultiReference<User>().AddAsync(group, this.loginDb.Users.Find(id));
                 else
                     throw new InvalidOperationException();
             }
+        }
 
-            return RedirectToAction("Index");
+        private IQueryable<MappingInfo> GetMappingInfo(AdmuGroup group)
+        {
+            return (group.GroupType == AdmuGroupEntityTypes.Critter)
+                   ? this.data.MultiReference<Critter>().GetAllMappingInfoForSingle(group)
+                   : this.data.MultiReference<User>().GetAllMappingInfoForSingle(group);
         }
 
         private IEnumerable<GroupInfo> GetGroupInfo(string type)

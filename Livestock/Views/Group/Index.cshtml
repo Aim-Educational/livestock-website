@@ -23,6 +23,10 @@
                     <p class="card-title">@info.Group.Name</p>
                     <p class="card-subtitle">@info.Group.Description</p>
                     <p class="card-text text-muted">@info.GroupMemberCount members</p>
+
+                    <hr />
+
+                    <a class="card-link" asp-action="Edit" asp-route-id="@(info.Group.AdmuGroupId)">Edit</a>
                 </div>
             </div>
         </div>

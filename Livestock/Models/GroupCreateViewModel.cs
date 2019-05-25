@@ -7,7 +7,7 @@ using Database.Models;
 
 namespace Website.Models
 {
-    public class GroupCreateViewModel
+    public class GroupCreateEditViewModel
     {
         /// <summary>
         /// This is mostly for if the creation fails, so the user doesn't have to renter data while they fix things.
@@ -22,5 +22,8 @@ namespace Website.Models
         public IEnumerable<int> SelectedGroupIds { get; set; }
 
         public string GroupType { get; set; }
+        
+        [RegularExpression("create|edit")]
+        public string CreateOrEdit { get; set; }
     }
 }
