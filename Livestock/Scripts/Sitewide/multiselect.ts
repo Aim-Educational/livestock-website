@@ -79,6 +79,7 @@ function registerMultiSelect(
     selectedBox: HTMLSelectElement,
     addToSelectedButton: HTMLButtonElement,
     selectedToAddButton: HTMLButtonElement,
+    form: HTMLFormElement | null, // CAN ONLY BE NULL FOR CONTROLS NOT INSIDE A FORM. MUST BE NON-NULL FOR THOSE IN A FORM.
     selectType: "critter" | "user"
 ) {
     inputFilter.addEventListener('change', function () {
@@ -95,4 +96,13 @@ function registerMultiSelect(
 
     addToSelectedButton.addEventListener('click', () => moveBetweenSelectBoxes(addBox, selectedBox));
     selectedToAddButton.addEventListener('click', () => moveBetweenSelectBoxes(selectedBox, addBox));
+
+    // When the form is submitted, select all of the selected items, to ensure they're sent over.
+    if (form !== null) {
+        form.addEventListener('submit', () => {
+            for (let i = 0; i < selectedBox.options.length; i++) {
+                selectedBox.options.item(i).selected = true;
+            }
+        });
+    }
 }

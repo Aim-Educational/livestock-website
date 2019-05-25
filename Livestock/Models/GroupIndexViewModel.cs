@@ -15,6 +15,5 @@ namespace Website.Models
     public class GroupIndexViewModel
     {
         public IEnumerable<GroupIndexInfo> Groups { get; set; }
-        public List<int> TEMP { get; set; }
     }
 }

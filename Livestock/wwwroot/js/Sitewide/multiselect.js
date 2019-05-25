@@ -50,7 +50,7 @@ function moveBetweenSelectBoxes(sourceBox, destinationBox) {
             destinationBox.add(sourceBox.selectedOptions.item(i));
     }
 }
-function registerMultiSelect(inputFilter, addBox, selectedBox, addToSelectedButton, selectedToAddButton, selectType) {
+function registerMultiSelect(inputFilter, addBox, selectedBox, addToSelectedButton, selectedToAddButton, form, selectType) {
     inputFilter.addEventListener('change', function () {
         performMultiSelectAjax(inputFilter, addBox, selectedBox, selectType);
     });
@@ -59,5 +59,12 @@ function registerMultiSelect(inputFilter, addBox, selectedBox, addToSelectedButt
     inputFilter.onkeydown = function (event) { return event.keyCode != 13; };
     addToSelectedButton.addEventListener('click', function () { return moveBetweenSelectBoxes(addBox, selectedBox); });
     selectedToAddButton.addEventListener('click', function () { return moveBetweenSelectBoxes(selectedBox, addBox); });
+    if (form !== null) {
+        form.addEventListener('submit', function () {
+            for (var i = 0; i < selectedBox.options.length; i++) {
+                selectedBox.options.item(i).selected = true;
+            }
+        });
+    }
 }
 //# sourceMappingURL=multiselect.js.map

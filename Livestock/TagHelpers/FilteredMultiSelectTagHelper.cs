@@ -24,28 +24,32 @@ namespace Website.TagHelpers
 
         public MultiSelectType Type { get; set; }
 
-        public IList<string> Descriptions { get; set; }
+        public IDictionary<int, string> Descriptions { get; set; }
+
+        public string Label { get; set; }
+
+        public string FormId { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if(this.For.ModelExplorer.ModelType != typeof(List<int>))
-                throw new InvalidOperationException($"Attribute asp-for must be of type `List<int>`, not type `{this.For.ModelExplorer.ModelType}`");
-
             if(this.For.Model != null && this.Descriptions == null)
                 throw new InvalidOperationException($"Please pass the 'Descriptions' attribute for non-null models.");
 
-            var options         = (this.For.Model as List<int>)?.Select(i => new { value = i, inner = this.Descriptions[i] });
+            if (this.For.Model as IEnumerable<int> == null && this.For.Model != null)
+                throw new InvalidOperationException($"Attribute asp-for must be of type `IEnumerable<int>`, not type `{this.For.ModelExplorer.ModelType}`");
+
+            var options         = (this.For.Model as IEnumerable<int>)?.Select(i => new { value = i, inner = this.Descriptions[i] });
             var idName          = this.For.Name.Replace('.', '_');
             var filterId        = $"filter{idName}";
             var addId           = $"selectAdd{idName}";
             var selectedId      = $"selectSelected{idName}";
             var leftToRightId   = $"addToSelected{idName}";
             var rightToLeftId   = $"selectedToAdd{idName}";
-            var builder         = new StringBuilder();
+            var builder         = new StringBuilder(); 
             builder.Append(
                 // Filter box
                 $"<div class='form-group'>\n" +
-                $"  <label class='control-label'>{this.For.Name}</label>\n" +
+                $"  <label class='control-label'>{this.Label ?? this.For.Name}</label>\n" +
                 $"  <input class='form-control' id='{filterId}' type='text' placeholder='Filter'/>\n" +
                 $"</div>\n" +
                 $"<div class='form-group row'>\n" +
@@ -94,6 +98,7 @@ namespace Website.TagHelpers
                 $"                          document.getElementById('{selectedId}'), " +
                 $"                          document.getElementById('{leftToRightId}')," +
                 $"                          document.getElementById('{rightToLeftId}')," +
+                $"                          document.getElementById('{FormId}')," +
                 $"                          '{multiSelectType}')\n" +
                 $"  }});\n" +
                 $"</script>\n"
