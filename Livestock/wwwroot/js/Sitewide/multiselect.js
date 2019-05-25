@@ -50,6 +50,11 @@ function moveBetweenSelectBoxes(sourceBox, destinationBox) {
             destinationBox.add(sourceBox.selectedOptions.item(i));
     }
 }
+function clearSelection(box) {
+    while (box.selectedOptions.length > 0) {
+        box.selectedOptions[0].selected = false;
+    }
+}
 function registerMultiSelect(inputFilter, addBox, selectedBox, addToSelectedButton, selectedToAddButton, form, selectType) {
     inputFilter.addEventListener('change', function () {
         performMultiSelectAjax(inputFilter, addBox, selectedBox, selectType);
@@ -59,6 +64,8 @@ function registerMultiSelect(inputFilter, addBox, selectedBox, addToSelectedButt
     inputFilter.onkeydown = function (event) { return event.keyCode != 13; };
     addToSelectedButton.addEventListener('click', function () { return moveBetweenSelectBoxes(addBox, selectedBox); });
     selectedToAddButton.addEventListener('click', function () { return moveBetweenSelectBoxes(selectedBox, addBox); });
+    addBox.addEventListener('change', function () { return clearSelection(selectedBox); });
+    selectedBox.addEventListener('change', function () { return clearSelection(addBox); });
     if (form !== null) {
         form.addEventListener('submit', function () {
             for (var i = 0; i < selectedBox.options.length; i++) {

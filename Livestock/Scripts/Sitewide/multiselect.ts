@@ -73,6 +73,12 @@ function moveBetweenSelectBoxes(
     }
 }
 
+function clearSelection(box: HTMLSelectElement) {
+    while (box.selectedOptions.length > 0) {
+        box.selectedOptions[0].selected = false;
+    }
+}
+
 function registerMultiSelect(
     inputFilter: HTMLInputElement,
     addBox: HTMLSelectElement,
@@ -96,6 +102,10 @@ function registerMultiSelect(
 
     addToSelectedButton.addEventListener('click', () => moveBetweenSelectBoxes(addBox, selectedBox));
     selectedToAddButton.addEventListener('click', () => moveBetweenSelectBoxes(selectedBox, addBox));
+
+    // Clear the opposite box's selection when we click on it.
+    addBox.addEventListener('change', () => clearSelection(selectedBox));
+    selectedBox.addEventListener('change', () => clearSelection(addBox));
 
     // When the form is submitted, select all of the selected items, to ensure they're sent over.
     if (form !== null) {
