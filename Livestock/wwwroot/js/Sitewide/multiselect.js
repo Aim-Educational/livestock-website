@@ -36,12 +36,28 @@ function performMultiSelectAjax(inputFilter, addBox, selectedBox, selectType) {
         });
     }
 }
-function registerMultiSelect(inputFilter, addBox, selectedBox, selectType) {
+function moveBetweenSelectBoxes(sourceBox, destinationBox) {
+    for (var i = 0; i < sourceBox.selectedOptions.length; i++) {
+        var inserted = false;
+        for (var sortingI = 0; sortingI < destinationBox.length; sortingI++) {
+            if (destinationBox.options.item(sortingI).text < sourceBox.selectedOptions.item(i).text)
+                continue;
+            destinationBox.add(sourceBox.selectedOptions.item(i), sortingI);
+            inserted = true;
+            break;
+        }
+        if (!inserted)
+            destinationBox.add(sourceBox.selectedOptions.item(i));
+    }
+}
+function registerMultiSelect(inputFilter, addBox, selectedBox, addToSelectedButton, selectedToAddButton, selectType) {
     inputFilter.addEventListener('change', function () {
         performMultiSelectAjax(inputFilter, addBox, selectedBox, selectType);
     });
     inputFilter.dispatchEvent(new Event('change'));
     inputFilter.onkeyup = function () { inputFilter.dispatchEvent(new Event('change')); };
     inputFilter.onkeydown = function (event) { return event.keyCode != 13; };
+    addToSelectedButton.addEventListener('click', function () { return moveBetweenSelectBoxes(addBox, selectedBox); });
+    selectedToAddButton.addEventListener('click', function () { return moveBetweenSelectBoxes(selectedBox, addBox); });
 }
 //# sourceMappingURL=multiselect.js.map

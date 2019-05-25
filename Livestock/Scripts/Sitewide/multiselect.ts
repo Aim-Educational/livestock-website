@@ -51,10 +51,34 @@ function performMultiSelectAjax(
     }
 }
 
+function moveBetweenSelectBoxes(
+    sourceBox: HTMLSelectElement,
+    destinationBox: HTMLSelectElement
+) {
+    // Sorted insert.
+    // destinationBox must always be sorted for this to work.
+    for (let i = 0; i < sourceBox.selectedOptions.length; i++) {
+        let inserted = false;
+        for (let sortingI = 0; sortingI < destinationBox.length; sortingI++) {
+            if (destinationBox.options.item(sortingI).text < sourceBox.selectedOptions.item(i).text)
+                continue;
+
+            destinationBox.add(sourceBox.selectedOptions.item(i), sortingI);
+            inserted = true;
+            break;
+        }
+
+        if (!inserted)
+            destinationBox.add(sourceBox.selectedOptions.item(i));
+    }
+}
+
 function registerMultiSelect(
     inputFilter: HTMLInputElement,
     addBox: HTMLSelectElement,
     selectedBox: HTMLSelectElement,
+    addToSelectedButton: HTMLButtonElement,
+    selectedToAddButton: HTMLButtonElement,
     selectType: "critter" | "user"
 ) {
     inputFilter.addEventListener('change', function () {
@@ -64,7 +88,11 @@ function registerMultiSelect(
     inputFilter.dispatchEvent(new Event('change'));
 
     // In case this is put into a form, pressing 'Enter' would make the form submit.
-    // So we make 'onkeydown' stop doing anything, then 'onkeyup' fire off the change event.
+    // So we make 'onkeydown' stop doing anything for the enter key, then 'onkeyup' fire off the change event.
+    // A nice side effect of this is, you don't have to press enter anymore to see changes, it'll happen every keypress.
     inputFilter.onkeyup = function () { inputFilter.dispatchEvent(new Event('change')); }
     inputFilter.onkeydown = function (event) { return event.keyCode != 13; }
+
+    addToSelectedButton.addEventListener('click', () => moveBetweenSelectBoxes(addBox, selectedBox));
+    selectedToAddButton.addEventListener('click', () => moveBetweenSelectBoxes(selectedBox, addBox));
 }

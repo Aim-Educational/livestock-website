@@ -34,31 +34,39 @@ namespace Website.TagHelpers
             if(this.For.Model != null && this.Descriptions == null)
                 throw new InvalidOperationException($"Please pass the 'Descriptions' attribute for non-null models.");
 
-            var options    = (this.For.Model as List<int>)?.Select(i => new { value = i, inner = this.Descriptions[i] });
-            var idName     = this.For.Name.Replace('.', '_');
-            var filterId   = $"filter{idName}";
-            var addId      = $"selectAdd{idName}";
-            var selectedId = $"selectSelected{idName}";
-            var builder    = new StringBuilder();
+            var options         = (this.For.Model as List<int>)?.Select(i => new { value = i, inner = this.Descriptions[i] });
+            var idName          = this.For.Name.Replace('.', '_');
+            var filterId        = $"filter{idName}";
+            var addId           = $"selectAdd{idName}";
+            var selectedId      = $"selectSelected{idName}";
+            var leftToRightId   = $"addToSelected{idName}";
+            var rightToLeftId   = $"selectedToAdd{idName}";
+            var builder         = new StringBuilder();
             builder.Append(
+                // Filter box
                 $"<div class='form-group'>\n" +
                 $"  <label class='control-label'>{this.For.Name}</label>\n" +
                 $"  <input class='form-control' id='{filterId}' type='text' placeholder='Filter'/>\n" +
                 $"</div>\n" +
-                $"<div class='form-group row float-md-left'>\n" +
-                $"  <label class='col-sm-2 col-form-label'>Add:</label>" +
-                $"  <div class='col-sm-10'>" +
-                $"      <select multiple class='form-control resize-both' id='{addId}'>\n" +
+                $"<div class='form-group row'>\n" +
+                // Add box
+                $"  <label class='col-sm-2 col-md-1 col-form-label'>Add:</label>" +
+                $"  <div class='col-sm-10 col-md-11'>" +
+                $"      <select multiple class='form-control resize-vert' id='{addId}'>\n" +
                 $"      </select>\n" +
                 $"  </div>" +
-                $"</div>\n" +
-                $"<div class='form-group row'>\n" +
-                $"  <label class='col-sm-2 col-form-label'>Selected:</label>" +
-                $"  <div class='col-sm-10'>" +
-                $"      <select multiple class='form-control resize-both' id='{selectedId}' name='{this.For.Name}'>\n" +
+                // Selected box
+                $"  <label class='col-sm-2 col-md-1 col-form-label'>Selected:</label>" +
+                $"  <div class='col-sm-10 col-md-11'>" +
+                $"      <select multiple class='form-control resize-vert' id='{selectedId}' name='{this.For.Name}'>\n" +
                 $"          {options?.Select(o => $"<option value='{o.value}'>{o.inner}</option>").Aggregate((o1, o2) => $"{o1}\n{o2}") ?? ""}" +
                 $"      </select>\n" +
                 $"      <span class='text-danger' asp-validation-for='{this.For.Name}'></span>\n" +
+                $"  </div>" +
+                // Left to right, and right to left buttons.
+                $"  <div class='col-md-4'>" +
+                $"      <button class='btn btn-primary' id='{leftToRightId}' type='button'>&gt;&gt;&gt;</button>" +
+                $"      <button class='btn btn-primary' id='{rightToLeftId}' type='button'>&lt;&lt;&lt;</button>" +
                 $"  </div>" +
                 $"</div>\n"
             );
@@ -81,8 +89,12 @@ namespace Website.TagHelpers
             builder.Append(
                 $"<script>\n" +
                 $"  $(function () {{\n" +
-                $"      registerMultiSelect(document.getElementById('{filterId}'), document.getElementById('{addId}'), " +
-                $"                          document.getElementById('{selectedId}'), '{multiSelectType}')\n" +
+                $"      registerMultiSelect(document.getElementById('{filterId}'), " +
+                $"                          document.getElementById('{addId}'), " +
+                $"                          document.getElementById('{selectedId}'), " +
+                $"                          document.getElementById('{leftToRightId}')," +
+                $"                          document.getElementById('{rightToLeftId}')," +
+                $"                          '{multiSelectType}')\n" +
                 $"  }});\n" +
                 $"</script>\n"
             );
