@@ -128,7 +128,7 @@ namespace Website.Controllers
                 ids.Remove(id);
             }
 
-            // Next, add in anything new.
+            // Finally, add in anything new.
             await this.AddToGroup(model.Group, ids);
             await this.livestockDb.SaveChangesAsync();
 
