@@ -23,7 +23,7 @@ namespace Website.Models
 
         public string GroupType { get; set; }
         
-        [RegularExpression("create|edit")]
+        [RegularExpression("(create)|(edit)")]
         public string CreateOrEdit { get; set; }
     }
 }

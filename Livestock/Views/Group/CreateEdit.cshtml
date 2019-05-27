@@ -33,7 +33,6 @@
 
     <input asp-for="CreateOrEdit" type="hidden" />
     <input asp-for="GroupType" type="hidden" />
-    <input asp-for="Group.AdmuGroupId" type="hidden" />
 
     @if (Model.CreateOrEdit == "create")
     {
@@ -41,6 +40,7 @@
     }
     else
     {
+        <input asp-for="Group.AdmuGroupId" type="hidden" />
         <input asp-for="Group.Timestamp" type="hidden" />
     }
 
