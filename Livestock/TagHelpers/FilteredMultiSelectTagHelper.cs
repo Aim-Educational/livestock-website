@@ -46,6 +46,9 @@ namespace Website.TagHelpers
             var leftToRightId   = $"addToSelected{idName}";
             var rightToLeftId   = $"selectedToAdd{idName}";
             var builder         = new StringBuilder(); 
+
+            if(options.Count() == 0)
+                options = null;
             builder.Append(
                 // Filter box
                 $"<div class='form-group'>\n" +

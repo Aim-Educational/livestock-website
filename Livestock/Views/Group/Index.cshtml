@@ -17,12 +17,16 @@
 <div class="row">
     @foreach (var info in Model.Groups)
     {
+        var groupTypeString = (info.Group.GroupType == AdmuGroupEntityTypes.Critter)
+                              ? "Critter"
+                              : "User";
+
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <p class="card-title">@info.Group.Name</p>
                     <p class="card-subtitle">@info.Group.Description</p>
-                    <p class="card-text text-muted">@info.GroupMemberCount members</p>
+                    <p class="card-text text-muted">@info.GroupMemberCount members - @groupTypeString group</p>
 
                     <hr />
 
