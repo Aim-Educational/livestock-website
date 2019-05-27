@@ -49,6 +49,7 @@ namespace Website.TagHelpers
 
             if(options?.Count() == 0)
                 options = null;
+
             builder.Append(
                 // Filter box
                 $"<div class='form-group'>\n" +
