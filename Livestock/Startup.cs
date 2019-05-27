@@ -118,7 +118,8 @@ namespace Livestock
 
             services.Configure<AimSmtpTemplateConfig>(c =>
             {
-                c.EmailTemplates["test"] = "/Views/Emails/Test.cshtml";
+                c.EmailTemplates[AimLoginMiscExtentions.TEMPLATE_PASS_CHANGE] = "/Views/Emails/ChangePass.cshtml";
+                c.EmailTemplates[AimLoginMiscExtentions.TEMPLATE_ACC_VERIFY]  = "/Views/Emails/VerifyAccount.cshtml";
             });
 
             services.Configure<IAimPasswordSchemeConfig>(c => 

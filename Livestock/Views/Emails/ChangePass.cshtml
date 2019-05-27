@@ -1,0 +1,23 @@
+﻿@model string
+@{
+    ViewData["Title"] = "ChangePass";
+    Layout = "_EmailLayout";
+}
+
+<h1>A request has been made to change your password.</h1>
+
+<!--The model is the link to the endpoint-->
+<p>
+    To finish changing your password, please click this link: @Model
+</p>
+
+<br />
+
+<p>
+    If you did not request to change your password, please inform Andy ASAP.
+</p>
+
+<p>
+    It would also be wise to login to your account from a different device or browser, as this will force your
+    account to be logged out of the device the perpertrator is using.
+</p>
