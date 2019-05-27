@@ -22,12 +22,12 @@
 
     @if (Model.GroupType == "critter")
     {
-        <aim-multi-select asp-for="SelectedGroupIds" descriptions="@ViewBag.GroupDescriptions" form-id="createForm" type="Critter" label="Critters"></aim-multi-select>
+        <aim-multi-select asp-for="SelectedMemberIds" descriptions="@ViewBag.GroupDescriptions" form-id="createForm" type="Critter" label="Critters"></aim-multi-select>
         <input asp-for="Group.GroupType" type="hidden" value="@AdmuGroupEntityTypes.Critter" />
     }
     else if (Model.GroupType == "user")
     {
-        <aim-multi-select asp-for="SelectedGroupIds" descriptions="@ViewBag.GroupDescriptions" form-id="createForm" type="User" label="Users"></aim-multi-select>
+        <aim-multi-select asp-for="SelectedMemberIds" descriptions="@ViewBag.GroupDescriptions" form-id="createForm" type="User" label="Users"></aim-multi-select>
         <input asp-for="Group.GroupType" type="hidden" value="@AdmuGroupEntityTypes.User" />
     }
 

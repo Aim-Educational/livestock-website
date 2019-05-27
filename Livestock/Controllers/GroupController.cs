@@ -52,7 +52,7 @@ namespace Website.Controllers
                 new GroupCreateEditViewModel
                 {
                     Group = null,
-                    SelectedGroupIds = null,
+                    SelectedMemberIds = null,
                     GroupType = type,
                     CreateOrEdit = "create"
                 }
@@ -71,7 +71,7 @@ namespace Website.Controllers
                 new GroupCreateEditViewModel
                 {
                     Group = group,
-                    SelectedGroupIds = this.GetMappingInfo(group).Select(i => i.DataId),
+                    SelectedMemberIds = this.GetMappingInfo(group).Select(i => i.DataId),
                     GroupType = type,
                     CreateOrEdit = "edit"
                 }
@@ -91,7 +91,7 @@ namespace Website.Controllers
 
             this.livestockDb.AdmuGroup.Add(model.Group);
             await this.livestockDb.SaveChangesAsync();
-            await this.AddToGroup(model.Group, model.SelectedGroupIds);
+            await this.AddToGroup(model.Group, model.SelectedMemberIds);
 
             return RedirectToAction("Index");
         }
@@ -111,7 +111,7 @@ namespace Website.Controllers
 
             // First, remove any that no longer are needed.
             var maps = this.GetMappingInfo(model.Group);
-            var ids = model.SelectedGroupIds.ToList(); // We need it as a list so we can use .Remove
+            var ids = model.SelectedMemberIds.ToList(); // We need it as a list so we can use .Remove
             foreach(var id in maps.Select(m => m.DataId).ToList()) // We're removing things, so we need to cache the data in a list first.
             {
                 if(!ids.Contains(id))

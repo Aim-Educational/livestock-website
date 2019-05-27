@@ -19,7 +19,7 @@ namespace Website.Models
         /// </summary>
         [Required(ErrorMessage = "There must be at least one entity for this group.")]
         [MinLength(1, ErrorMessage = "There must be at least one entity for this group.")]
-        public IEnumerable<int> SelectedGroupIds { get; set; }
+        public IEnumerable<int> SelectedMemberIds { get; set; }
 
         public string GroupType { get; set; }
         
