@@ -252,6 +252,7 @@ namespace Website.Controllers
                                        })
                                        .Where(vd => String.IsNullOrWhiteSpace(model.NamesRegex)
                                                  || Regex.IsMatch(vd.description, model.NamesRegex, RegexOptions.IgnoreCase))
+                                       .OrderBy(vd => vd.description)
                        );
         }
         #endregion
