@@ -116,6 +116,11 @@ namespace Livestock
                 c.VerifyPasswordChangeDomain = "https://livestock.chatha.dev/Account/ChangePasswordVerify?token=";
             });
 
+            services.Configure<AimSmtpTemplateConfig>(c =>
+            {
+                c.EmailTemplates["test"] = "/Views/Emails/Test.cshtml";
+            });
+
             services.Configure<IAimPasswordSchemeConfig>(c => 
             {
                 c.ValidateFuncs.Add(pass => (pass.Length > 8)                   ? null : "Passwords must be at least 8 characters long");

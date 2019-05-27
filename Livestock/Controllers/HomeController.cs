@@ -10,6 +10,7 @@ using Database.Models;
 using Livestock.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Website.Controllers
 {
@@ -26,6 +27,11 @@ namespace Website.Controllers
             this.loginDb = loginDb;
             this.userManager = userManager;
             this.data = data;
+        }
+
+        public IActionResult EmailLayoutTest()
+        {
+            return View("Views/Emails/Test.cshtml");
         }
 
         public async Task<IActionResult> Index()
