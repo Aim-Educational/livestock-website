@@ -47,7 +47,7 @@ namespace Website.TagHelpers
             var rightToLeftId   = $"selectedToAdd{idName}";
             var builder         = new StringBuilder(); 
 
-            if(options.Count() == 0)
+            if(options?.Count() == 0)
                 options = null;
             builder.Append(
                 // Filter box
