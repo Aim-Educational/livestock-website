@@ -30,24 +30,37 @@ function performMultiSelectAjax(
         existingValues.push(Number(selectedBox.options.item(i).value));
     }
 
-    if (cacheKey in multiSelectCache) {
-        updateMultiSelect(addBox, multiSelectCache[cacheKey]);
-    }
-    else {
+    let doAjax = (url: string, data: any) => {
         $.ajax(
             {
                 type: "POST",
-                url: "/CritterEx/GetCrittersFilteredValueDescription",
+                url: url,
                 contentType: "application/json",
                 dataType: "json",
-                data: JSON.stringify({
-                    Name: inputFilter.value
-                })
+                data: JSON.stringify(data)
             }
         ).done(function (response: ValueAndDescription<number>[]) {
             multiSelectCache[cacheKey] = response;
             updateMultiSelect(addBox, response, existingValues);
         });
+    }
+
+    if (cacheKey in multiSelectCache) {
+        updateMultiSelect(addBox, multiSelectCache[cacheKey]);
+    }
+    else {
+        switch (selectType) {
+            case "critter":
+                doAjax("/CritterEx/GetCrittersFilteredValueDescription", { Name: inputFilter.value });
+                break;
+
+            case "user":
+                doAjax("/Account/GetUsersFilteredValueDescription", { NamesRegex: inputFilter.value });
+                break;
+
+            default:
+                break;
+        }
     }
 }
 

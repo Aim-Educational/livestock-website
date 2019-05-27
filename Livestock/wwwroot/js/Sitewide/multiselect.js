@@ -18,22 +18,32 @@ function performMultiSelectAjax(inputFilter, addBox, selectedBox, selectType) {
     for (var i = 0; i < selectedBox.options.length; i++) {
         existingValues.push(Number(selectedBox.options.item(i).value));
     }
-    if (cacheKey in multiSelectCache) {
-        updateMultiSelect(addBox, multiSelectCache[cacheKey]);
-    }
-    else {
+    var doAjax = function (url, data) {
         $.ajax({
             type: "POST",
-            url: "/CritterEx/GetCrittersFilteredValueDescription",
+            url: url,
             contentType: "application/json",
             dataType: "json",
-            data: JSON.stringify({
-                Name: inputFilter.value
-            })
+            data: JSON.stringify(data)
         }).done(function (response) {
             multiSelectCache[cacheKey] = response;
             updateMultiSelect(addBox, response, existingValues);
         });
+    };
+    if (cacheKey in multiSelectCache) {
+        updateMultiSelect(addBox, multiSelectCache[cacheKey]);
+    }
+    else {
+        switch (selectType) {
+            case "critter":
+                doAjax("/CritterEx/GetCrittersFilteredValueDescription", { Name: inputFilter.value });
+                break;
+            case "user":
+                doAjax("/Account/GetUsersFilteredValueDescription", { NamesRegex: inputFilter.value });
+                break;
+            default:
+                break;
+        }
     }
 }
 function moveBetweenSelectBoxes(sourceBox, destinationBox) {

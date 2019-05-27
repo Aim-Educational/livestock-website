@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Aim.DataMapper;
 using AimLogin.DbModel;
@@ -234,5 +235,30 @@ namespace Website.Controllers
             return RedirectToAction("Index", "Home");
         }
         #endregion
+
+        #region AJAX
+        [Authorize(Roles = "staff,admin")]
+        [HttpPost]
+        public IActionResult GetUsersFilteredValueDescription([FromBody] UserAJAXFilter model)
+        {
+            var userInfo = this.aimLoginData.SingleValue<AlUserInfo>();
+            // Slightly inefficient, but even when we reach 100 users (which is very far off) this won't really matter.
+            return Json(this.aimloginDb.Users
+                                       .ToList()
+                                       .Select(u => 
+                                       {
+                                           var info = userInfo.GetOrDefaultAsync(u).Result;
+                                           return new { value = u.UserId, description = $"{info.FirstName} {info.LastName}" };
+                                       })
+                                       .Where(vd => String.IsNullOrWhiteSpace(model.NamesRegex)
+                                                 || Regex.IsMatch(vd.description, model.NamesRegex, RegexOptions.IgnoreCase))
+                       );
+        }
+        #endregion
+    }
+
+    public class UserAJAXFilter
+    {
+        public string NamesRegex { get; set; }
     }
 }
