@@ -72,8 +72,8 @@ namespace Website.TagHelpers
                 $"  </div>" +
                 // Left to right, and right to left buttons.
                 $"  <div class='col-md-4'>" +
-                $"      <button class='btn btn-primary' id='{leftToRightId}' type='button'>&gt;&gt;&gt;</button>" +
-                $"      <button class='btn btn-primary' id='{rightToLeftId}' type='button'>&lt;&lt;&lt;</button>" +
+                $"      <button class='btn btn-secondary' id='{leftToRightId}' type='button'>&gt;&gt;&gt;</button>" +
+                $"      <button class='btn btn-secondary' id='{rightToLeftId}' type='button'>&lt;&lt;&lt;</button>" +
                 $"  </div>" +
                 $"</div>\n"
             );
