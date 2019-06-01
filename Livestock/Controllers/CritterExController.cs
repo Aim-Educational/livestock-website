@@ -59,8 +59,11 @@ namespace Website.Controllers
                 if (width != null && height != null)
                 {
                     // Prevent exploits
-                    if(width > MAX_IMAGE_RESIZE_WIDTH && height > MAX_IMAGE_RESIZE_HEIGHT)
+                    if(width > MAX_IMAGE_RESIZE_WIDTH || height > MAX_IMAGE_RESIZE_HEIGHT)
                         return BadRequest("Width or height was too high.");
+
+                    if(width < 0 || height < 0)
+                        return BadRequest("Width or height cannot be negative.");
 
                     var variant = await this._livestock.CritterImageVariant
                                                        .FirstOrDefaultAsync(v => v.CritterImageOriginalId == critter.CritterImageId
