@@ -54,7 +54,7 @@ namespace Website.Controllers
                 CritterImage image = null;
 
                 // If we need a specific size, either retrieve or create it.
-                if(width != null && height != null)
+                if (width != null && height != null)
                 {
                     var variant = await this._livestock.CritterImageVariant
                                                        .FirstOrDefaultAsync(v => v.CritterImageOriginalId == critter.CritterImageId
@@ -100,18 +100,14 @@ namespace Website.Controllers
                             this._livestock.Entry(image).State = EntityState.Detached;
                             _imageBufferPool.Return(resized);
                         }
+
+                        return File(image.Data, "image/png");
                     }
                 }
                 else // Otherwise, return the original.
                 {
-                    await this._livestock.Entry(critter).Reference(c => c.CritterImage).LoadAsync();
-                    image = critter.CritterImage;
+                    return await this.GetAndCacheImage(critter, critter.CritterImageId.Value, cacheVersion, width, height);
                 }
-                
-                // Hopefully force the GC to clean up the LOH
-                GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-
-                return File(image.Data, "image/png");
             }
             else
                 return Redirect("/images/icons/default.png");
@@ -448,6 +444,8 @@ namespace Website.Controllers
                 }
             }
 
+            // Hopefully force the GC to clean up the LOH, since these images really do give it a run for it's money.
+            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
             return PhysicalFile(cachePath, "image/png");
         }
 
