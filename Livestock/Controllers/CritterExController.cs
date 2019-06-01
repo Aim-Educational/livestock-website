@@ -93,6 +93,11 @@ namespace Website.Controllers
                         }
                     }
                 }
+                else // Otherwise, return the original.
+                {
+                    await this._livestock.Entry(critter).Reference(c => c.CritterImage).LoadAsync();
+                    image = critter.CritterImage;
+                }
                 
                 // Hopefully force the GC to clean up the LOH
                 GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
