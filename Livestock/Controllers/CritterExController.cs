@@ -19,23 +19,32 @@ using SixLabors.ImageSharp.Processing;
 using System.Buffers;
 using System.Runtime;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Caching.Memory;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Website.Controllers
 {
     [Authorize(Roles = "admin,staff,student")]
     public class CritterExController : Controller
     {
-        static readonly ArrayPool<byte> _imageBufferPool = ArrayPool<byte>.Create(1 * 1024 * 1024, 20);
-        readonly LivestockContext _livestock;
+        const string IMAGE_CACHE_FOLDER = "ImageCache";
 
-        public CritterExController(LivestockContext livestock)
+        static readonly ArrayPool<byte> _imageBufferPool = ArrayPool<byte>.Create(1 * 1024 * 1024, 20);
+
+        readonly LivestockContext _livestock;
+        readonly IHostingEnvironment _environment;
+
+        public CritterExController(LivestockContext livestock, IHostingEnvironment environment)
         {
             this._livestock = livestock;
+            this._environment = environment;
         }
 
         #region CritterImage
         [ResponseCache(Duration = 60 * 60 * 24 * 365)]
-        public async Task<IActionResult> Image(int critterId, int cacheVersion, int? width, int? height) // cacheVersion is unused, but needs to be there for routing.
+        public async Task<IActionResult> Image(int critterId, int cacheVersion, int? width, int? height)
         {
             var critter = await this._livestock.Critter.FirstAsync(c => c.CritterId == critterId);
             
@@ -48,12 +57,13 @@ namespace Website.Controllers
                 if(width != null && height != null)
                 {
                     var variant = await this._livestock.CritterImageVariant
-                                                       .FirstOrDefaultAsync(v => v.CritterImageOriginalId == critter.CritterImageId);
+                                                       .FirstOrDefaultAsync(v => v.CritterImageOriginalId == critter.CritterImageId
+                                                                              && v.Width == width
+                                                                              && v.Height == height);
 
                     if(variant != null)
                     {
-                        await this._livestock.Entry(variant).Reference(v => v.CritterImageModified).LoadAsync();
-                        image = variant.CritterImageModified;
+                        return await this.GetAndCacheImage(critter, variant.CritterImageModifiedId, cacheVersion, width, height);
                     }
                     else
                     {
@@ -64,7 +74,6 @@ namespace Website.Controllers
                             Height = height.Value
                         };
 
-                        // Load the original.
                         await this._livestock.Entry(critter).Reference(c => c.CritterImage).LoadAsync();
                         image = critter.CritterImage;
 
@@ -406,6 +415,42 @@ namespace Website.Controllers
         #endregion
 
         #region Utility
+        private async Task<IActionResult> GetAndCacheImage(Critter critter, int critterImageId, int cacheVersion, int? width, int? height)
+        {
+            var cachePath = Path.Combine(this._environment.WebRootPath, IMAGE_CACHE_FOLDER, $"{critter.CritterId}-{width ?? 0}-{height ?? 0}-{cacheVersion}.png");
+            if(!System.IO.File.Exists(cachePath))
+            {
+                if(!Directory.Exists(Path.GetDirectoryName(cachePath)))
+                    Directory.CreateDirectory(Path.GetDirectoryName(cachePath));
+
+                // Get the image data, and cache it to the file system (faster downloading for the user).
+                // We're manually executing the request, since EF butchers memory usage in this case.
+                using (var command = this._livestock.Database.GetDbConnection().CreateCommand())
+                {
+                    var imageId = command.CreateParameter();
+                    imageId.ParameterName = "@ImageId";
+                    imageId.Value = critterImageId;
+                    command.Parameters.Add(imageId);
+
+                    command.CommandText = "SELECT data FROM dbo.critter_image WHERE critter_image_id = @ImageId;";
+                    command.Connection.Open();
+                    using (var dbStream = await command.ExecuteReaderAsync(System.Data.CommandBehavior.SequentialAccess | System.Data.CommandBehavior.SingleResult))
+                    {
+                        using (var fileStream = System.IO.File.Create(cachePath))
+                        {
+                            while (await dbStream.ReadAsync())
+                            {
+                                var stream = dbStream.GetStream(0);
+                                await stream.CopyToAsync(fileStream);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return PhysicalFile(cachePath, "image/png");
+        }
+
         private void FixNullFields(Critter val)
         {
             if (String.IsNullOrWhiteSpace(val.Comment)) val.Comment = "N/A";

@@ -24,6 +24,9 @@
 # Documentation
 Libraries/C#/Documentation/
 
+# Image cache
+ImageCache/
+
 # Build results
 #[Dd]ebug/
 #[Dd]ebugPublic/
