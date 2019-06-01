@@ -23,17 +23,22 @@ using Microsoft.Extensions.Caching.Memory;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using Microsoft.AspNetCore.Hosting;
+using System.Threading;
 
 namespace Website.Controllers
 {
     [Authorize(Roles = "admin,staff,student")]
     public class CritterExController : Controller
     {
+        // TODO: Turn all of these into configurations.
         const string IMAGE_CACHE_FOLDER = "ImageCache";
         const int MAX_IMAGE_RESIZE_WIDTH = 1920;
         const int MAX_IMAGE_RESIZE_HEIGHT = 1080;
+        const int MAX_IMAGE_SIMUL_REQUESTS = 8;
+        const int IMAGE_DELAY_MS = 500;
 
         static readonly ArrayPool<byte> _imageBufferPool = ArrayPool<byte>.Create(1 * 1024 * 1024, 20);
+        static long _imageRequestCounter = 0;
 
         readonly LivestockContext _livestock;
         readonly IHostingEnvironment _environment;
@@ -46,80 +51,94 @@ namespace Website.Controllers
 
         #region CritterImage
         [ResponseCache(Duration = 60 * 60 * 24 * 365)]
-        public async Task<IActionResult> Image(int critterId, int cacheVersion, int? width, int? height)
+        public async Task<IActionResult> Image(int critterId, int cacheVersion, int? width, int? height, CancellationToken cancelToken)
         {
-            var critter = await this._livestock.Critter.FirstAsync(c => c.CritterId == critterId);
-            
-            // If the critter has an image, retrieve it.
-            if(critter.CritterImageId != null)
+            // Limit to only processing a certain amount of image requests, to prevent the rest of the
+            // website from dying when someone needs to get a lot of images.
+            while(Interlocked.Read(ref _imageRequestCounter) >= MAX_IMAGE_SIMUL_REQUESTS)
+                await Task.Delay(IMAGE_DELAY_MS);
+
+            try
             {
-                CritterImage image = null;
+                Interlocked.Increment(ref _imageRequestCounter);
 
-                // If we need a specific size, either retrieve or create it.
-                if (width != null && height != null)
+                var critter = await this._livestock.Critter.FirstAsync(c => c.CritterId == critterId);
+            
+                // If the critter has an image, retrieve it.
+                if(critter.CritterImageId != null)
                 {
-                    // Prevent exploits
-                    if(width > MAX_IMAGE_RESIZE_WIDTH || height > MAX_IMAGE_RESIZE_HEIGHT)
-                        return BadRequest("Width or height was too high.");
+                    CritterImage image = null;
 
-                    if(width < 0 || height < 0)
-                        return BadRequest("Width or height cannot be negative.");
-
-                    var variant = await this._livestock.CritterImageVariant
-                                                       .FirstOrDefaultAsync(v => v.CritterImageOriginalId == critter.CritterImageId
-                                                                              && v.Width == width
-                                                                              && v.Height == height);
-
-                    if(variant != null)
+                    // If we need a specific size, either retrieve or create it.
+                    if (width != null && height != null)
                     {
-                        return await this.GetAndCacheImage(critter, variant.CritterImageModifiedId, cacheVersion, width, height);
+                        // Prevent exploits
+                        if(width > MAX_IMAGE_RESIZE_WIDTH || height > MAX_IMAGE_RESIZE_HEIGHT)
+                            return BadRequest("Width or height was too high.");
+
+                        if(width < 0 || height < 0)
+                            return BadRequest("Width or height cannot be negative.");
+
+                        var variant = await this._livestock.CritterImageVariant
+                                                           .FirstOrDefaultAsync(v => v.CritterImageOriginalId == critter.CritterImageId
+                                                                                  && v.Width == width
+                                                                                  && v.Height == height);
+
+                        if(variant != null)
+                        {
+                            return await this.GetAndCacheImage(critter, variant.CritterImageModifiedId, cacheVersion, width, height);
+                        }
+                        else
+                        {
+                            variant = new CritterImageVariant
+                            {
+                                CritterImageOriginalId = critter.CritterImageId.Value,
+                                Width = width.Value,
+                                Height = height.Value
+                            };
+
+                            await this._livestock.Entry(critter).Reference(c => c.CritterImage).LoadAsync();
+                            image = critter.CritterImage;
+
+                            // Resize it, then upload it so it's cached.
+                            var resized = await this.ResizeImageAsyncPOOLED(image.Data, width.Value, height.Value);
+                            image = new CritterImage
+                            {
+                                Data = resized
+                            };
+
+                            variant.CritterImageModified = image;
+
+                            try
+                            {
+                                await this._livestock.CritterImage.AddAsync(image);
+                                await this._livestock.CritterImageVariant.AddAsync(variant);
+                                await this._livestock.SaveChangesAsync();
+                            }
+                            finally // I can count on one hand the amount of times I've used 'finally'.
+                            {
+                                // We detach the entity, since the image data shouldn't be reference anymore once it's returned.
+                                // And if we set it to 'null', then we can accidentally remove the image data if we save at some point.
+                                // So it's safer to just detach it, and take the performance hit of downloading a new version of it when needed.
+                                this._livestock.Entry(image).State = EntityState.Detached;
+                                _imageBufferPool.Return(resized);
+                            }
+
+                            return File(image.Data, "image/png");
+                        }
                     }
-                    else
+                    else // Otherwise, return the original.
                     {
-                        variant = new CritterImageVariant
-                        {
-                            CritterImageOriginalId = critter.CritterImageId.Value,
-                            Width = width.Value,
-                            Height = height.Value
-                        };
-
-                        await this._livestock.Entry(critter).Reference(c => c.CritterImage).LoadAsync();
-                        image = critter.CritterImage;
-
-                        // Resize it, then upload it so it's cached.
-                        var resized = await this.ResizeImageAsyncPOOLED(image.Data, width.Value, height.Value);
-                        image = new CritterImage
-                        {
-                            Data = resized
-                        };
-
-                        variant.CritterImageModified = image;
-
-                        try
-                        {
-                            await this._livestock.CritterImage.AddAsync(image);
-                            await this._livestock.CritterImageVariant.AddAsync(variant);
-                            await this._livestock.SaveChangesAsync();
-                        }
-                        finally // I can count on one hand the amount of times I've used 'finally'.
-                        {
-                            // We detach the entity, since the image data shouldn't be reference anymore once it's returned.
-                            // And if we set it to 'null', then we can accidentally remove the image data if we save at some point.
-                            // So it's safer to just detach it, and take the performance hit of downloading a new version of it when needed.
-                            this._livestock.Entry(image).State = EntityState.Detached;
-                            _imageBufferPool.Return(resized);
-                        }
-
-                        return File(image.Data, "image/png");
+                        return await this.GetAndCacheImage(critter, critter.CritterImageId.Value, cacheVersion, width, height);
                     }
                 }
-                else // Otherwise, return the original.
-                {
-                    return await this.GetAndCacheImage(critter, critter.CritterImageId.Value, cacheVersion, width, height);
-                }
+                else
+                    return Redirect("/images/icons/default.png");
             }
-            else
-                return Redirect("/images/icons/default.png");
+            finally
+            {
+                Interlocked.Decrement(ref _imageRequestCounter);
+            }
         }
         
         [Authorize(Roles = "admin,staff")]
