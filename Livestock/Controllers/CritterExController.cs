@@ -30,6 +30,8 @@ namespace Website.Controllers
     public class CritterExController : Controller
     {
         const string IMAGE_CACHE_FOLDER = "ImageCache";
+        const int MAX_IMAGE_RESIZE_WIDTH = 1920;
+        const int MAX_IMAGE_RESIZE_HEIGHT = 1080;
 
         static readonly ArrayPool<byte> _imageBufferPool = ArrayPool<byte>.Create(1 * 1024 * 1024, 20);
 
@@ -56,6 +58,10 @@ namespace Website.Controllers
                 // If we need a specific size, either retrieve or create it.
                 if (width != null && height != null)
                 {
+                    // Prevent exploits
+                    if(width > MAX_IMAGE_RESIZE_WIDTH && height > MAX_IMAGE_RESIZE_HEIGHT)
+                        return BadRequest("Width or height was too high.");
+
                     var variant = await this._livestock.CritterImageVariant
                                                        .FirstOrDefaultAsync(v => v.CritterImageOriginalId == critter.CritterImageId
                                                                               && v.Width == width
