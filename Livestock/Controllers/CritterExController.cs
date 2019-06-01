@@ -56,7 +56,10 @@ namespace Website.Controllers
             // Limit to only processing a certain amount of image requests, to prevent the rest of the
             // website from dying when someone needs to get a lot of images.
             while(Interlocked.Read(ref _imageRequestCounter) >= MAX_IMAGE_SIMUL_REQUESTS)
+            {
                 await Task.Delay(IMAGE_DELAY_MS);
+                cancelToken.ThrowIfCancellationRequested();
+            }
 
             try
             {
