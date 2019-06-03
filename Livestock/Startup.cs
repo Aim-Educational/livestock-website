@@ -112,8 +112,6 @@ namespace Livestock
             services.Configure<IAimSmtpDomainConfig>(c =>
             {
                 var domain = this.Configuration.GetValue<string>("AIMDEPLOY:DOMAIN", "localhost");
-                
-                // This will have to be hard coded for now.
                 c.VerifyEmailDomain = $"https://{domain}/Account/VerifyEmail?token=";
                 c.VerifyPasswordChangeDomain = $"https://{domain}/Account/ChangePasswordVerify?token=";
             });
