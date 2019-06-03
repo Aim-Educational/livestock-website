@@ -111,9 +111,11 @@ namespace Livestock
 
             services.Configure<IAimSmtpDomainConfig>(c =>
             {
+                var domain = this.Configuration.GetValue<string>("AIMDEPLOY:DOMAIN", "localhost");
+                
                 // This will have to be hard coded for now.
-                c.VerifyEmailDomain = "https://livestock.chatha.dev/Account/VerifyEmail?token=";
-                c.VerifyPasswordChangeDomain = "https://livestock.chatha.dev/Account/ChangePasswordVerify?token=";
+                c.VerifyEmailDomain = $"https://{domain}/Account/VerifyEmail?token=";
+                c.VerifyPasswordChangeDomain = $"https://{domain}/Account/ChangePasswordVerify?token=";
             });
 
             services.Configure<AimSmtpTemplateConfig>(c =>
