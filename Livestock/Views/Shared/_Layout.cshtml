@@ -1,7 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.Extensions.DependencyInjection
+@using Microsoft.Extensions.Configuration
 @{
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
-    var canUseCookies = consentFeature.CanTrack;
+    var canUseCookies = consentFeature.CanTrack;    
+    var config = Context.RequestServices.GetRequiredService<IConfiguration>();
 }
 <!DOCTYPE html>
 <html>
@@ -37,7 +40,10 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2019 - AimEducational</p>
+            <div class="row">
+                <p class="text-muted col-md-8">[@(config.GetValue<string>("AIMDEPLOY:GIT_TAG", "Unknown version"))]</p>
+                <p class="col-md-4 text-right">&copy; 2019 - AimEducational</p>
+            </div>
         </footer>
     </div>
 
