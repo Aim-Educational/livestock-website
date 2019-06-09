@@ -2,9 +2,11 @@
 @using Database.Models;
 @{
     ViewData["Title"] = "Edit Critter";
+    
+    var db = Context.RequestServices.GetRequiredService<LivestockContext>();
 
     string cantDeleteReason;
-    var canDeleteSafely = Model.Critter.CanSafelyDelete(out cantDeleteReason);
+    var canDeleteSafely = Model.Critter.CanSafelyDelete(db, out cantDeleteReason);
 }
 
 <h2>Edit</h2>
