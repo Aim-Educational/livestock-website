@@ -87,7 +87,7 @@ namespace Website.Controllers
                 await this.data.SingleReference<Role>().SetAsync(user, role);
                 await this.data.SingleValue<UserEmail>().SetAsync(user, email);
 
-                return RedirectToActionPermanent("UserList", "Admin");
+                return RedirectToAction("UserList", "Admin");
             }
             catch(Exception ex)
             {

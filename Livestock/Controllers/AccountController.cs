@@ -171,7 +171,7 @@ namespace Website.Controllers
             cookie.SaveChanges(DEFAULT_COOKIE_OPTIONS);
 
             await HttpContext.SignOutAsync();
-            return RedirectToActionPermanent("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize(Roles = "student,staff,admin")]
