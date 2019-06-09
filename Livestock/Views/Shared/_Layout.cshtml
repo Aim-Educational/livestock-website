@@ -41,7 +41,9 @@
         <hr />
         <footer>
             <div class="row">
-                <p class="text-muted col-md-8">[@(config.GetValue<string>("AIMDEPLOY:GIT_TAG", "Unknown version"))]</p>
+                <a class="text-muted col-md-8" asp-action="Index" asp-controller="Changelog">
+                    [@(config.GetValue<string>("AIMDEPLOY:GIT_TAG", "Unknown version"))]
+                </a>
                 <p class="col-md-4 text-right">&copy; 2019 - AimEducational</p>
             </div>
         </footer>

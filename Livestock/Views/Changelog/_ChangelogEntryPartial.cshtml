@@ -1,0 +1,25 @@
+﻿@model string
+
+@{
+    var versionFixed = Model.Replace(".", "_");
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body card-title">
+                @Model
+            </div>
+
+            <div class="card-footer">
+                <a class="card-link" asp-action="ShowLog" asp-route-version="@versionFixed">
+                    Simple
+                </a>
+
+                <a class="card-link" asp-action="ShowLog" asp-route-version="@versionFixed" asp-route-technical="true">
+                    Technical
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
