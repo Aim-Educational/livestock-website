@@ -228,17 +228,12 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var val = await this._livestock.Critter
-                                .Include(c => c.CritterLifeEvent)
-                                .Include(c => c.InverseDadCritter)
-                                .Include(c => c.InverseMumCritter)
-                                .FirstAsync(c => c.CritterId == id);
-
+            var val = await this._livestock.Critter.FirstAsync(c => c.CritterId == id);
             if(val == null)
                 return NotFound();
 
             string cantDeleteReason;
-            var canDelete = val.CanSafelyDelete(out cantDeleteReason);
+            var canDelete = val.CanSafelyDelete(this._livestock, out cantDeleteReason);
 
             if(!canDelete)
                 return RedirectToAction("Error", "Home", new { message = cantDeleteReason });

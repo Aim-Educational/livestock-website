@@ -58,24 +58,19 @@ namespace Database.Models
          && (this.Flags & (int)CritterFlags.ReproduceNoTooOld) == 0
          && (this.Flags & (int)CritterFlags.ReproduceYesUser) > 0;
 
-        public bool CanSafelyDelete(out string reasonIfFalse)
+        public bool CanSafelyDelete(LivestockContext db, out string reasonIfFalse)
         {
-            if (this.InverseDadCritter == null)
-                throw new InvalidOperationException($"Please make sure to .Include() the 'InverseDadCritter' property.");
-
-            if (this.InverseMumCritter == null)
-                throw new InvalidOperationException($"Please make sure to .Include() the 'InverseMumCritter' property.");
-
-            if(this.CritterLifeEvent == null)
-                throw new InvalidOperationException($"Please make sure to .Include() the 'CritterLifeEvent' property.");
+            db.Entry(this).Collection(c => c.InverseDadCritter).Load();
+            db.Entry(this).Collection(c => c.InverseMumCritter).Load();
+            db.Entry(this).Collection(c => c.CritterLifeEvent).Load();
 
             if(this.InverseDadCritter.Count > 0 || this.InverseMumCritter.Count > 0)
             {
                 reasonIfFalse = $"This Critter is a parent of another critter. TODO: Display which critters.";
                 return false;
             }
-
-            // TODO: Life event checks to see if they can't be deleted.
+            
+            // TODO: Check if the life event for any other critter references this critter.
             reasonIfFalse = null;
             return true;
         }
