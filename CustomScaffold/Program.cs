@@ -24,6 +24,10 @@ namespace CustomScaffold
 
     class Program
     {
+        static Type[] IGNORED_TYPES = new Type[]
+        {
+            typeof(Critter)
+        };
         static List<IEntityFileGenerator> _generators;
 
         static void Main(string[] args)
@@ -41,7 +45,7 @@ namespace CustomScaffold
             using (var db = new LivestockContext(json.Get("ConnectionStrings").Get("Livestock").As<string>()))
             {
                 _generators.Add(new ControllerGenerator(db));
-                foreach (var entity in db.Model.GetEntityTypes())
+                foreach (var entity in db.Model.GetEntityTypes().Where(e => !IGNORED_TYPES.Contains(e.ClrType)))
                 {
                     foreach(var gen in _generators)
                     {
