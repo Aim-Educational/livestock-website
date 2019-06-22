@@ -28,6 +28,6 @@ body {
 }
 
 /* Padding helpers */
-.bottom.one.padded {
+html * [class*="bottom one padded"] {
     padding-bottom: 1em;
 }
