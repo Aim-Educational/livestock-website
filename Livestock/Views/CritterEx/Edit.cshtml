@@ -217,13 +217,13 @@
 
 @foreach (var item in Model.LifeEventTableInfo)
 {
-    <div class="card">
+    <div class="ui card">
         <div class="content">
-            <h5 class="header">@item.Type</h5>
-            <h6 class="ui grey text">
+            <h2 class="header">@item.Type</h2>
+            <div class="ui grey text">
                 @item.DateTime
                 <abbr title="This is when the event was registered, not when it happened.">?</abbr>
-            </h6>
+            </div>
             <p class="description">@item.Description</p>
 
             <div class="ui inverted divider"></div>
