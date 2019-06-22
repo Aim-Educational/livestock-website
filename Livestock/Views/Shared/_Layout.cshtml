@@ -13,13 +13,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Livestock</title>
 
-    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.3.1/css/bootstrap.min.css"
-          asp-fallback-href="~/lib/bootstrap/css/bootstrap.min.css"
-          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-    <link rel="stylesheet" href="~/lib/bootstrap-social/bootstrap-social.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.7.6/dist/semantic.min.css">
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
 
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -36,29 +31,24 @@
 <body>
     <partial name="_Navbar" />
 
-    <div class="container">
+    <main class="ui centered grid">
         @RenderBody()
-        <hr />
-        <footer>
-            <div class="row">
-                <a class="text-muted col-md-8" asp-action="Index" asp-controller="Changelog">
-                    [@(config.GetValue<string>("AIMDEPLOY:GIT_TAG", "Unknown version"))]
-                </a>
-                <p class="col-md-4 text-right">&copy; 2019 - AimEducational</p>
-            </div>
-        </footer>
-    </div>
+    </main>
+    <hr />
+    <footer>
+        <div class="ui centered grid">
+            <a class="eight wide column" asp-action="Index" asp-controller="Changelog">
+                [@(config.GetValue<string>("AIMDEPLOY:GIT_TAG", "Unknown version"))]
+            </a>
+            <p class="four wide column right aligned">&copy; 2019 - AimEducational</p>
+        </div>
+    </footer>
 
     <partial name="_CookieConsentPartial" />
 
     <!--START Extern scripts-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
-            integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
-            crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.7.6/dist/semantic.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
     <!--END Extern Scripts-->

@@ -3,10 +3,6 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "bootstrap-social@5.1.1",
-      "destination": "wwwroot/lib/bootstrap-social/"
-    },
-    {
       "library": "font-awesome@4.7.0",
       "destination": "wwwroot/lib/font-awesome/"
     },
@@ -15,8 +11,8 @@
       "destination": "wwwroot/lib/tempusdominus-bootstrap-4/"
     },
     {
-      "library": "bootstrap-material-design@4.0.2",
-      "destination": "wwwroot/lib/bootstrap-material-design/"
+      "library": "fomantic-ui@2.7.6",
+      "destination": "wwwroot/lib/fomantic-ui/"
     }
   ]
 }
