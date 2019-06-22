@@ -19,8 +19,11 @@
                                                                   : item.Gender)
                         @item.CritterType.Name - @item.Breed.Description
                     </div>
+
                     <div class="ui inverted divider"></div>
-                    <partial name="_CritterLinks" model="item" />
+                    <div class="extra content">
+                        <partial name="_CritterLinks" model="item" />
+                    </div>
                 </div>
             </div>
         </div>
