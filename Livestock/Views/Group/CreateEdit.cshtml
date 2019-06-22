@@ -11,12 +11,12 @@
 <form class="ui form" id="createForm" asp-action="@(Model.CreateOrEdit == "create" ? "Create" : "Edit")" method="post">
     <div class="field">
         <label asp-for="Group.Name"></label>
-        <inputasp-for="Group.Name" />
+        <input asp-for="Group.Name" />
         <span class="ui red text" asp-validation-for="Group.Name"></span>
     </div>
     <div class="field">
         <label asp-for="Group.Description"></label>
-        <inputasp-for="Group.Description" />
+        <input asp-for="Group.Description" />
         <span class="ui red text" asp-validation-for="Group.Description"></span>
     </div>
 

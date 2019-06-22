@@ -3,12 +3,6 @@
 .lazy {
 }
 
-/* MAIN FONT*/
-body {
-    /* Line stolen from _reboot.scss */
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-}
-
 /* Resize-ability helpers */
 .resize-horiz {
     resize: horizontal;
