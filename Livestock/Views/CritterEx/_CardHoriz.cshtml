@@ -11,7 +11,9 @@
                         <div>
                             <partial name="_CritterIcons" model="item" />
                         </div>
-                        <div class="header"><span class="badge badge-secondary">[@item.TagNumber]</span> @item.Name</div>
+                        <div class="ui massive header text" style="margin-top: 2px;"> 
+                            @item.Name
+                        </div>
                     </div>
                     <div class="meta">
                         @(item.Gender == "M" ? "Male"

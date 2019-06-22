@@ -8,7 +8,9 @@
                 <img class="lazy image" data-src="/CritterEx/Image?critterId=@item.CritterId&cacheVersion=@item.VersionNumber&width=348&height=464"/>
 
                 <div class="content">
-                    <div class="header">[@item.TagNumber] @item.Name</div>
+                    <div class="header">
+                        @item.Name
+                    </div>
                     <div class="meta">
                         @(item.Gender == "M" ? "Male"
                                              : item.Gender == "F" ? "Female"
