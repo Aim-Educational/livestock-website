@@ -17,10 +17,10 @@ function changeDesign(divName: string) {
 
     // Hide all designs
     let designs = document.querySelectorAll('*[id^="design-"]');
-    designs.forEach(d => d.classList.add("d-none"));
+    designs.forEach(d => d.classList.add("transition", "hidden"));
 
     // Unhide the one we want
-    div.classList.remove("d-none");
+    div.classList.remove("transition", "hidden");
 
     if(CAN_USE_COOKIES)
         Cookies.set("critterDesign", divName);

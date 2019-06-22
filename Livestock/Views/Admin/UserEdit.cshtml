@@ -5,32 +5,32 @@
 
 <h1>UserEdit</h1>
 
-<form method="post" asp-controller="Admin" asp-action="UserEdit">
+<form class="ui form" method="post" asp-controller="Admin" asp-action="UserEdit">
     @Html.HiddenFor(m => m.UserId)
 
     <h3>AlUserInfo</h3>
     <hr />
-    <div class="form-group">
+    <div class="field">
         <label asp-for="Info.FirstName"></label>
-        <input asp-for="Info.FirstName" class="form-control" />
-        <span asp-validation-for="Info.FirstName" class="text-danger"></span>
+        <input asp-for="Info.FirstName"/>
+        <span asp-validation-for="Info.FirstName" class="ui red text"></span>
     </div>
-    <div class="form-group">
+    <div class="field">
         <label asp-for="Info.LastName"></label>
-        <input asp-for="Info.LastName" class="form-control" />
-        <span asp-validation-for="Info.LastName" class="text-danger"></span>
+        <input asp-for="Info.LastName"/>
+        <span asp-validation-for="Info.LastName" class="ui red text"></span>
     </div>
-    <div class="form-group">
+    <div class="field">
         <label asp-for="Email.Email"></label>
-        <input asp-for="Email.Email" class="form-control" />
-        <span asp-validation-for="Email.Email" class="text-danger"></span>
+        <input asp-for="Email.Email"/>
+        <span asp-validation-for="Email.Email" class="ui red text"></span>
     </div>
 
     <h3>Role</h3>
     <hr />
-    <div class="form-group">
+    <div class="field">
         <label asp-for="Role.RoleId"></label>
-        <select asp-for="Role.RoleId" class="form-control">
+        <select asp-for="Role.RoleId">
             @foreach (var role in (IList<Database.Models.Role>)ViewBag.Roles)
             {
                 <option value="@(role.RoleId)">@role.Description</option>
@@ -38,8 +38,8 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Update User</button>
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <button type="submit" class="ui primary button">Update User</button>
+    <div asp-validation-summary="All" class="ui red text"></div>
 </form>
 
 @section Scripts {

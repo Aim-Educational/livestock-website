@@ -1,69 +1,54 @@
 ﻿@using Website.Other
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <!--Toggler (only shown if not all of the navbar can fit on screen)-->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapseArea">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
+<nav class="ui stackable top menu inverted">
     <!--Brand-->
-    <a class="navbar-brand" href="/">Livestock</a>
+    <a class="header item" href="/">Livestock</a>
 
-    <!--Content that can be put into the collapse area-->
-    <div id="navbarCollapseArea" class="collapse navbar-collapse">
-        
-        <!--Left-hand side-->
-        <ul class="navbar-nav list-unstyled">
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-            </li>
-        </ul>
+    <!--Left-hand side-->
+    <a class="left link item" asp-controller="Home" asp-action="Index">Home</a>
 
-        <!--Right-hand side-->
-        <ul class="navbar-nav ml-auto">
+    <!--Right-hand side-->
+    <!--Account stuff-->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="right text item">
+            <div>
+                <!--For some reason, this is needed so that there's a space between words.-->
+                Welcome
+                <a class="" asp-controller="Account" asp-action="Profile">
+                    <strong>
+                        @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? "NO NAME")
+                    </strong>
+                </a>
+            </div>
 
-            <!--Account stuff-->
-            @if(User.Identity.IsAuthenticated)
-            {
-                <li class="nav-item">
-                    <div class="navbar-text">Welcome</div>
-                    <a class="navbar-text" asp-controller="Account" asp-action="Profile">
-                        <strong>
-                            @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? "NO NAME")
-                        </strong>
-                    </a>
-                </li>
+            <img class="image" src="@User.FindFirstValue(LivestockClaims.ProfileImage)" width="40" height="40" />
+        </div>
 
-                <li class="nav-item">
-                    <img src="@User.FindFirstValue(LivestockClaims.ProfileImage)" width="40" height="40" />
-                </li>
+        <div class="item">
+            <form class="ui form" method="post" asp-controller="Account" asp-action="Logout">
+                <button class="ui inverted orange button" type="submit">
+                    Logout
+                </button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="item">
+            <form class="ui form" method="get" asp-controller="Account" asp-action="Login">
+                <button class="ui inverted green button" type="submit">
+                    Login
+                </button>
+            </form>
+        </div>
 
-                <li class="nav-item">
-                    <form method="post" asp-controller="Account" asp-action="Logout">
-                        <button type="submit" class="btn form-control btn-outline-warning">
-                            Logout
-                        </button>
-                    </form>
-                </li>
-            }
-            else
-            {
-                <li class="nav-item">
-                    <form method="get" asp-controller="Account" asp-action="Login">
-                        <button type="submit" class="btn form-control btn-outline-success">
-                            Login
-                        </button>
-                    </form>
-                </li>
-
-                <li class="nav-item">
-                    <form method="get" asp-controller="Account" asp-action="Signup">
-                        <button type="submit" class="btn form-control btn-outline-primary">
-                            Signup
-                        </button>
-                    </form>
-                </li>
-            }
-        </ul>
-    </div>
+        <div class="item">
+            <form class="ui form" method="get" asp-controller="Account" asp-action="Signup">
+                <button class="ui inverted orange button" type="submit">
+                    Signup
+                </button>
+            </form>
+        </div>
+    }
 </nav>

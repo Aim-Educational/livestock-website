@@ -10,18 +10,18 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-																<div class="form-group">
-						<label asp-for="CritterId" class="control-label"></label>
+        <form class="ui form" asp-action="Create">
+																<div class="field">
+						<label asp-for="CritterId"></label>
 						<select asp-for="CritterId" class ="form-control" asp-items="ViewBag.CritterId"></select>
 					</div>
-																<div class="form-group">
-						<label asp-for="Comment" class="control-label"></label>
-						<input asp-for="Comment" class="form-control" />
-						<span asp-validation-for="Comment" class="text-danger"></span>
+																<div class="field">
+						<label asp-for="Comment"></label>
+						<input asp-for="Comment"/>
+						<span asp-validation-for="Comment" class="ui red text"></span>
 					</div>
-																<div class="form-group date" id="DateTime" data-target-input="nearest">
-						<label asp-for="DateTime" class="control-label"></label>
+																<div class="field date" id="DateTime" data-target-input="nearest">
+						<label asp-for="DateTime"></label>
 						<div class="form-inline">
 							<input id="DateTime" type="text" name="DateTime" class="form-control datetimepicker-input" data-target="#DateTime"
 								   value="@(Model?.DateTime.ToString("G") ?? "")"/>
@@ -30,26 +30,26 @@
 							</div>
 						</div>
 					</div>
-																<div class="form-group">
-						<label asp-for="Rfid" class="control-label"></label>
-						<input asp-for="Rfid" class="form-control" />
-						<span asp-validation-for="Rfid" class="text-danger"></span>
+																<div class="field">
+						<label asp-for="Rfid"></label>
+						<input asp-for="Rfid"/>
+						<span asp-validation-for="Rfid" class="ui red text"></span>
 					</div>
-																<div class="form-group">
-						<label asp-for="Tag1" class="control-label"></label>
-						<input asp-for="Tag1" class="form-control" />
-						<span asp-validation-for="Tag1" class="text-danger"></span>
+																<div class="field">
+						<label asp-for="Tag1"></label>
+						<input asp-for="Tag1"/>
+						<span asp-validation-for="Tag1" class="ui red text"></span>
 					</div>
-																				<div class="form-group">
-						<label asp-for="UserId" class="control-label"></label>
-						<input asp-for="UserId" class="form-control" />
-						<span asp-validation-for="UserId" class="text-danger"></span>
+																				<div class="field">
+						<label asp-for="UserId"></label>
+						<input asp-for="UserId"/>
+						<span asp-validation-for="UserId" class="ui red text"></span>
 					</div>
-											            <div class="form-group">
+											            <div class="field">
                 <input type="submit" value="Create" class="btn btn-success" />
             </div>
 			
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="All" class="ui red text"></div>
         </form>
     </div>
 </div>

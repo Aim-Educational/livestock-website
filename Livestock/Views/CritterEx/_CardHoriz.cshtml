@@ -1,29 +1,33 @@
 ﻿@model IList<Database.Models.Critter>
 
-@foreach (var item in Model)
-{
-<div class="col-md-4 pb-2">
-    <div class="card">
-        <img class="card-img-top lazy" data-src="/CritterEx/Image?critterId=@item.CritterId&cacheVersion=@item.VersionNumber&width=348&height=464" />
-        <div class="card-body">
-            <div class="clearfix">
-                <div class="float-right">
-                    <partial name="_CritterIcons" model="item" />
+<div class="ui stackable three column grid">
+    @foreach (var item in Model)
+    {
+        <div class="column bottom one padded">
+            <div class="ui fluid card">
+                <img class="image lazy" data-src="/CritterEx/Image?critterId=@item.CritterId&cacheVersion=@item.VersionNumber&width=348&height=464" />
+                <div class="content">
+                    <div>
+                        <div>
+                            <partial name="_CritterIcons" model="item" />
+                        </div>
+                        <div class="ui massive header text" style="margin-top: 2px;"> 
+                            @item.Name
+                        </div>
+                    </div>
+                    <div class="meta">
+                        @(item.Gender == "M" ? "Male"
+                                             : item.Gender == "F" ? "Female"
+                                                                  : item.Gender)
+                        @item.CritterType.Name - @item.Breed.Description
+                    </div>
+
+                    <div class="ui inverted divider"></div>
+                    <div class="extra content">
+                        <partial name="_CritterLinks" model="item" />
+                    </div>
                 </div>
-                <h5 class="card-title"><span class="badge badge-secondary">[@item.TagNumber]</span> @item.Name</h5>
             </div>
-
-            <h6 class="card-subtitle text-muted">
-                @(item.Gender == "M" ? "Male"
-                                     : item.Gender == "F" ? "Female"
-                                                          : item.Gender)
-                @item.CritterType.Name - @item.Breed.Description
-            </h6>
-
-            <hr />
-
-            <partial name="_CritterLinks" model="item" />
         </div>
-    </div>
+    }
 </div>
-}

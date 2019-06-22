@@ -8,28 +8,42 @@
 </h1>
 <hr />
 
-<form id="createForm" asp-action="@(Model.CreateOrEdit == "create" ? "Create" : "Edit")" method="post">
-    <div class="form-group">
-        <label class="control-label" asp-for="Group.Name"></label>
-        <input class="form-control" asp-for="Group.Name" />
-        <span class="text-danger" asp-validation-for="Group.Name"></span>
+<form class="ui form" id="createForm" asp-action="@(Model.CreateOrEdit == "create" ? "Create" : "Edit")" method="post">
+    <div class="field">
+        <label asp-for="Group.Name"></label>
+        <input asp-for="Group.Name" />
+        <span class="ui red text" asp-validation-for="Group.Name"></span>
     </div>
-    <div class="form-group">
-        <label class="control-label" asp-for="Group.Description"></label>
-        <input class="form-control" asp-for="Group.Description" />
-        <span class="text-danger" asp-validation-for="Group.Description"></span>
+    <div class="field">
+        <label asp-for="Group.Description"></label>
+        <input asp-for="Group.Description" />
+        <span class="ui red text" asp-validation-for="Group.Description"></span>
     </div>
 
-    @if (Model.GroupType == "critter")
-    {
-        <aim-multi-select asp-for="SelectedMemberIds" descriptions="@ViewBag.GroupDescriptions" form-id="createForm" type="Critter" label="Critters"></aim-multi-select>
-        <input asp-for="Group.GroupType" type="hidden" value="@AdmuGroupEntityTypes.Critter" />
-    }
-    else if (Model.GroupType == "user")
-    {
-        <aim-multi-select asp-for="SelectedMemberIds" descriptions="@ViewBag.GroupDescriptions" form-id="createForm" type="User" label="Users"></aim-multi-select>
-        <input asp-for="Group.GroupType" type="hidden" value="@AdmuGroupEntityTypes.User" />
-    }
+    <div class="field">
+        @if (Model.GroupType == "critter")
+        {
+            <label>Critters</label>
+            <select class="ui search multiple selection dropdown" asp-for="SelectedMemberIds" multiple>
+                @foreach (KeyValuePair<int, string> info in ViewBag.GroupDescriptions)
+                {
+                    <option value="@info.Key">@info.Value</option>
+                }
+            </select>
+            <input asp-for="Group.GroupType" type="hidden" value="@AdmuGroupEntityTypes.Critter" />
+        }
+        else if (Model.GroupType == "user")
+        { 
+            <label>Members</label>
+            <select class="ui search multiple selection dropdown" asp-for="SelectedMemberIds" multiple>
+                @foreach (KeyValuePair<int, string> info in ViewBag.GroupDescriptions)
+                {
+                    <option value="@info.Key">@info.Value</option>
+                }
+            </select>
+            <input asp-for="Group.GroupType" type="hidden" value="@AdmuGroupEntityTypes.User" />
+        }
+    </div>
 
     <input asp-for="CreateOrEdit" type="hidden" />
     <input asp-for="GroupType" type="hidden" />
@@ -44,9 +58,9 @@
         <input asp-for="Group.Timestamp" type="hidden" />
     }
 
-    <div class="form-group">
-        <button class="btn btn-primary" type="submit">@(Model.CreateOrEdit == "create" ? "Create" : "Edit") @Model.GroupType</button>
+    <div class="field">
+        <button class="ui primary button" type="submit">@(Model.CreateOrEdit == "create" ? "Create" : "Edit") @Model.GroupType group</button>
     </div>
 
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <div asp-validation-summary="All" class="ui red text"></div>
 </form>

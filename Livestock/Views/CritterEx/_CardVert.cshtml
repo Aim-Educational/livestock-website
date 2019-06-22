@@ -2,34 +2,33 @@
 
 @foreach (var item in Model)
 {
-    <div class="row pb-2">
-        <div class="col">
-            <div>
-                <table class="card">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <img class="vert-card-img-responsive lazy" data-src="/CritterEx/Image?critterId=@item.CritterId&cacheVersion=@item.VersionNumber&width=348&height=464" />
-                            </td>
-                            <td class="pl-4">
-                                <h5 class="card-title"><span class="badge badge-secondary">[@item.TagNumber]</span> @item.Name</h5>
-                                <h6 class="card-subtitle text-muted">
-                                    @(item.Gender == "M" ? "Male"
-                                                         : item.Gender == "F" ? "Female"
-                                                                              : item.Gender)
-                                    @item.CritterType.Name - @item.Breed.Description
-                                </h6>
+    <div class="one column row bottom one padded">
+        <div class="column">
+            <div class="ui fluid horizontal card" >
+                <img class="lazy image" data-src="/CritterEx/Image?critterId=@item.CritterId&cacheVersion=@item.VersionNumber&width=348&height=464"/>
 
-                                <partial name="_CritterIcons" model="item"/>
+                <div class="content">
+                    <div class="header">
+                        @item.Name
+                    </div>
+                    <div class="meta">
+                        @(item.Gender == "M" ? "Male"
+                                             : item.Gender == "F" ? "Female"
+                                                                  : item.Gender)
+                        @item.CritterType.Name - @item.Breed.Description
+                    </div>
 
-                                <div class="pt-5">
-                                    <hr />
-                                    <partial name="_CritterLinks" model="item" />
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <partial name="_CritterIcons" model="item" />
+
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <div class="ui inverted divider"></div>
+                    <div class="extra content">
+                        <partial name="_CritterLinks" model="item" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>

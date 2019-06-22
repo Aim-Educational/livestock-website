@@ -1,6 +1,6 @@
 ﻿@model Database.Models.Critter
 
-<a class="card-link" asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(Model.CritterId)">
+<a asp-controller="CritterEx" asp-action="Edit" asp-route-id="@(Model.CritterId)">
     <for-roles action="Hide" roles="@RoleEnum.Student">
         Edit
     </for-roles>

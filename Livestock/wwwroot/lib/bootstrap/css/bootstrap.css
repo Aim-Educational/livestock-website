@@ -1994,7 +1994,7 @@ textarea.form-control {
   height: auto;
 }
 
-.form-group {
+.field {
   margin-bottom: 1rem;
 }
 
@@ -2018,27 +2018,27 @@ textarea.form-control {
   padding-left: 5px;
 }
 
-.form-check {
+.checkbox {
   position: relative;
   display: block;
   padding-left: 1.25rem;
 }
 
-.form-check-input {
+.checkbox-input {
   position: absolute;
   margin-top: 0.3rem;
   margin-left: -1.25rem;
 }
 
-.form-check-input:disabled ~ .form-check-label {
+.checkbox-input:disabled ~ .checkbox-label {
   color: #6c757d;
 }
 
-.form-check-label {
+.checkbox-label {
   margin-bottom: 0;
 }
 
-.form-check-inline {
+.checkbox-inline {
   display: -ms-inline-flexbox;
   display: inline-flex;
   -ms-flex-align: center;
@@ -2047,7 +2047,7 @@ textarea.form-control {
   margin-right: 0.75rem;
 }
 
-.form-check-inline .form-check-input {
+.checkbox-inline .checkbox-input {
   position: static;
   margin-top: 0;
   margin-right: 0.3125rem;
@@ -2125,13 +2125,13 @@ textarea.form-control {
   display: block;
 }
 
-.was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
+.was-validated .checkbox-input:valid ~ .checkbox-label, .checkbox-input.is-valid ~ .checkbox-label {
   color: #28a745;
 }
 
-.was-validated .form-check-input:valid ~ .valid-feedback,
-.was-validated .form-check-input:valid ~ .valid-tooltip, .form-check-input.is-valid ~ .valid-feedback,
-.form-check-input.is-valid ~ .valid-tooltip {
+.was-validated .checkbox-input:valid ~ .valid-feedback,
+.was-validated .checkbox-input:valid ~ .valid-tooltip, .checkbox-input.is-valid ~ .valid-feedback,
+.checkbox-input.is-valid ~ .valid-tooltip {
   display: block;
 }
 
@@ -2248,13 +2248,13 @@ textarea.form-control {
   display: block;
 }
 
-.was-validated .form-check-input:invalid ~ .form-check-label, .form-check-input.is-invalid ~ .form-check-label {
+.was-validated .checkbox-input:invalid ~ .checkbox-label, .checkbox-input.is-invalid ~ .checkbox-label {
   color: #dc3545;
 }
 
-.was-validated .form-check-input:invalid ~ .invalid-feedback,
-.was-validated .form-check-input:invalid ~ .invalid-tooltip, .form-check-input.is-invalid ~ .invalid-feedback,
-.form-check-input.is-invalid ~ .invalid-tooltip {
+.was-validated .checkbox-input:invalid ~ .invalid-feedback,
+.was-validated .checkbox-input:invalid ~ .invalid-tooltip, .checkbox-input.is-invalid ~ .invalid-feedback,
+.checkbox-input.is-invalid ~ .invalid-tooltip {
   display: block;
 }
 
@@ -2309,7 +2309,7 @@ textarea.form-control {
   align-items: center;
 }
 
-.form-inline .form-check {
+.form-inline .checkbox {
   width: 100%;
 }
 
@@ -2323,7 +2323,7 @@ textarea.form-control {
     justify-content: center;
     margin-bottom: 0;
   }
-  .form-inline .form-group {
+  .form-inline .field {
     display: -ms-flexbox;
     display: flex;
     -ms-flex: 0 0 auto;
@@ -2346,7 +2346,7 @@ textarea.form-control {
   .form-inline .custom-select {
     width: auto;
   }
-  .form-inline .form-check {
+  .form-inline .checkbox {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: center;
@@ -2356,7 +2356,7 @@ textarea.form-control {
     width: auto;
     padding-left: 0;
   }
-  .form-inline .form-check-input {
+  .form-inline .checkbox-input {
     position: relative;
     -ms-flex-negative: 0;
     flex-shrink: 0;
@@ -6721,7 +6721,7 @@ button.bg-dark:focus {
   content: "";
 }
 
-.d-none {
+.hidden {
   display: none !important;
 }
 
@@ -6792,7 +6792,7 @@ button.bg-dark:focus {
 }
 
 @media (min-width: 768px) {
-  .d-md-none {
+  .d-mhidden {
     display: none !important;
   }
   .d-md-inline {
@@ -7719,7 +7719,7 @@ button.bg-dark:focus {
   .float-md-right {
     float: right !important;
   }
-  .float-md-none {
+  .float-mhidden {
     float: none !important;
   }
 }

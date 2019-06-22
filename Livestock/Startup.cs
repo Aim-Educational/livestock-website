@@ -167,9 +167,9 @@ namespace Livestock
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, AimLoginContext loginDb)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, LivestockContext livestockDb)
         {
-            //loginDb.Database.EnsureCreated();
+            //livestockDb.Database.Migrate();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
