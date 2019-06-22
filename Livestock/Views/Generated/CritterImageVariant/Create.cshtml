@@ -10,30 +10,30 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-																<div class="form-group">
+        <form class="ui form"asp-action="Create">
+																<div class="field">
 						<label asp-for="CritterImageModifiedId" class="control-label"></label>
 						<select asp-for="CritterImageModifiedId" class ="form-control" asp-items="ViewBag.CritterImageModifiedId"></select>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="CritterImageOriginalId" class="control-label"></label>
 						<select asp-for="CritterImageOriginalId" class ="form-control" asp-items="ViewBag.CritterImageOriginalId"></select>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="Height" class="control-label"></label>
-						<input asp-for="Height" class="form-control" />
-						<span asp-validation-for="Height" class="text-danger"></span>
+						<input asp-for="Height"/>
+						<span asp-validation-for="Height" class="ui red text"></span>
 					</div>
-																				<div class="form-group">
+																				<div class="field">
 						<label asp-for="Width" class="control-label"></label>
-						<input asp-for="Width" class="form-control" />
-						<span asp-validation-for="Width" class="text-danger"></span>
+						<input asp-for="Width"/>
+						<span asp-validation-for="Width" class="ui red text"></span>
 					</div>
-							            <div class="form-group">
+							            <div class="field">
                 <input type="submit" value="Create" class="btn btn-success" />
             </div>
 			
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="All" class="ui red text"></div>
         </form>
     </div>
 </div>

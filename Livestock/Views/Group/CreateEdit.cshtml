@@ -8,16 +8,16 @@
 </h1>
 <hr />
 
-<form id="createForm" asp-action="@(Model.CreateOrEdit == "create" ? "Create" : "Edit")" method="post">
-    <div class="form-group">
+<form class="ui form"id="createForm" asp-action="@(Model.CreateOrEdit == "create" ? "Create" : "Edit")" method="post">
+    <div class="field">
         <label class="control-label" asp-for="Group.Name"></label>
-        <input class="form-control" asp-for="Group.Name" />
-        <span class="text-danger" asp-validation-for="Group.Name"></span>
+        <inputasp-for="Group.Name" />
+        <span class="ui red text" asp-validation-for="Group.Name"></span>
     </div>
-    <div class="form-group">
+    <div class="field">
         <label class="control-label" asp-for="Group.Description"></label>
-        <input class="form-control" asp-for="Group.Description" />
-        <span class="text-danger" asp-validation-for="Group.Description"></span>
+        <inputasp-for="Group.Description" />
+        <span class="ui red text" asp-validation-for="Group.Description"></span>
     </div>
 
     @if (Model.GroupType == "critter")
@@ -44,9 +44,9 @@
         <input asp-for="Group.Timestamp" type="hidden" />
     }
 
-    <div class="form-group">
+    <div class="field">
         <button class="btn btn-primary" type="submit">@(Model.CreateOrEdit == "create" ? "Create" : "Edit") @Model.GroupType</button>
     </div>
 
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <div asp-validation-summary="All" class="ui red text"></div>
 </form>

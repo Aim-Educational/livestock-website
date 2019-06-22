@@ -10,36 +10,36 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form class="ui form"asp-action="Edit">
 												@Html.HiddenFor(model => model.ProductPurchaseId)
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="LocationId" class="control-label"></label>
 						<select asp-for="LocationId" class ="form-control" asp-items="ViewBag.LocationId"></select>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="ProductId" class="control-label"></label>
 						<select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="SupplierId" class="control-label"></label>
 						<select asp-for="SupplierId" class ="form-control" asp-items="ViewBag.SupplierId"></select>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="BatchNumber" class="control-label"></label>
-						<input asp-for="BatchNumber" class="form-control" />
-						<span asp-validation-for="BatchNumber" class="text-danger"></span>
+						<input asp-for="BatchNumber"/>
+						<span asp-validation-for="BatchNumber" class="ui red text"></span>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="Comment" class="control-label"></label>
-						<input asp-for="Comment" class="form-control" />
-						<span asp-validation-for="Comment" class="text-danger"></span>
+						<input asp-for="Comment"/>
+						<span asp-validation-for="Comment" class="ui red text"></span>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="Cost" class="control-label"></label>
-						<input asp-for="Cost" class="form-control" />
-						<span asp-validation-for="Cost" class="text-danger"></span>
+						<input asp-for="Cost"/>
+						<span asp-validation-for="Cost" class="ui red text"></span>
 					</div>
-																<div class="form-group date" id="DateTime" data-target-input="nearest">
+																<div class="field date" id="DateTime" data-target-input="nearest">
 						<label asp-for="DateTime" class="control-label"></label>
 						<div class="form-inline">
 							<input id="DateTime" type="text" name="DateTime" class="form-control datetimepicker-input" data-target="#DateTime"
@@ -49,7 +49,7 @@
 							</div>
 						</div>
 					</div>
-																<div class="form-group date" id="Expiry" data-target-input="nearest">
+																<div class="field date" id="Expiry" data-target-input="nearest">
 						<label asp-for="Expiry" class="control-label"></label>
 						<div class="form-inline">
 							<input id="Expiry" type="text" name="Expiry" class="form-control datetimepicker-input" data-target="#Expiry"
@@ -61,16 +61,16 @@
 					</div>
 																@Html.HiddenFor(model => model.Timestamp)
 																@Html.HiddenFor(model => model.VersionNumber)
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="Volume" class="control-label"></label>
-						<input asp-for="Volume" class="form-control" />
-						<span asp-validation-for="Volume" class="text-danger"></span>
+						<input asp-for="Volume"/>
+						<span asp-validation-for="Volume" class="ui red text"></span>
 					</div>
-							            <div class="form-group">
+							            <div class="field">
                 <input type="submit" value="Edit" class="btn btn-success" />
             </div>
 			
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="All" class="ui red text"></div>
         </form>
     </div>
 </div>

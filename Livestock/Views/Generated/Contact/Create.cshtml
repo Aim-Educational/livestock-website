@@ -10,62 +10,62 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-																<div class="form-group">
+        <form class="ui form"asp-action="Create">
+																<div class="field">
 						<label asp-for="Name" class="control-label"></label>
-						<input asp-for="Name" class="form-control" />
-						<span asp-validation-for="Name" class="text-danger"></span>
+						<input asp-for="Name"/>
+						<span asp-validation-for="Name" class="ui red text"></span>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="Address" class="control-label"></label>
-						<input asp-for="Address" class="form-control" />
-						<span asp-validation-for="Address" class="text-danger"></span>
+						<input asp-for="Address"/>
+						<span asp-validation-for="Address" class="ui red text"></span>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="Comment" class="control-label"></label>
-						<input asp-for="Comment" class="form-control" />
-						<span asp-validation-for="Comment" class="text-danger"></span>
+						<input asp-for="Comment"/>
+						<span asp-validation-for="Comment" class="ui red text"></span>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="EmailAddress" class="control-label"></label>
-						<input asp-for="EmailAddress" class="form-control" />
-						<span asp-validation-for="EmailAddress" class="text-danger"></span>
+						<input asp-for="EmailAddress"/>
+						<span asp-validation-for="EmailAddress" class="ui red text"></span>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="IsCustomer" class="control-label"></label>
-						<input asp-for="IsCustomer" class="form-control" />
-						<span asp-validation-for="IsCustomer" class="text-danger"></span>
+						<input asp-for="IsCustomer"/>
+						<span asp-validation-for="IsCustomer" class="ui red text"></span>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="IsSupplier" class="control-label"></label>
-						<input asp-for="IsSupplier" class="form-control" />
-						<span asp-validation-for="IsSupplier" class="text-danger"></span>
+						<input asp-for="IsSupplier"/>
+						<span asp-validation-for="IsSupplier" class="ui red text"></span>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="PhoneNumber1" class="control-label"></label>
-						<input asp-for="PhoneNumber1" class="form-control" />
-						<span asp-validation-for="PhoneNumber1" class="text-danger"></span>
+						<input asp-for="PhoneNumber1"/>
+						<span asp-validation-for="PhoneNumber1" class="ui red text"></span>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="PhoneNumber2" class="control-label"></label>
-						<input asp-for="PhoneNumber2" class="form-control" />
-						<span asp-validation-for="PhoneNumber2" class="text-danger"></span>
+						<input asp-for="PhoneNumber2"/>
+						<span asp-validation-for="PhoneNumber2" class="ui red text"></span>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="PhoneNumber3" class="control-label"></label>
-						<input asp-for="PhoneNumber3" class="form-control" />
-						<span asp-validation-for="PhoneNumber3" class="text-danger"></span>
+						<input asp-for="PhoneNumber3"/>
+						<span asp-validation-for="PhoneNumber3" class="ui red text"></span>
 					</div>
-																<div class="form-group">
+																<div class="field">
 						<label asp-for="PhoneNumber4" class="control-label"></label>
-						<input asp-for="PhoneNumber4" class="form-control" />
-						<span asp-validation-for="PhoneNumber4" class="text-danger"></span>
+						<input asp-for="PhoneNumber4"/>
+						<span asp-validation-for="PhoneNumber4" class="ui red text"></span>
 					</div>
-															            <div class="form-group">
+															            <div class="field">
                 <input type="submit" value="Create" class="btn btn-success" />
             </div>
 			
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="All" class="ui red text"></div>
         </form>
     </div>
 </div>

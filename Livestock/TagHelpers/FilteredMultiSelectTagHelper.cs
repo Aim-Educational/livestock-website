@@ -52,11 +52,11 @@ namespace Website.TagHelpers
 
             builder.Append(
                 // Filter box
-                $"<div class='form-group'>\n" +
+                $"<div class='field'>\n" +
                 $"  <label class='control-label'>{this.Label ?? this.For.Name}</label>\n" +
                 $"  <input class='form-control' id='{filterId}' type='text' placeholder='Filter'/>\n" +
                 $"</div>\n" +
-                $"<div class='form-group row'>\n" +
+                $"<div class='field row'>\n" +
                 // Add box
                 $"  <label class='col-sm-2 col-md-1 col-form-label'>Add:</label>" +
                 $"  <div class='col-sm-10 col-md-11'>" +

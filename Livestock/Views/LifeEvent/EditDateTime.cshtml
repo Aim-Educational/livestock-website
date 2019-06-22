@@ -7,14 +7,14 @@
 <h2>EditDateTime</h2>
 
 <div class="col-md-4">
-    <form asp-action="EditDateTime">
+    <form class="ui form"asp-action="EditDateTime">
         @Html.HiddenFor(m => m.Common.Id)
 
-        <div class="form-group">
+        <div class="field">
             <label asp-for="Common.Description" class="control-label"></label>
-            <input asp-for="Common.Description" class="form-control" />
+            <input asp-for="Common.Description"/>
             <small class="form-text text-muted">General description of this event.</small>
-            <span asp-validation-for="Common.Description" class="text-danger"></span>
+            <span asp-validation-for="Common.Description" class="ui red text"></span>
         </div>
 
         <label asp-for="DateTime" class="control-label"></label>
@@ -27,16 +27,16 @@
             </div>
             <small class="form-text text-muted">When did this event occur?</small>
 
-            <span asp-validation-for="DateTime" class="text-danger"></span>
+            <span asp-validation-for="DateTime" class="ui red text"></span>
         </div>
 
         <for-roles action="Hide" roles="@RoleEnum.Student">
-            <div class="form-group">
+            <div class="field">
                 <input type="submit" value="Edit" class="btn btn-success" />
             </div>
         </for-roles>
 
-        <div asp-validation-summary="All" class="text-danger"></div>
+        <div asp-validation-summary="All" class="ui red text"></div>
     </form>
 </div>
 

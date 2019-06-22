@@ -14,7 +14,7 @@
         <dd>@Html.DisplayFor(m => Model.DateTime)</dd>
     </dl>
 
-    <form asp-action="DeleteDateTimePost">
+    <form class="ui form"asp-action="DeleteDateTimePost">
         <input type="hidden" asp-for="Common.Id" />
         <input type="submit" value="Delete Event" class="btn btn-danger" /> |
         <a asp-action="Edit" asp-route-id="@(Model.Common.Id)">Back to Critter</a>

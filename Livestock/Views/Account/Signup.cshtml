@@ -5,57 +5,60 @@
 
 <h1>Signup</h1>
 
-<form id="signup" method="post" asp-controller="Account" asp-action="Signup" autocomplete="off">
-    <h3>Login Info</h3>
-    <hr />
-    <div class="form-group">
+<form class="ui form" id="signup" method="post" asp-controller="Account" asp-action="Signup" autocomplete="off">
+    <h3 class="ui dividing header">Login Info</h3>
+    <div class="field">
         <label asp-for="Username"></label>
-        <input asp-for="Username" placeholder="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
+        <input asp-for="Username" placeholder="Username" />
+        <span asp-validation-for="Username" class="ui red text"></span>
     </div>
-    <div class="form-group">
+    <div class="field">
         <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password" class="ui red text"></span>
     </div>
-    <div class="form-group">
+    <div class="field">
         <label asp-for="PasswordConfirm"></label>
-        <input asp-for="PasswordConfirm" class="form-control" />
-        <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+        <input asp-for="PasswordConfirm" />
+        <span asp-validation-for="PasswordConfirm" class="ui red text"></span>
     </div>
 
     <h3>Account Info</h3>
     <hr />
-    <div class="form-group">
+    <div class="field">
         <label asp-for="FirstName"></label>
-        <input asp-for="FirstName" placeholder="FirstName" class="form-control" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
+        <input asp-for="FirstName" placeholder="FirstName" />
+        <span asp-validation-for="FirstName" class="ui red text"></span>
     </div>
-    <div class="form-group">
+    <div class="field">
         <label asp-for="LastName"></label>
-        <input asp-for="LastName" placeholder="LastName" class="form-control" />
-        <span asp-validation-for="LastName" class="text-danger"></span>
+        <input asp-for="LastName" placeholder="LastName"/>
+        <span asp-validation-for="LastName" class="ui red text"></span>
     </div>
-    <div class="form-group">
+    <div class="field">
         <label asp-for="EmailAddress"></label>
-        <input asp-for="EmailAddress" placeholder="EmailAddress" class="form-control" />
-        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+        <input asp-for="EmailAddress" placeholder="EmailAddress"/>
+        <span asp-validation-for="EmailAddress" class="ui red text"></span>
     </div>
-    <div class="form-check">
-        <input asp-for="ToSConsent" type="checkbox" class="form-check-input" />
-        <label asp-for="ToSConsent" class="form-check-label">
-            I have read and accept the terms under the <a href="#">Terms of Service</a> agreement.
-        </label>
+    <div class="inline field">
+        <div class="ui checkbox">
+            <input asp-for="ToSConsent" type="checkbox" class="hidden" />
+            <label asp-for="ToSConsent">
+                I have read and accept the terms under the <a href="#">Terms of Service</a> agreement.
+            </label>
+        </div>
     </div>
-    <div class="form-check">
-        <input asp-for="PrivacyConsent" type="checkbox" class="form-check-input" />
-        <label asp-for="PrivacyConsent" class="form-check-label">
-            I have read and accept the terms under the <a href="#">Privacy Statement</a>.
-        </label>
+    <div class="inline field">
+        <div class="ui checkbox">
+            <input asp-for="PrivacyConsent" type="checkbox" class="hidden" />
+            <label asp-for="PrivacyConsent">
+                I have read and accept the terms under the <a href="#">Privacy Statement</a>.
+            </label>
+        </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create Account</button>
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <button type="submit" class="ui button">Create Account</button>
+    <div asp-validation-summary="All" class="ui red text"></div>
 </form>
 
 @section Scripts {

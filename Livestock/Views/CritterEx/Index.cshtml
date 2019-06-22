@@ -31,31 +31,31 @@
 <div class="border">
     <div class="pt-2 pl-2"> <!--Padding wrapper-->
         <!--Name and Tag filter-->
-        <div class="form-group row">
+        <div class="field row">
             <label class="col-md-1 col-form-label">Search:</label>
             <div class="col-md-8">
                 <div class="form-inline">
-                    <input id="search-box" type="text" class="form-control" />
+                    <input id="search-box" type="text"/>
 
-                    <div class="form-check form-check-inline pl-md-2">
-                        <input id="radioSearchName" type="radio" name="searchType" class="form-check-input" value="Name" checked />
-                        <label class="form-check-label">Name</label>
+                    <div class="checkbox checkbox-inline pl-md-2">
+                        <input id="radioSearchName" type="radio" name="searchType" class="checkbox-input" value="Name" checked />
+                        <label >Name</label>
                     </div>
 
-                    <div class="form-check form-check-inline">
-                        <input id="radioSearchTag" type="radio" name="searchType" class="form-check-input" value="Tag" />
-                        <label class="form-check-label">Tag</label>
+                    <div class="checkbox checkbox-inline">
+                        <input id="radioSearchTag" type="radio" name="searchType" class="checkbox-input" value="Tag" />
+                        <label >Tag</label>
                     </div>
                 </div>
             </div>
         </div>
 
         <!--Critter type filter-->
-        <div class="form-group row">
+        <div class="field row">
             <label class="col-md-1 col-form-label">Race:</label>
             <div class="col-md-4">
                 <div class="form-inline">
-                    <select id="type-dropdown" class="form-control">
+                    <select id="type-dropdown">
                         <option value="-999">All</option>
                         @foreach (var type in Model.Select(c => c.CritterType).OrderBy(b => b.Name).Distinct())
                         {
@@ -67,11 +67,11 @@
         </div>
 
         <!--Breed filter-->
-        <div class="form-group row">
+        <div class="field row">
             <label class="col-md-1 col-form-label">Breed:</label>
             <div class="col-md-4">
                 <div class="form-inline">
-                    <select id="breed-dropdown" class="form-control">
+                    <select id="breed-dropdown">
                         <option value="-999"></option>
                     </select>
                 </div>
@@ -79,39 +79,39 @@
         </div>
 
         <!--Gender filter-->
-        <div class="form-group row">
+        <div class="field row">
             <label class="col-md-1 col-form-label">Gender:</label>
             <div class="col-md-4">
-                <div class="form-check form-check-inline pt-2">
-                    <input id="radioGenderMale" class="form-check-input" type="radio" value="M" name="genderFilter" />
-                    <label class="form-check-label">Male</label>
+                <div class="checkbox checkbox-inline pt-2">
+                    <input id="radioGenderMale" class="checkbox-input" type="radio" value="M" name="genderFilter" />
+                    <label >Male</label>
                 </div>
-                <div class="form-check form-check-inline pt-2">
-                    <input id="radioGenderFemale" class="form-check-input" type="radio" value="F" name="genderFilter" />
-                    <label class="form-check-label">Female</label>
+                <div class="checkbox checkbox-inline pt-2">
+                    <input id="radioGenderFemale" class="checkbox-input" type="radio" value="F" name="genderFilter" />
+                    <label >Female</label>
                 </div>
-                <div class="form-check form-check-inline pt-2">
-                    <input id="radioGenderBoth" class="form-check-input" type="radio" value="ALL" name="genderFilter" checked />
-                    <label class="form-check-label">Both</label>
+                <div class="checkbox checkbox-inline pt-2">
+                    <input id="radioGenderBoth" class="checkbox-input" type="radio" value="ALL" name="genderFilter" checked />
+                    <label >Both</label>
                 </div>
             </div>
         </div>
 
         <!--Can Reproduce filters-->
-        <div class="form-group row">
+        <div class="field row">
             <label class="col-md-1 col-form-label">Can Reproduce:</label>
             <div class="col-md-4">
-                <div class="form-check form-check-inline pt-2">
-                    <input id="radioReproduceYes" class="form-check-input" type="radio" value="true" name="canReproduceFilter" />
-                    <label class="form-check-label">Yes</label>
+                <div class="checkbox checkbox-inline pt-2">
+                    <input id="radioReproduceYes" class="checkbox-input" type="radio" value="true" name="canReproduceFilter" />
+                    <label >Yes</label>
                 </div>
-                <div class="form-check form-check-inline pt-2">
-                    <input id="radioReproduceNo" class="form-check-input" type="radio" value="false" name="canReproduceFilter" />
-                    <label class="form-check-label">No</label>
+                <div class="checkbox checkbox-inline pt-2">
+                    <input id="radioReproduceNo" class="checkbox-input" type="radio" value="false" name="canReproduceFilter" />
+                    <label >No</label>
                 </div>
-                <div class="form-check form-check-inline pt-2">
-                    <input id="radioReproduceBoth" class="form-check-input" type="radio" value="ALL" name="canReproduceFilter" checked />
-                    <label class="form-check-label">Both</label>
+                <div class="checkbox checkbox-inline pt-2">
+                    <input id="radioReproduceBoth" class="checkbox-input" type="radio" value="ALL" name="canReproduceFilter" checked />
+                    <label >Both</label>
                 </div>
             </div>
         </div>

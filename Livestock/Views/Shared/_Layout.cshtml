@@ -37,9 +37,11 @@
     <hr />
     <footer>
         <div class="ui centered grid">
-            <a class="eight wide column" asp-action="Index" asp-controller="Changelog">
-                [@(config.GetValue<string>("AIMDEPLOY:GIT_TAG", "Unknown version"))]
-            </a>
+            <div class="eight wide column">
+                <a asp-action="Index" asp-controller="Changelog">
+                    [@(config.GetValue<string>("AIMDEPLOY:GIT_TAG", "Unknown version"))]
+                </a>
+            </div>
             <p class="four wide column right aligned">&copy; 2019 - AimEducational</p>
         </div>
     </footer>

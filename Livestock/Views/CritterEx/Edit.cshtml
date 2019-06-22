@@ -60,16 +60,16 @@
              width="348" height="464"/>
 
         <for-roles action="Hide" roles="@RoleEnum.Student">
-            <form asp-action="Image" method="post" enctype="multipart/form-data">
-                <div class="pt-2 form-group">
+            <form class="ui form"asp-action="Image" method="post" enctype="multipart/form-data">
+                <div class="pt-2 field">
                     <input class="form-control-file" name="file" type="file" accept="image/*" onchange="previewFile(event)" />
                 </div>
-                <div class="form-group">
+                <div class="field">
                     <input class="btn btn-success" type="submit" value="Upload" />
                 </div>
 
                 <input type="hidden" value="@Model.Critter.CritterId" name="critterId" />
-                <div asp-validation-summary="All" class="text-danger"></div>
+                <div asp-validation-summary="All" class="ui red text"></div>
             </form>
         </for-roles>
     </div>
@@ -80,66 +80,66 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div class="form-group">
+        <form class="ui form"asp-action="Edit">
+            <div class="field">
                 <label asp-for="Critter.Name" class="control-label"></label>
-                <input asp-for="Critter.Name" class="form-control" />
-                <span asp-validation-for="Critter.Name" class="text-danger"></span>
+                <input asp-for="Critter.Name"/>
+                <span asp-validation-for="Critter.Name" class="ui red text"></span>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label asp-for="Critter.TagNumber" class="control-label"></label>
-                <input asp-for="Critter.TagNumber" class="form-control" />
-                <span asp-validation-for="Critter.TagNumber" class="text-danger"></span>
+                <input asp-for="Critter.TagNumber"/>
+                <span asp-validation-for="Critter.TagNumber" class="ui red text"></span>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label asp-for="Critter.CritterTypeId" class="control-label"></label>
-                <select id="selectCritterType" asp-for="Critter.CritterTypeId" class="form-control" asp-items="ViewBag.CritterTypeId"></select>
+                <select id="selectCritterType" asp-for="Critter.CritterTypeId"asp-items="ViewBag.CritterTypeId"></select>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label asp-for="Critter.BreedId" class="control-label"></label>
-                <select id="selectBreed" asp-for="Critter.BreedId" class="form-control"></select>
+                <select id="selectBreed" asp-for="Critter.BreedId"></select>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label asp-for="Critter.Gender" class="control-label"></label>
-                <select asp-for="Critter.Gender" class="form-control">
+                <select asp-for="Critter.Gender">
                     <option value="M">Male</option>
                     <option value="F">Female</option>
                     <option value="?">Unknown</option>
                 </select>
-                <span asp-validation-for="Critter.Gender" class="text-danger"></span>
+                <span asp-validation-for="Critter.Gender" class="ui red text"></span>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label asp-for="Critter.DadCritterId" class="control-label"></label>
-                <select asp-for="Critter.DadCritterId" class="form-control" asp-items="ViewBag.DadCritterId"></select>
+                <select asp-for="Critter.DadCritterId"asp-items="ViewBag.DadCritterId"></select>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label asp-for="Critter.MumCritterId" class="control-label"></label>
-                <select asp-for="Critter.MumCritterId" class="form-control" asp-items="ViewBag.MumCritterId"></select>
+                <select asp-for="Critter.MumCritterId"asp-items="ViewBag.MumCritterId"></select>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label asp-for="Critter.OwnerContactId" class="control-label"></label>
-                <select asp-for="Critter.OwnerContactId" class="form-control" asp-items="ViewBag.OwnerContactId"></select>
+                <select asp-for="Critter.OwnerContactId"asp-items="ViewBag.OwnerContactId"></select>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label asp-for="Critter.Comment" class="control-label"></label>
-                <input asp-for="Critter.Comment" class="form-control" />
-                <span asp-validation-for="Critter.Comment" class="text-danger"></span>
+                <input asp-for="Critter.Comment"/>
+                <span asp-validation-for="Critter.Comment" class="ui red text"></span>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label asp-for="Critter.DadFurther" class="control-label"></label>
-                <input asp-for="Critter.DadFurther" class="form-control" />
-                <span asp-validation-for="Critter.DadFurther" class="text-danger"></span>
+                <input asp-for="Critter.DadFurther"/>
+                <span asp-validation-for="Critter.DadFurther" class="ui red text"></span>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label asp-for="Critter.MumFurther" class="control-label"></label>
-                <input asp-for="Critter.MumFurther" class="form-control" />
-                <span asp-validation-for="Critter.MumFurther" class="text-danger"></span>
+                <input asp-for="Critter.MumFurther"/>
+                <span asp-validation-for="Critter.MumFurther" class="ui red text"></span>
             </div>
-            <div class="form-check">
-                <input asp-for="YesReproduceUser" class="form-check-input" type="checkbox"
+            <div class="ui checkbox">
+                <input asp-for="YesReproduceUser" class="checkbox-input" type="checkbox"
                        flag-to-use="@CritterFlags.ReproduceYesUser" flag-input="@Model.Critter.Flags" />
-                <label asp-for="YesReproduceUser" class="form-check-label">Can Reproduce</label>
-                <span asp-validation-for="YesReproduceUser" class="text-danger"></span>
+                <label asp-for="YesReproduceUser" >Can Reproduce</label>
+                <span asp-validation-for="YesReproduceUser" class="ui red text"></span>
             </div>
             @Html.HiddenFor(model => model.Critter.CritterImageId)
             @Html.HiddenFor(model => model.Critter.CritterId)
@@ -148,12 +148,12 @@
             @Html.HiddenFor(model => model.Critter.Flags)
 
             <for-roles action="Hide" roles="@RoleEnum.Student">
-                <div class="form-group">
+                <div class="field">
                     <input type="submit" value="Edit" class="btn btn-success" />
                 </div>
             </for-roles>
 
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="All" class="ui red text"></div>
         </form>
     </div>
 </div>
@@ -166,9 +166,9 @@
     <div class="row">
         <div class="col-md-4">
             <!--Select box-->
-            <div class="form-group">
+            <div class="field">
                 <label class="form-text">Event</label>
-                <select name="editorSelect" id="editorSelect" class="form-control"></select>
+                <select name="editorSelect" id="editorSelect"></select>
             </div>
 
             <small class="form-text text-muted">What type of event took place?</small>
@@ -181,7 +181,7 @@
         <div class="col-md-4">
             <!--'datetime' EDITOR-->
             <div id="editor-datetime" class="d-none">
-                <form asp-controller="LifeEvent" asp-action="NewDateTime" asp-route-id="@Model.Critter.CritterId">
+                <form class="ui form"asp-controller="LifeEvent" asp-action="NewDateTime" asp-route-id="@Model.Critter.CritterId">
                     <!--Date input-->
                     <label asp-for="DateTime.DateTime" class="control-label"></label>
                     <div class="form-inline">
@@ -193,18 +193,18 @@
                         </div>
                         <small class="form-text text-muted">When did this event occur?</small>
 
-                        <span asp-validation-for="DateTime.DateTime" class="text-danger"></span>
+                        <span asp-validation-for="DateTime.DateTime" class="ui red text"></span>
                     </div>
 
                     <partial name="_EditorCommon" />
                     <br />
 
                     <!--Submit button-->
-                    <div class="form-group">
+                    <div class="field">
                         <input type="submit" value="Create New Event" class="btn btn-success" />
                     </div>
 
-                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div asp-validation-summary="All" class="ui red text"></div>
                 </form>
             </div>
         </div>
