@@ -7,39 +7,41 @@
 
 @if (Model != null)
 {
-    <div class="row">
-        @foreach (var item in Model.OrderBy(i => i.SequenceNumber).ThenBy(i => i.Title))
-        {
-            <div class="col-sm-8 col-md-6 col-lg-2 col-xl-2">
-                <a asp-controller="@item.Controller" asp-action="@item.Action">
-                    <div class="card menu-card text-center">
-                        <img class="card-img-top border-bottom" src="@item.IconUri" alt="Critter">
-                        <div class="card-body">
-                            <p class="card-text">
-                                @item.Title
-                            </p>
+    <div class="ui fixed width grid">
+        <div class="row">
+            @foreach (var item in Model.OrderBy(i => i.SequenceNumber).ThenBy(i => i.Title))
+            {
+                <div class="sixteen wide mobile three wide computer column">
+                    <a asp-controller="@item.Controller" asp-action="@item.Action">
+                        <div class="ui card">
+                            <img class="home-card image" src="@item.IconUri" alt="Critter">
+                            <div class="content">
+                                <p class="header center aligned">
+                                    @item.Title
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-        }
+                    </a>
+                </div>
+            }
+        </div>
     </div>
 }
 else if(User.IsInRole("temp"))
 {
-    <div class="alert alert-danger">
+    <div class="ui warning message">
         You currently aren't set to a role. Yell at Andy to finish setting up your account.
     </div>
 }
 else if(!User.Identity.IsAuthenticated)
 {
-    <div class="alert alert-info">
+    <div class="ui info message">
         Please login before doing anything.
     </div>
 }
 else
 {
-    <div class="alert alert-danger">
+    <div class="ui error message">
         Unhandled corner case. Yell at Andy.
     </div>
 }

@@ -1,9 +1,4 @@
-﻿li.nav-item {
-    margin-right: 5px;
-    margin-bottom: 5px; /*For when it's in the collapsed menu*/
-}
-
-/* This is used in the vertical card design for CritterEx/Index */
+﻿/* This is used in the vertical card design for CritterEx/Index */
 img.vert-card-img-responsive {
     width: 180px !important;
     height: 200px !important;
@@ -25,4 +20,9 @@ img.vert-card-img-responsive {
 
 .resize-both {
     resize: both;
+}
+
+.home-card.image {
+    /*width: 198px;*/
+    height: 199px;
 }
