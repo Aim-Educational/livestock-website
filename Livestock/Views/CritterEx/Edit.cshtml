@@ -60,7 +60,7 @@
              width="348" height="464"/>
 
         <for-roles action="Hide" roles="@RoleEnum.Student">
-            <form class="ui form"asp-action="Image" method="post" enctype="multipart/form-data">
+            <form class="ui form" asp-action="Image" method="post" enctype="multipart/form-data">
                 <div class="pt-2 field">
                     <input class="form-control-file" name="file" type="file" accept="image/*" onchange="previewFile(event)" />
                 </div>
@@ -80,7 +80,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form class="ui form"asp-action="Edit">
+        <form class="ui form" asp-action="Edit">
             <div class="field">
                 <label asp-for="Critter.Name" class="control-label"></label>
                 <input asp-for="Critter.Name"/>
@@ -181,7 +181,7 @@
         <div class="col-md-4">
             <!--'datetime' EDITOR-->
             <div id="editor-datetime" class="d-none">
-                <form class="ui form"asp-controller="LifeEvent" asp-action="NewDateTime" asp-route-id="@Model.Critter.CritterId">
+                <form class="ui form" asp-controller="LifeEvent" asp-action="NewDateTime" asp-route-id="@Model.Critter.CritterId">
                     <!--Date input-->
                     <label asp-for="DateTime.DateTime" class="control-label"></label>
                     <div class="form-inline">
