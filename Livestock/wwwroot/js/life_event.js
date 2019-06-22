@@ -19,11 +19,10 @@ function setupEditors(eventTypes) {
     }
     editorSelector.addEventListener("change", function () {
         editorsHtml.forEach(function (e) {
-            if (!e.classList.contains("d-none"))
-                e.classList.add("d-none");
+            e.classList.add("transition", "hidden");
         });
         var thisEditor = editors[eventTypes[editorSelector.value]];
-        thisEditor.classList.remove("d-none");
+        thisEditor.classList.remove("transition", "hidden");
         var dataTypeInput = thisEditor.querySelector(".data-type-input");
         if (dataTypeInput === null) {
             alert("Editor for '" + editorSelector.value + "' does not have a hidden input of class 'data-type-input'");

@@ -981,7 +981,7 @@ html {
   }
 }
 
-.d-none {
+.hidden {
   display: none !important;
 }
 
@@ -1052,7 +1052,7 @@ html {
 }
 
 @media (min-width: 768px) {
-  .d-md-none {
+  .d-mhidden {
     display: none !important;
   }
   .d-md-inline {

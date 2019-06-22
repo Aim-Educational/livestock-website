@@ -3,6 +3,12 @@
 .lazy {
 }
 
+/* MAIN FONT*/
+body {
+    /* Line stolen from _reboot.scss */
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
 /* Resize-ability helpers */
 .resize-horiz {
     resize: horizontal;
@@ -16,7 +22,12 @@
     resize: both;
 }
 
+/* Limit the height for images on the home page */
 .home-card.image {
-    /*width: 198px;*/
     height: 199px;
+}
+
+/* Padding helpers */
+.bottom.one.padded {
+    padding-bottom: 1em;
 }

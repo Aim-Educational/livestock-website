@@ -33,13 +33,12 @@ function setupEditors(eventTypes: { [eventName: string]: string }) {
     editorSelector.addEventListener("change", function () {
         // Hide all editors.
         editorsHtml.forEach(function (e) {
-            if (!e.classList.contains("d-none"))
-                e.classList.add("d-none");
+            e.classList.add("transition", "hidden");
         });
 
         // Then unhide the one we want.
         let thisEditor = editors[eventTypes[editorSelector.value]];
-        thisEditor.classList.remove("d-none");
+        thisEditor.classList.remove("transition", "hidden");
 
         // And set the data type input.
         let dataTypeInput = <HTMLInputElement>thisEditor.querySelector(".data-type-input");

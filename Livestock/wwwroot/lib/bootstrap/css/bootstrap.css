@@ -6721,7 +6721,7 @@ button.bg-dark:focus {
   content: "";
 }
 
-.d-none {
+.hidden {
   display: none !important;
 }
 
@@ -6792,7 +6792,7 @@ button.bg-dark:focus {
 }
 
 @media (min-width: 768px) {
-  .d-md-none {
+  .d-mhidden {
     display: none !important;
   }
   .d-md-inline {
@@ -7719,7 +7719,7 @@ button.bg-dark:focus {
   .float-md-right {
     float: right !important;
   }
-  .float-md-none {
+  .float-mhidden {
     float: none !important;
   }
 }

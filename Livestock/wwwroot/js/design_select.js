@@ -12,8 +12,8 @@ function changeDesign(divName) {
         return;
     }
     var designs = document.querySelectorAll('*[id^="design-"]');
-    designs.forEach(function (d) { return d.classList.add("d-none"); });
-    div.classList.remove("d-none");
+    designs.forEach(function (d) { return d.classList.add("transition", "hidden"); });
+    div.classList.remove("transition", "hidden");
     if (CAN_USE_COOKIES)
         Cookies.set("critterDesign", divName);
 }

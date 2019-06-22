@@ -86,6 +86,11 @@
             doLazyLoading();
         });
 
+        // Transform all <select> elements into Semantic UI versions.
+        $(function () {
+            $("select").dropdown();
+        });
+
         // Ensure all cookies we use are secured, and that we can even track them.
         Cookies.defaults.secure = true;
         CAN_USE_COOKIES = @(canUseCookies ? "true" : "false");
