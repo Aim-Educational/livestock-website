@@ -13,24 +13,24 @@
         <form class="ui form" asp-action="Edit">
 												@Html.HiddenFor(model => model.VehicleId)
 																<div class="field">
-						<label asp-for="Name" class="control-label"></label>
+						<label asp-for="Name"></label>
 						<input asp-for="Name"/>
 						<span asp-validation-for="Name" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="Comment" class="control-label"></label>
+						<label asp-for="Comment"></label>
 						<input asp-for="Comment"/>
 						<span asp-validation-for="Comment" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="RegistrationNumber" class="control-label"></label>
+						<label asp-for="RegistrationNumber"></label>
 						<input asp-for="RegistrationNumber"/>
 						<span asp-validation-for="RegistrationNumber" class="ui red text"></span>
 					</div>
 																@Html.HiddenFor(model => model.Timestamp)
 																@Html.HiddenFor(model => model.VersionNumber)
 																<div class="field">
-						<label asp-for="WeightKg" class="control-label"></label>
+						<label asp-for="WeightKg"></label>
 						<input asp-for="WeightKg"/>
 						<span asp-validation-for="WeightKg" class="ui red text"></span>
 					</div>

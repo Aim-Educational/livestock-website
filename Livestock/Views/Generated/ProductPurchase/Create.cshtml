@@ -12,34 +12,34 @@
     <div class="col-md-4">
         <form class="ui form" asp-action="Create">
 																<div class="field">
-						<label asp-for="LocationId" class="control-label"></label>
+						<label asp-for="LocationId"></label>
 						<select asp-for="LocationId" class ="form-control" asp-items="ViewBag.LocationId"></select>
 					</div>
 																<div class="field">
-						<label asp-for="ProductId" class="control-label"></label>
+						<label asp-for="ProductId"></label>
 						<select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select>
 					</div>
 																<div class="field">
-						<label asp-for="SupplierId" class="control-label"></label>
+						<label asp-for="SupplierId"></label>
 						<select asp-for="SupplierId" class ="form-control" asp-items="ViewBag.SupplierId"></select>
 					</div>
 																<div class="field">
-						<label asp-for="BatchNumber" class="control-label"></label>
+						<label asp-for="BatchNumber"></label>
 						<input asp-for="BatchNumber"/>
 						<span asp-validation-for="BatchNumber" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="Comment" class="control-label"></label>
+						<label asp-for="Comment"></label>
 						<input asp-for="Comment"/>
 						<span asp-validation-for="Comment" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="Cost" class="control-label"></label>
+						<label asp-for="Cost"></label>
 						<input asp-for="Cost"/>
 						<span asp-validation-for="Cost" class="ui red text"></span>
 					</div>
 																<div class="field date" id="DateTime" data-target-input="nearest">
-						<label asp-for="DateTime" class="control-label"></label>
+						<label asp-for="DateTime"></label>
 						<div class="form-inline">
 							<input id="DateTime" type="text" name="DateTime" class="form-control datetimepicker-input" data-target="#DateTime"
 								   value="@(Model?.DateTime.ToString("G") ?? "")"/>
@@ -49,7 +49,7 @@
 						</div>
 					</div>
 																<div class="field date" id="Expiry" data-target-input="nearest">
-						<label asp-for="Expiry" class="control-label"></label>
+						<label asp-for="Expiry"></label>
 						<div class="form-inline">
 							<input id="Expiry" type="text" name="Expiry" class="form-control datetimepicker-input" data-target="#Expiry"
 								   value="@(Model?.Expiry.ToString("G") ?? "")"/>
@@ -59,7 +59,7 @@
 						</div>
 					</div>
 																								<div class="field">
-						<label asp-for="Volume" class="control-label"></label>
+						<label asp-for="Volume"></label>
 						<input asp-for="Volume"/>
 						<span asp-validation-for="Volume" class="ui red text"></span>
 					</div>

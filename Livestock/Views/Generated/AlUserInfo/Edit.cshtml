@@ -13,28 +13,28 @@
         <form class="ui form" asp-action="Edit">
 												@Html.HiddenFor(model => model.AlUserInfoId)
 																<div class="field">
-						<label asp-for="Comment" class="control-label"></label>
+						<label asp-for="Comment"></label>
 						<input asp-for="Comment"/>
 						<span asp-validation-for="Comment" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="FirstName" class="control-label"></label>
+						<label asp-for="FirstName"></label>
 						<input asp-for="FirstName"/>
 						<span asp-validation-for="FirstName" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="LastName" class="control-label"></label>
+						<label asp-for="LastName"></label>
 						<input asp-for="LastName"/>
 						<span asp-validation-for="LastName" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="PrivacyConsent" class="control-label"></label>
+						<label asp-for="PrivacyConsent"></label>
 						<input asp-for="PrivacyConsent"/>
 						<span asp-validation-for="PrivacyConsent" class="ui red text"></span>
 					</div>
 																@Html.HiddenFor(model => model.Timestamp)
 																<div class="field">
-						<label asp-for="TosConsent" class="control-label"></label>
+						<label asp-for="TosConsent"></label>
 						<input asp-for="TosConsent"/>
 						<span asp-validation-for="TosConsent" class="ui red text"></span>
 					</div>

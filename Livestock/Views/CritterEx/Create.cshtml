@@ -4,34 +4,34 @@
     ViewData["Title"] = "Create";
 }
 <h1>Create new critter</h1>
-<hr />
+<div class="ui inverted divider"></div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="six wide column">
         <form class="ui form" asp-action="Create" method="post" enctype="multipart/form-data">
             <img id="image" src="~/images/icons/default.png" width="348" height="464"/>
-            <div class="pt-2 field">
+            <div class="field">
                 <input class="form-control-file" asp-for="File" type="file" accept="image/*" onchange="previewFile(event)" />
             </div>
             <div class="field">
-                <label asp-for="Critter.Name" class="control-label"></label>
+                <label asp-for="Critter.Name"></label>
                 <input asp-for="Critter.Name"/>
                 <span asp-validation-for="Critter.Name" class="ui red text"></span>
             </div>
             <div class="field">
-                <label asp-for="Critter.TagNumber" class="control-label"></label>
+                <label asp-for="Critter.TagNumber"></label>
                 <input asp-for="Critter.TagNumber"/>
                 <span asp-validation-for="Critter.TagNumber" class="ui red text"></span>
             </div>
             <div class="field">
-                <label asp-for="Critter.CritterTypeId" class="control-label"></label>
-                <select id="selectCritterType" asp-for="Critter.CritterTypeId"asp-items="ViewBag.CritterTypeId"></select>
+                <label asp-for="Critter.CritterTypeId"></label>
+                <select class="ui search dropdown" id="selectCritterType" asp-for="Critter.CritterTypeId" asp-items="ViewBag.CritterTypeId"></select>
             </div>
             <div class="field">
-                <label asp-for="Critter.BreedId" class="control-label"></label>
-                <select id="selectBreed" asp-for="Critter.BreedId"asp-items="ViewBag.BreedId"></select>
+                <label asp-for="Critter.BreedId"></label>
+                <select class="ui search dropdown" id="selectBreed" asp-for="Critter.BreedId" asp-items="ViewBag.BreedId"></select>
             </div>
             <div class="field">
-                <label asp-for="Critter.Gender" class="control-label"></label>
+                <label asp-for="Critter.Gender"></label>
                 <select asp-for="Critter.Gender">
                     <option value="M">Male</option>
                     <option value="F">Female</option>
@@ -40,43 +40,45 @@
                 <span asp-validation-for="Critter.Gender" class="ui red text"></span>
             </div>
             <div class="field">
-                <label asp-for="Critter.DadCritterId" class="control-label"></label>
-                <select asp-for="Critter.DadCritterId"asp-items="ViewBag.DadCritterId"></select>
+                <label asp-for="Critter.DadCritterId"></label>
+                <select class="ui search dropdown" asp-for="Critter.DadCritterId" asp-items="ViewBag.DadCritterId"></select>
             </div>
             <div class="field">
-                <label asp-for="Critter.MumCritterId" class="control-label"></label>
-                <select asp-for="Critter.MumCritterId"asp-items="ViewBag.MumCritterId"></select>
+                <label asp-for="Critter.MumCritterId"></label>
+                <select class="ui search dropdown" asp-for="Critter.MumCritterId" asp-items="ViewBag.MumCritterId"></select>
             </div>
             <div class="field">
-                <label asp-for="Critter.OwnerContactId" class="control-label"></label>
-                <select asp-for="Critter.OwnerContactId"asp-items="ViewBag.OwnerContactId"></select>
+                <label asp-for="Critter.OwnerContactId"></label>
+                <select class="ui search dropdown" asp-for="Critter.OwnerContactId" asp-items="ViewBag.OwnerContactId"></select>
             </div>
             <div class="field">
-                <label asp-for="Critter.Comment" class="control-label"></label>
+                <label asp-for="Critter.Comment"></label>
                 <input asp-for="Critter.Comment"/>
                 <span asp-validation-for="Critter.Comment" class="ui red text"></span>
             </div>
             <div class="field">
-                <label asp-for="Critter.DadFurther" class="control-label"></label>
+                <label asp-for="Critter.DadFurther"></label>
                 <input asp-for="Critter.DadFurther"/>
                 <span asp-validation-for="Critter.DadFurther" class="ui red text"></span>
             </div>
             <div class="field">
-                <label asp-for="Critter.MumFurther" class="control-label"></label>
+                <label asp-for="Critter.MumFurther"></label>
                 <input asp-for="Critter.MumFurther"/>
                 <span asp-validation-for="Critter.MumFurther" class="ui red text"></span>
             </div>
-            <div class="ui checkbox">
-                <input asp-for="YesReproduceUser" class="checkbox-input" type="checkbox"
-                       flag-to-use="ReproduceYesUser" />
-                <label asp-for="YesReproduceUser" >Can Reproduce</label>
-                <span asp-validation-for="YesReproduceUser" class="ui red text"></span>
+            <div class="inline field">
+                <div class="ui checkbox">
+                    <input asp-for="YesReproduceUser" class="checkbox-input" type="checkbox"
+                           flag-to-use="ReproduceYesUser" />
+                    <label asp-for="YesReproduceUser">Can Reproduce</label>
+                    <span asp-validation-for="YesReproduceUser" class="ui red text"></span>
+                </div>
             </div>
             <input type="hidden" asp-for="Critter.CritterId" value="@(Model?.Critter.CritterId ?? 0)" />
             <input type="hidden" asp-for="Critter.Timestamp" value="AAAAAAAAH0U=" />
             <input type="hidden" asp-for="Critter.VersionNumber" value="@(Model?.Critter.VersionNumber ?? 1)" />
             <div class="field">
-                <input type="submit" value="Create" class="btn btn-success" />
+                <input class="ui positive button" type="submit" value="Create" />
             </div>
             <div asp-validation-summary="All" class="ui red text"></div>
         </form>

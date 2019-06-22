@@ -12,24 +12,24 @@
     <div class="col-md-4">
         <form class="ui form" asp-action="Create">
 																<div class="field">
-						<label asp-for="Name" class="control-label"></label>
+						<label asp-for="Name"></label>
 						<input asp-for="Name"/>
 						<span asp-validation-for="Name" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="EnumLocationTypeId" class="control-label"></label>
+						<label asp-for="EnumLocationTypeId"></label>
 						<select asp-for="EnumLocationTypeId" class ="form-control" asp-items="ViewBag.EnumLocationTypeId"></select>
 					</div>
 																<div class="field">
-						<label asp-for="HoldingId" class="control-label"></label>
+						<label asp-for="HoldingId"></label>
 						<select asp-for="HoldingId" class ="form-control" asp-items="ViewBag.HoldingId"></select>
 					</div>
 																<div class="field">
-						<label asp-for="ParentId" class="control-label"></label>
+						<label asp-for="ParentId"></label>
 						<select asp-for="ParentId" class ="form-control" asp-items="ViewBag.ParentId"></select>
 					</div>
 																<div class="field">
-						<label asp-for="Comment" class="control-label"></label>
+						<label asp-for="Comment"></label>
 						<input asp-for="Comment"/>
 						<span asp-validation-for="Comment" class="ui red text"></span>
 					</div>

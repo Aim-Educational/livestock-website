@@ -13,12 +13,12 @@
         <form class="ui form" asp-action="Edit">
 												@Html.HiddenFor(model => model.VehicleLifeEventWashId)
 																<div class="field">
-						<label asp-for="Comment" class="control-label"></label>
+						<label asp-for="Comment"></label>
 						<input asp-for="Comment"/>
 						<span asp-validation-for="Comment" class="ui red text"></span>
 					</div>
 																<div class="field date" id="DateTime" data-target-input="nearest">
-						<label asp-for="DateTime" class="control-label"></label>
+						<label asp-for="DateTime"></label>
 						<div class="form-inline">
 							<input id="DateTime" type="text" name="DateTime" class="form-control datetimepicker-input" data-target="#DateTime"
 								   value="@(Model?.DateTime.ToString("G") ?? "")"/>
@@ -29,12 +29,12 @@
 					</div>
 																@Html.HiddenFor(model => model.Timestamp)
 																<div class="field">
-						<label asp-for="UserId" class="control-label"></label>
+						<label asp-for="UserId"></label>
 						<input asp-for="UserId"/>
 						<span asp-validation-for="UserId" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="VehicleLifeEventId" class="control-label"></label>
+						<label asp-for="VehicleLifeEventId"></label>
 						<input asp-for="VehicleLifeEventId"/>
 						<span asp-validation-for="VehicleLifeEventId" class="ui red text"></span>
 					</div>

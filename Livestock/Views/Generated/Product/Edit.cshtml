@@ -13,26 +13,26 @@
         <form class="ui form" asp-action="Edit">
 												@Html.HiddenFor(model => model.ProductId)
 																<div class="field">
-						<label asp-for="Description" class="control-label"></label>
+						<label asp-for="Description"></label>
 						<input asp-for="Description"/>
 						<span asp-validation-for="Description" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="EnumProductTypeId" class="control-label"></label>
+						<label asp-for="EnumProductTypeId"></label>
 						<select asp-for="EnumProductTypeId" class ="form-control" asp-items="ViewBag.EnumProductTypeId"></select>
 					</div>
 																<div class="field">
-						<label asp-for="Comment" class="control-label"></label>
+						<label asp-for="Comment"></label>
 						<input asp-for="Comment"/>
 						<span asp-validation-for="Comment" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="DefaultVolume" class="control-label"></label>
+						<label asp-for="DefaultVolume"></label>
 						<input asp-for="DefaultVolume"/>
 						<span asp-validation-for="DefaultVolume" class="ui red text"></span>
 					</div>
 																<div class="field">
-						<label asp-for="RequiresRefridgeration" class="control-label"></label>
+						<label asp-for="RequiresRefridgeration"></label>
 						<input asp-for="RequiresRefridgeration"/>
 						<span asp-validation-for="RequiresRefridgeration" class="ui red text"></span>
 					</div>

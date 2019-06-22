@@ -12,15 +12,15 @@
     <div class="col-md-4">
         <form class="ui form" asp-action="Create">
 																<div class="field">
-						<label asp-for="MenuHeaderId" class="control-label"></label>
+						<label asp-for="MenuHeaderId"></label>
 						<select asp-for="MenuHeaderId" class ="form-control" asp-items="ViewBag.MenuHeaderId"></select>
 					</div>
 																<div class="field">
-						<label asp-for="MenuItemId" class="control-label"></label>
+						<label asp-for="MenuItemId"></label>
 						<select asp-for="MenuItemId" class ="form-control" asp-items="ViewBag.MenuItemId"></select>
 					</div>
 																<div class="field">
-						<label asp-for="Comment" class="control-label"></label>
+						<label asp-for="Comment"></label>
 						<input asp-for="Comment"/>
 						<span asp-validation-for="Comment" class="ui red text"></span>
 					</div>

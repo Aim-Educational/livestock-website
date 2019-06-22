@@ -13,15 +13,15 @@
         <form class="ui form" asp-action="Edit">
 												@Html.HiddenFor(model => model.VehicleTrailerMapId)
 																<div class="field">
-						<label asp-for="TrailerId" class="control-label"></label>
+						<label asp-for="TrailerId"></label>
 						<select asp-for="TrailerId" class ="form-control" asp-items="ViewBag.TrailerId"></select>
 					</div>
 																<div class="field">
-						<label asp-for="VehicleMainId" class="control-label"></label>
+						<label asp-for="VehicleMainId"></label>
 						<select asp-for="VehicleMainId" class ="form-control" asp-items="ViewBag.VehicleMainId"></select>
 					</div>
 																<div class="field">
-						<label asp-for="Comment" class="control-label"></label>
+						<label asp-for="Comment"></label>
 						<input asp-for="Comment"/>
 						<span asp-validation-for="Comment" class="ui red text"></span>
 					</div>

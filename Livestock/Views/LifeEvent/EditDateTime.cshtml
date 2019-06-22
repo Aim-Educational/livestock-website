@@ -11,13 +11,13 @@
         @Html.HiddenFor(m => m.Common.Id)
 
         <div class="field">
-            <label asp-for="Common.Description" class="control-label"></label>
+            <label asp-for="Common.Description"></label>
             <input asp-for="Common.Description"/>
             <small class="form-text text-muted">General description of this event.</small>
             <span asp-validation-for="Common.Description" class="ui red text"></span>
         </div>
 
-        <label asp-for="DateTime" class="control-label"></label>
+        <label asp-for="DateTime"></label>
         <div class="form-inline">
             <div class="input-group">
                 <input id="datetimeDateTime" type="text" asp-for="DateTime" class="form-control datetimepicker-input" data-target="#datetimeDateTime" />
