@@ -1,0 +1,8 @@
+{
+  "lockfileVersion": 1,
+  "dependencies": {
+    "@types/jquery": "^3.3.30",
+    "@types/js-cookie": "^2.2.2",
+    "js-cookie": "^2.2.0"
+  }
+}
