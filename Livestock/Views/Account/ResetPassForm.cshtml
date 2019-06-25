@@ -1,0 +1,27 @@
+﻿@model Website.Models.AccountResetPasswordViewModel
+@{
+    ViewData["Title"] = "ResetPassForm";
+}
+
+<h1>Reset Password</h1>
+
+<form class="ui form" asp-action="ResetPassForm" method="post">
+    <div class="field">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email" class="ui red text"></span>
+    </div>
+    <div class="field">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password" class="ui red text"></span>
+    </div>
+    <div class="field">
+        <label asp-for="PasswordConfirm"></label>
+        <input asp-for="PasswordConfirm" />
+        <span asp-validation-for="PasswordConfirm" class="ui red text"></span>
+    </div>
+
+    <button type="submit" class="ui primary button">Reset</button>
+    <div asp-validation-summary="All" class="ui red text"></div>
+</form>

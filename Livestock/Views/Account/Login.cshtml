@@ -17,6 +17,11 @@
         <input asp-for="Password"/>
         <span asp-validation-for="Password" class="ui red text"></span>
     </div>
+
+    <div class="field">
+        <a asp-controller="Account" asp-action="ResetPassForm">Forgotten your password?</a>
+    </div>
+
     <button type="submit" class="ui primary button">Login</button>
     <div asp-validation-summary="All" class="ui red text"></div>
 </form>

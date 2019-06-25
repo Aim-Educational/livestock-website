@@ -54,6 +54,11 @@ namespace Website.Controllers
             return View();
         }
 
+        public IActionResult ResetPassForm()
+        {
+            return View();
+        }
+
         [Authorize(Roles = "student,staff,admin")]
         public IActionResult Profile()
         {
@@ -182,31 +187,68 @@ namespace Website.Controllers
             if(ModelState.IsValid)
             {
                 var userId = Convert.ToInt32(HttpContext.User.FindFirstValue(AimLoginClaims.UserId));
-                var user = await this.aimloginDb.Users.FindAsync(userId);
-                var loginInfo = await this.aimLoginData.SingleValue<UserLoginInfo>().GetOrDefaultAsync(user);
+                var result = await this.ChangePasswordForUser(userId, model.OldPassword, model.Password);
                 
-                var passHash = await this.aimHasher.HashWithSalt(model.OldPassword, loginInfo.Salt);
-                if(!passHash.SequenceEqual(loginInfo.PassHash))
-                {
-                    ModelState.AddModelError(nameof(model.OldPassword), "The current password is incorrect.");
-                    return View(model);
-                }
-
-                try
-                {
-                    await this.aimloginUsers.ChangeUserPassword(user, model.Password);
-                }
-                catch(PasswordValidationException ex)
-                {
-                    ModelState.AddModelError(nameof(model.Password), ex.Message);
-                    return View(model);
-                }
-
-                return RedirectToAction("Verify", "Home", new { type = "changepass" });
+                return result ?? View(model);
             }
 
             return View(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassForm(AccountResetPasswordViewModel model)
+        {
+            if(!ModelState.IsValid)
+                return View(model);
+
+            var email = await this.aimloginDb.UserEmail.SingleOrDefaultAsync(e => e.Email == model.Email);
+            if(email == null)
+            {
+                ModelState.AddModelError(nameof(model.Email), "The given email does not exist.");
+                return View(model);
+            }
+
+            var userId = await this.aimLoginData.SingleValue<UserEmail>().ReverseLookupUserId(email);
+            if(userId == null)
+            {
+                ModelState.AddModelError(nameof(model.Email), "Internal Server Error: No userId could be found in a reverse lookup.");
+            }
+
+            var result = await this.ChangePasswordForUser(userId.Value, null, model.Password);
+            return result ?? View(model);
+        }
+
+        #region Common Operations
+        public async Task<IActionResult> ChangePasswordForUser(int userId, string oldPass, string newPass)
+        {
+            var user = await this.aimloginDb.Users.FindAsync(userId);
+            var loginInfo = await this.aimLoginData.SingleValue<UserLoginInfo>().GetOrDefaultAsync(user);
+
+            // Please mr security auditor, don't eat me.
+            if(oldPass != null)
+            {
+                var passHash = await this.aimHasher.HashWithSalt(oldPass, loginInfo.Salt);
+                if (!passHash.SequenceEqual(loginInfo.PassHash))
+                {
+                    ModelState.AddModelError("OldPassword", "The current password is incorrect.");
+                    return null;
+                }
+            }
+
+            try
+            {
+                await this.aimloginUsers.ChangeUserPassword(user, newPass);
+            }
+            catch (PasswordValidationException ex)
+            {
+                ModelState.AddModelError("Password", ex.Message);
+                return null;
+            }
+
+            return RedirectToAction("Verify", "Home", new { type = "changepass" });
+        }
+        #endregion
 
         #region Callbacks
         public async Task<IActionResult> VerifyEmail(string token)
